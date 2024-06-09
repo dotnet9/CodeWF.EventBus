@@ -1,0 +1,6 @@
+@WebAPIDemo_HostAddress = http://localhost:5069
+
+GET {{WebAPIDemo_HostAddress}}/event/
+Accept: application/json
+
+###
