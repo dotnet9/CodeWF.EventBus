@@ -1,11 +1,11 @@
-﻿<Window x:Class="WPFDemo.MainWindow"
+﻿<Window x:Class="WPFDemoUseNuget.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFDemo"
+        xmlns:local="clr-namespace:WPFDemoUseNuget"
         mc:Ignorable="d"
-        Title="WPF事件总线测试(直接引用)" Height="400" Width="400">
+        Title="WPF事件总线测试(NuGet版)" Height="400" Width="400">
     <StackPanel Margin="10">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="消息：" />
