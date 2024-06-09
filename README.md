@@ -149,17 +149,17 @@ internal class MessageHandler
 }
 ```
 
-## 1. IOC方式使用
+## 2. IOC方式使用
 
 适合于在ASP.NET Core程序中使用，下面是使用步骤。
 
-### 1.1. 安装包
+### 2.1. 安装包
 
 ```shell
 Install-Package CodeWF.AspNetCore.EventBus -Version 1.0.1
 ```
 
-### 1.2. 注册事件总线
+### 2.2. 注册事件总线
 
 ```CSharp
 using CodeWF.AspNetCore.EventBus;
@@ -192,7 +192,7 @@ app.UseEventBus();
 app.Run();
 ```
 
-### 1.3. 定义事件处理类
+### 2.3. 定义事件处理类
 
 处理类中可以正常使用构造函数注入IOC服务：
 
@@ -224,7 +224,7 @@ public class MessageHandler
 }
 ```
 
-### 1.4. 控制器中发送消息
+### 2.4. 控制器中发送消息
 
 控制器或其他服务可以发布消息，上面的处理程序会接收处理：
 
