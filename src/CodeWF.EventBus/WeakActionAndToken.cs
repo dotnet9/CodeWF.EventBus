@@ -6,11 +6,7 @@ namespace CodeWF.EventBus
     {
         public object Recipient { get; set; }
 
-        public ThreadOption ThreadOption { get; set; }
-
         public Delegate Action { get; set; }
-
-        public string Tag { get; set; }
 
         public void ExecuteWithObject<TMessage>(TMessage message) where TMessage : Message
         {

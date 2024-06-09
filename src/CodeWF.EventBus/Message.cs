@@ -6,7 +6,7 @@ namespace CodeWF.EventBus
     {
         public object Sender { get; }
 
-        public Message(object sender)
+        protected Message(object sender)
         {
             Sender = sender ?? throw new ArgumentNullException(nameof(sender));
         }
