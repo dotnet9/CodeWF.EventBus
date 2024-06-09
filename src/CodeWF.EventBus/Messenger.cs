@@ -51,23 +51,8 @@ namespace CodeWF.EventBus
                 var actionType = typeof(Action<>).MakeGenericType(messageType);
                 var delegateInstance = Delegate.CreateDelegate(actionType, recipient, methodInfo);
 
-                lock (_registerLock)
-                {
-                    if (_recipientsOfSubclassesAction == null)
-                        _recipientsOfSubclassesAction =
-                            new Dictionary<Type, List<WeakActionAndToken>>(); // 注意这里存储的是object  
-
-                    if (!_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
-                    {
-                        actionList = new List<WeakActionAndToken>();
-                        _recipientsOfSubclassesAction.Add(messageType, actionList);
-                    }
-
-                    var item = new WeakActionAndToken()
-                        { Recipient = recipient, Action = delegateInstance, Order = eventHandlerAttr.Order };
-
-                    actionList.Add(item);
-                }
+                Subscribe(messageType, new WeakActionAndToken()
+                    { Recipient = recipient, Action = delegateInstance, Order = eventHandlerAttr.Order });
             }
         }
 
@@ -80,25 +65,24 @@ namespace CodeWF.EventBus
         public void Subscribe<TMessage>(object recipient, Action<TMessage> action)
             where TMessage : Message
         {
-            lock (_registerLock)
+            var messageType = typeof(TMessage);
+            Subscribe(messageType, new WeakActionAndToken()
+                { Recipient = recipient, Action = action });
+        }
+
+        private void Subscribe(Type messageType, WeakActionAndToken actionInfo)
+        {
+            if (_recipientsOfSubclassesAction == null)
+                _recipientsOfSubclassesAction = new Dictionary<Type, List<WeakActionAndToken>>();
+
+
+            if (!_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
             {
-                var messageType = typeof(TMessage);
-
-                if (_recipientsOfSubclassesAction == null)
-                    _recipientsOfSubclassesAction = new Dictionary<Type, List<WeakActionAndToken>>();
-
-
-                if (!_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
-                {
-                    actionList = new List<WeakActionAndToken>();
-                    _recipientsOfSubclassesAction.Add(messageType, actionList);
-                }
-
-                var item = new WeakActionAndToken()
-                    { Recipient = recipient, Action = action };
-
-                actionList.Add(item);
+                actionList = new List<WeakActionAndToken>();
+                _recipientsOfSubclassesAction.Add(messageType, actionList);
             }
+
+            actionList.Add(actionInfo);
         }
 
         /// <summary>  
