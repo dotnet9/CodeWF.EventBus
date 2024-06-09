@@ -2,28 +2,31 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<UseWPF>true</UseWPF>
 		<Company>https://codewf.com</Company>
 		<Authors>沙漠尽头的狼</Authors>
 		<Owners>https://codewf.com</Owners>
 		<Version>1.0.1</Version>
-		<Description>EventBus，事件总线，进程内事件订阅与发布，可在各种模板项目使用：WPF、Winform、AvaloniaUI、ASP.NET Core</Description>
+		<Description>EventBus，事件总线，进程内事件订阅与发布，适用于ASP.NET Core使用依赖注入，其他模板程序请使用CodeWF.EventBuss</Description>
 		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
 		<Copyright>Copyright © https://codewf.com 2024</Copyright>
-		<PackageId>CodeWF.EventBus</PackageId>
-		<PackageTags>C# EventBus; WPF; Winform; AvaloniaUI,ASP.NET Core;</PackageTags>
+		<PackageId>CodeWF.AspNetCore.EventBus</PackageId>
+		<PackageTags>ASP.NET Core EventBus</PackageTags>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/dotnet9/CodeWF.EventBus</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/dotnet9/CodeWF.EventBus</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CodeWF.EventBus" Version="1.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.4.24266.19" />
+	</ItemGroup>
+	<ItemGroup>
 		<None Include="Resources\logo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
-
 </Project>

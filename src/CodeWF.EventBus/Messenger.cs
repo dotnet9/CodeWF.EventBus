@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using static System.Collections.Specialized.BitVector32;
 
 namespace CodeWF.EventBus
 {
@@ -65,7 +64,7 @@ namespace CodeWF.EventBus
                     }
 
                     var item = new WeakActionAndToken()
-                        { Recipient = recipient, Action = delegateInstance };
+                        { Recipient = recipient, Action = delegateInstance, Order = eventHandlerAttr.Order };
 
                     actionList.Add(item);
                 }
@@ -194,6 +193,7 @@ namespace CodeWF.EventBus
                 if (messageType == type || messageType.IsSubclassOf(type) || type.IsAssignableFrom(messageType))
                     list = _recipientsOfSubclassesAction[type]
                         .Take(_recipientsOfSubclassesAction[type].Count)
+                        .OrderBy(action => action.Order)
                         .ToList();
 
                 if (list != null && list.Count > 0) SendToList(message, list);

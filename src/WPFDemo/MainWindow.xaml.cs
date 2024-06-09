@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using CodeWF.EventBus;
-using MessageViewModel;
+﻿using CodeWF.EventBus;
+using System.Windows;
+using WPFDemo.EventBus;
 
 namespace WPFDemo
 {
@@ -50,15 +50,15 @@ namespace WPFDemo
         }
 
         [EventHandler(Order = 2)]
-        private void ReceiveAutoMessage1(SayHelloMessage message)
-        {
-            AddLog($"收到自动订阅消息({nameof(ReceiveAutoMessage1)})“{message.Word}”");
-        }
-
-        [EventHandler(Order = 1)]
         private void ReceiveAutoMessage2(SayHelloMessage message)
         {
             AddLog($"收到自动订阅消息({nameof(ReceiveAutoMessage2)})“{message.Word}”");
+        }
+
+        [EventHandler(Order = 1)]
+        private void ReceiveAutoMessage1(SayHelloMessage message)
+        {
+            AddLog($"收到自动订阅消息({nameof(ReceiveAutoMessage1)})“{message.Word}”");
         }
 
         [EventHandler(Order = 3)]

@@ -1,5 +1,5 @@
-﻿using ConsoleDemo;
+﻿using ConsoleDemo.EventBus.EventHandlers;
 
-new TestHello();
+new SayHelloMessageHandler();
 
 Console.ReadKey();

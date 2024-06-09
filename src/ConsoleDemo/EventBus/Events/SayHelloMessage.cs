@@ -1,4 +1,4 @@
-﻿namespace WPFDemoUseNuget.Message
+﻿namespace ConsoleDemo.EventBus.Events
 {
     public class SayHelloMessage : CodeWF.EventBus.Message
     {

@@ -1,8 +1,6 @@
-﻿using CodeWF.EventBus;
-
-namespace MessageViewModel
+﻿namespace WebAPIDemo.EventBus.Events
 {
-    public class SayHelloMessage : Message
+    public class SayHelloMessage : CodeWF.EventBus.Message
     {
         public string Word { get; }
 
