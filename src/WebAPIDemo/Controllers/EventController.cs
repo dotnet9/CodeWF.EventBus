@@ -1,6 +1,6 @@
 using CodeWF.EventBus;
+using MessageViewModel;
 using Microsoft.AspNetCore.Mvc;
-using WebAPIDemo.EventBus.Events;
 
 namespace WebAPIDemo.Controllers
 {
@@ -17,12 +17,16 @@ namespace WebAPIDemo.Controllers
             _messenger = messenger;
         }
 
-        [HttpGet]
-        public string Get()
+        [HttpPost]
+        public void Add()
         {
-            _messenger.Publish(this, new SayHelloMessage(this, "Hello!"));
+            _messenger.Publish(this, new CreateProductMessage(this, $"{DateTime.Now:HHmmss}ºÅ²úÆ·"));
+        }
 
-            return "Get success";
+        [HttpDelete]
+        public void Delete()
+        {
+            _messenger.Publish(this, new DeleteProductMessage(this, $"{DateTime.Now:HHmmss}ºÅ"));
         }
     }
 }
