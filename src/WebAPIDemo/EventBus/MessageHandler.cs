@@ -1,10 +1,17 @@
 ﻿using CodeWF.EventBus;
 using MessageViewModel;
+using WebAPIDemo.Services;
 
 namespace WebAPIDemo.EventBus
 {
     public class MessageHandler
     {
+        private readonly ITimeService timeService;
+
+        public MessageHandler(ITimeService timeService)
+        {
+            this.timeService = timeService;
+        }
         [EventHandler(Order = 3)]
         public void ReceiveAutoCreateProductMessage3(CreateProductMessage message)
         {
@@ -25,7 +32,7 @@ namespace WebAPIDemo.EventBus
 
         private void AddLog(string message)
         {
-            Console.WriteLine($"{DateTime.Now:HH:mm:ss fff} {message}\r\n");
+            Console.WriteLine($"{timeService.GetTime()}: {message}\r\n");
         }
     }
 }
