@@ -2,16 +2,19 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<UseWPF>true</UseWPF>
 		<Company>https://codewf.com</Company>
 		<Authors>沙漠尽头的狼</Authors>
 		<Owners>https://codewf.com</Owners>
-		<Version>1.0.1</Version>
+		<AssemblyVersion>1.0.2</AssemblyVersion>
+		<FileVersion>1.0.2</FileVersion>
+		<Version>1.0.2</Version>
 		<Description>EventBus，事件总线，进程内事件订阅与发布，可在各种模板项目使用：WPF、Winform、AvaloniaUI、ASP.NET Core</Description>
 		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
 		<Copyright>Copyright © https://codewf.com 2024</Copyright>
+		<AssemblyName>CodeWF.EventBus</AssemblyName>
+		<RootNamespace>CodeWF.EventBus</RootNamespace>
 		<PackageId>CodeWF.EventBus</PackageId>
 		<PackageTags>C# EventBus; WPF; Winform; AvaloniaUI,ASP.NET Core;</PackageTags>
 		<PackageIcon>logo.png</PackageIcon>
@@ -25,5 +28,7 @@
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
+
+	<Import Project="..\CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems" Label="Shared" />
 
 </Project>

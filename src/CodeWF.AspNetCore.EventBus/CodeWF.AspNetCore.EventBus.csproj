@@ -1,16 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<Company>https://codewf.com</Company>
 		<Authors>沙漠尽头的狼</Authors>
 		<Owners>https://codewf.com</Owners>
-		<Version>1.0.1</Version>
+		<AssemblyVersion>1.0.2</AssemblyVersion>
+		<FileVersion>1.0.2</FileVersion>
+		<Version>1.0.2</Version>
 		<Description>EventBus，事件总线，进程内事件订阅与发布，适用于ASP.NET Core使用依赖注入，其他模板程序请使用CodeWF.EventBuss</Description>
 		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
 		<Copyright>Copyright © https://codewf.com 2024</Copyright>
+		<AssemblyName>CodeWF.AspNetCore.EventBus</AssemblyName>
+		<RootNamespace>CodeWF.AspNetCore.EventBus</RootNamespace>
 		<PackageId>CodeWF.AspNetCore.EventBus</PackageId>
 		<PackageTags>ASP.NET Core EventBus</PackageTags>
 		<PackageIcon>logo.png</PackageIcon>
@@ -19,9 +23,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeWF.EventBus" Version="1.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.4.24266.19" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\logo.png">
@@ -29,4 +31,5 @@
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
+	<Import Project="..\CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems" Label="Shared" />
 </Project>

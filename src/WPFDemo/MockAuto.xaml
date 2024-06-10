@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFDemo"
         mc:Ignorable="d"
-        Title="自动注册处理" Height="400" Width="400">
+        Title="自动注册处理" Height="400" Width="420">
     <StackPanel Margin="10">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="产品ID：" />
@@ -13,9 +13,9 @@
             <Button Content="删除产品" Click="SendMessage_OnClick" Margin="10 0"/>
             <Button Content="注销消息" x:Name="BtnEvent" Click="SubscribeOrUnsubscribe_OnClick"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
             <TextBlock Text="消息：" />
-            <TextBox TextWrapping="Wrap" x:Name="TxtLog" Width="300" Height="300"/>
+            <TextBox TextWrapping="Wrap" x:Name="TxtLog" Width="340" Height="300"/>
         </StackPanel>
     </StackPanel>
 </Window>

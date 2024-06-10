@@ -12,6 +12,7 @@ namespace WebAPIDemo.EventBus
         {
             this.timeService = timeService;
         }
+
         [EventHandler(Order = 3)]
         public void ReceiveAutoCreateProductMessage3(CreateProductMessage message)
         {

@@ -1,9 +1,9 @@
-﻿using System;
-using CodeWF.EventBus;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using CodeWF.EventBus;
+using System;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeWF.AspNetCore.EventBus
 {

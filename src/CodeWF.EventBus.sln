@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.34929.205
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus", "CodeWF.EventBus.csproj", "{19C6C53A-D5AD-4400-A80A-CF8BEE422982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus", "CodeWF.EventBus\CodeWF.EventBus.csproj", "{19C6C53A-D5AD-4400-A80A-CF8BEE422982}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{53654337-FF17-4F13-A081-69801A2AE290}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDemo", "..\ConsoleDemo\ConsoleDemo.csproj", "{25E49426-E12F-4664-B392-DFC001796A4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDemo", "ConsoleDemo\ConsoleDemo.csproj", "{25E49426-E12F-4664-B392-DFC001796A4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIDemo", "..\WebAPIDemo\WebAPIDemo.csproj", "{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIDemo", "WebAPIDemo\WebAPIDemo.csproj", "{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A7FA457D-7E77-4B21-958F-F45A51EF8163}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFDemo", "..\WPFDemo\WPFDemo.csproj", "{4D1C3A2B-3C9B-49E2-8085-11B3163FF0EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFDemo", "WPFDemo\WPFDemo.csproj", "{4D1C3A2B-3C9B-49E2-8085-11B3163FF0EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.AspNetCore.EventBus", "..\CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj", "{333B237E-7DCE-4FDE-82E6-D69A79EDD41F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.AspNetCore.EventBus", "CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj", "{333B237E-7DCE-4FDE-82E6-D69A79EDD41F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageViewModel", "..\MessageViewModel\MessageViewModel.csproj", "{70E131CB-62EF-4125-B194-3576F326A005}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CodeWF.EventBus.Shared", "CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.shproj", "{361A66B2-2E1F-4B9A-8587-EEFF3364EBD8}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MessageViewModel.Shared", "MessageViewModel.Shared\MessageViewModel.Shared.shproj", "{B47C6BB8-EFB7-4F61-9538-48DECD480606}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +47,6 @@ Global
 		{333B237E-7DCE-4FDE-82E6-D69A79EDD41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{333B237E-7DCE-4FDE-82E6-D69A79EDD41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{333B237E-7DCE-4FDE-82E6-D69A79EDD41F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70E131CB-62EF-4125-B194-3576F326A005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70E131CB-62EF-4125-B194-3576F326A005}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70E131CB-62EF-4125-B194-3576F326A005}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70E131CB-62EF-4125-B194-3576F326A005}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,9 +57,19 @@ Global
 		{4BF9D6F9-2896-4006-B603-BC098FBEA3B8} = {53654337-FF17-4F13-A081-69801A2AE290}
 		{4D1C3A2B-3C9B-49E2-8085-11B3163FF0EC} = {53654337-FF17-4F13-A081-69801A2AE290}
 		{333B237E-7DCE-4FDE-82E6-D69A79EDD41F} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
-		{70E131CB-62EF-4125-B194-3576F326A005} = {53654337-FF17-4F13-A081-69801A2AE290}
+		{361A66B2-2E1F-4B9A-8587-EEFF3364EBD8} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
+		{B47C6BB8-EFB7-4F61-9538-48DECD480606} = {53654337-FF17-4F13-A081-69801A2AE290}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7685ED0A-581B-42BC-9613-64AD00D124D6}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{19c6c53a-d5ad-4400-a80a-cf8bee422982}*SharedItemsImports = 5
+		MessageViewModel.Shared\MessageViewModel.Shared.projitems*{25e49426-e12f-4664-b392-dfc001796a4f}*SharedItemsImports = 5
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{333b237e-7dce-4fde-82e6-d69a79edd41f}*SharedItemsImports = 5
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{361a66b2-2e1f-4b9a-8587-eeff3364ebd8}*SharedItemsImports = 13
+		MessageViewModel.Shared\MessageViewModel.Shared.projitems*{4bf9d6f9-2896-4006-b603-bc098fbea3b8}*SharedItemsImports = 5
+		MessageViewModel.Shared\MessageViewModel.Shared.projitems*{4d1c3a2b-3c9b-49e2-8085-11b3163ff0ec}*SharedItemsImports = 5
+		MessageViewModel.Shared\MessageViewModel.Shared.projitems*{b47c6bb8-efb7-4f61-9538-48decd480606}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

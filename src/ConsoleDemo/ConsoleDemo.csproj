@@ -8,11 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeWF.EventBus" Version="1.0.1" />
+    <PackageReference Include="CodeWF.EventBus" Version="1.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MessageViewModel\MessageViewModel.csproj" />
-  </ItemGroup>
+  <Import Project="..\MessageViewModel.Shared\MessageViewModel.Shared.projitems" Label="Shared" />
 
 </Project>
