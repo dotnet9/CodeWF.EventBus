@@ -11,7 +11,7 @@ namespace WPFDemo
         public MockManu()
         {
             InitializeComponent();
-            SubscribeOrUnsubscribe_OnClick(null, null);
+            ChangeSubscribe();
         }
 
         void ReceiveManuDeleteProductMessage(DeleteProductMessage message)
@@ -31,6 +31,11 @@ namespace WPFDemo
         }
 
         private void SubscribeOrUnsubscribe_OnClick(object sender, RoutedEventArgs e)
+        {
+            ChangeSubscribe();
+        }
+
+        private void ChangeSubscribe()
         {
             _isSubscribed = !_isSubscribed;
             if (_isSubscribed)

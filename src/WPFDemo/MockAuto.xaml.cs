@@ -11,7 +11,7 @@ namespace WPFDemo
         public MockAuto()
         {
             InitializeComponent();
-            SubscribeOrUnsubscribe_OnClick(null, null);
+            ChangeSubscribe();
         }
 
         private void SendMessage_OnClick(object sender, RoutedEventArgs e)
@@ -21,6 +21,11 @@ namespace WPFDemo
         }
 
         private void SubscribeOrUnsubscribe_OnClick(object sender, RoutedEventArgs e)
+        {
+            ChangeSubscribe();
+        }
+
+        private void ChangeSubscribe()
         {
             _isSubscribed = !_isSubscribed;
             if (_isSubscribed)

@@ -8,10 +8,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CodeWF.EventBus" Version="1.0.2" />
-  </ItemGroup>
-
   <Import Project="..\MessageViewModel.Shared\MessageViewModel.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeWF.EventBus\CodeWF.EventBus.csproj" />
+  </ItemGroup>
 
 </Project>

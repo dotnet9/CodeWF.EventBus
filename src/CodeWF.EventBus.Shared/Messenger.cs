@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CodeWF.EventBus
 {
     public class Messenger : IMessenger
     {
         /// <summary>
-        /// 提供Messenger类的默认实例
+        /// 提供Messenger类的默认实例，适合于无IOC使用的程序
         /// </summary>
         public static readonly Messenger Default = new Messenger();
 
@@ -72,17 +73,21 @@ namespace CodeWF.EventBus
 
         private void Subscribe(Type messageType, WeakActionAndToken actionInfo)
         {
-            if (_recipientsOfSubclassesAction == null)
-                _recipientsOfSubclassesAction = new Dictionary<Type, List<WeakActionAndToken>>();
-
-
-            if (!_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
+            lock (_registerLock)
             {
-                actionList = new List<WeakActionAndToken>();
-                _recipientsOfSubclassesAction.Add(messageType, actionList);
-            }
+                if (_recipientsOfSubclassesAction == null)
+                {
+                    _recipientsOfSubclassesAction = new Dictionary<Type, List<WeakActionAndToken>>();
+                }
 
-            actionList.Add(actionInfo);
+                if (!_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
+                {
+                    actionList = new List<WeakActionAndToken>();
+                    _recipientsOfSubclassesAction.Add(messageType, actionList);
+                }
+
+                actionList.Add(actionInfo);
+            }
         }
 
         /// <summary>  
@@ -112,18 +117,10 @@ namespace CodeWF.EventBus
 
                 if (_recipientsOfSubclassesAction == null ||
                     !_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList)) continue;
-                for (var i = actionList.Count - 1; i >= 0; i--)
-                {
-                    var item = actionList[i];
 
-                    if (item != null && item.Recipient == recipient)
-                    {
-                        actionList.RemoveAt(i);
-                    }
-                }
 
-                actionList.Clear();
-                _recipientsOfSubclassesAction.Remove(messageType);
+                actionList.RemoveAll(item =>
+                    item.Action != null && item.Action.Target == recipient);
             }
         }
 
@@ -133,7 +130,7 @@ namespace CodeWF.EventBus
         /// <typeparam name="TMessage">要取消订阅的消息类型，必须是Message类的派生类。</typeparam>  
         /// <param name="recipient">订阅者对象。</param>  
         /// <param name="action">要取消订阅的操作，如果为null，则取消该订阅者所有对TMessage类型的订阅。</param> 
-        public void Unsubscribe<TMessage>(object recipient, Action<TMessage> action) where TMessage : Message
+        public void Unsubscribe<TMessage>(object recipient, Action<TMessage> action = null) where TMessage : Message
         {
             var messageType = typeof(TMessage);
 
@@ -143,16 +140,9 @@ namespace CodeWF.EventBus
                 || !_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
                 return;
 
-            for (var i = actionList.Count - 1; i >= 0; i--)
-            {
-                var item = actionList[i];
-                var pastAction = item.Action;
-
-                if (pastAction != null
-                    && recipient == pastAction.Target
-                    && (action == null || action.Method.Name == pastAction.Method.Name))
-                    actionList.Remove(item);
-            }
+            actionList.RemoveAll(item =>
+                item.Action != null && item.Action.Target == recipient &&
+                (action == null || item.Action.Method.Name == action.Method.Name));
         }
 
         /// <summary>  

@@ -292,7 +292,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ITimeService, TimeService>();
 
 // 1、注册事件总线，将标注`EventHandler`特性方法的类采用单例方式注入IOC容器
-builder.Services.AddEventBus();
+builder.Services.AddEventBus(typeof(Program).Assembly);
 
 var app = builder.Build();
 
@@ -307,7 +307,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // 2、将上面已经注入IOC容器的类取出、关联处理方法到事件总线管理
-app.UseEventBus();
+app.UseEventBus(typeof(Program).Assembly);
 
 app.Run();
 ```

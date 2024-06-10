@@ -51,11 +51,8 @@ namespace CodeWF.AspNetCore.EventBus
         /// <param name="assemblies">包含事件处理器的程序集</param>  
         private static void HandleMessageObject(Action<Type> handleRecipient, params Assembly[] assemblies)
         {
-            // 获取当前调用此方法的程序集
-            var callingAssembly = Assembly.GetCallingAssembly();
-
             // 遍历指定的程序集以及当前调用程序集
-            foreach (var assembly in assemblies.Concat(new[] { callingAssembly }))
+            foreach (var assembly in assemblies)
             {
                 // 获取程序集中满足条件的类型（具有 EventHandlerAttribute 的非抽象类）
                 var types = assembly.GetTypes()
