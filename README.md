@@ -46,7 +46,7 @@ public class MessageHandler
 
 ## 2. 怎么使用事件总线？
 
-首先请搜索NuGet包`CodeWF.AspNetCore.EventBus`并安装，下面细说使用方法。
+首先请搜索NuGet包`CodeWF.EventBus`并安装，下面细说使用方法。
 
 ### 2.1. 添加事件总线
 
