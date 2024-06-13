@@ -1,5 +1,5 @@
 ﻿using CodeWF.EventBus;
-using MessageViewModel;
+using Messages;
 using System.Windows;
 
 namespace WPFDemo
@@ -16,12 +16,12 @@ namespace WPFDemo
 
         void ReceiveManuDeleteProductMessage(DeleteProductMessage message)
         {
-            AddLog($"收到手动注册的{message}");
+            AddLog($"Received manually registered \"{message}|");
         }
 
         private void SendMessage_OnClick(object sender, RoutedEventArgs e)
         {
-            AddLog($"发送\"{this.TxtMessage.Text}\"");
+            AddLog($"Publish \"{this.TxtMessage.Text}\"");
             Messenger.Default.Publish(this, new CreateProductMessage(this, this.TxtMessage.Text));
         }
 
@@ -40,12 +40,12 @@ namespace WPFDemo
             _isSubscribed = !_isSubscribed;
             if (_isSubscribed)
             {
-                BtnEvent.Content = "注销消息";
+                BtnEvent.Content = "Unsubscribe Message";
                 Messenger.Default.Subscribe<DeleteProductMessage>(this, ReceiveManuDeleteProductMessage);
             }
             else
             {
-                BtnEvent.Content = "注册消息";
+                BtnEvent.Content = "Subscribe Message";
                 Messenger.Default.Unsubscribe<DeleteProductMessage>(this, ReceiveManuDeleteProductMessage);
             }
         }

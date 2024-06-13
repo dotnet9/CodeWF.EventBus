@@ -1,4 +1,4 @@
-﻿namespace MessageViewModel
+﻿namespace Messages
 {
     public class DeleteProductMessage : CodeWF.EventBus.Message
     {
@@ -11,7 +11,7 @@
 
         public override string ToString()
         {
-            return $"删除产品消息-》产品Id：{Id}";
+            return $"Delete product message ->Product ID：{Id}";
         }
     }
 }

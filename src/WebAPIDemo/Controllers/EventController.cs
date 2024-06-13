@@ -1,5 +1,5 @@
 using CodeWF.EventBus;
-using MessageViewModel;
+using Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPIDemo.Controllers

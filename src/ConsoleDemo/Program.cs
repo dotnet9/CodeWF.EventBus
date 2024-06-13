@@ -2,24 +2,32 @@
 
 var handler = new MessageHandler();
 
-Console.WriteLine("1、未注册时发布消息：");
+Console.WriteLine("Post messages when not registered");
 handler.Publish();
 Console.WriteLine();
 
-Console.WriteLine("2、手动注册后发布消息：");
+Console.WriteLine("---------------------------------------------------------");
+
+Console.WriteLine("Post messages after manual registration");
 handler.ManuSubscribe();
 handler.Publish();
 
-Console.WriteLine("3、取消手动注册后发布消息：");
+Console.WriteLine("---------------------------------------------------------");
+
+Console.WriteLine("Post messages after canceling manual registration");
 handler.ManuUnsubscribe();
 handler.Publish();
 Console.WriteLine();
 
-Console.WriteLine("4、自动注册后发布消息：");
+Console.WriteLine("---------------------------------------------------------");
+
+Console.WriteLine("Post messages after automatic registration");
 handler.AutoSubscribe();
 handler.Publish();
 
-Console.WriteLine("5、取消自动注册后发布消息：");
+Console.WriteLine("---------------------------------------------------------");
+
+Console.WriteLine("Post a message after canceling automatic registration");
 handler.AutoUnsubscribe();
 handler.Publish();
 

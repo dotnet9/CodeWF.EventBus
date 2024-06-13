@@ -7,10 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Import Project="..\MessageViewModel.Shared\MessageViewModel.Shared.projitems" Label="Shared" />
-
   <ItemGroup>
     <ProjectReference Include="..\CodeWF.EventBus\CodeWF.EventBus.csproj" />
+    <ProjectReference Include="..\Messages\Messages.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFDemo"
         mc:Ignorable="d"
-        Title="手动注册处理" Height="400" Width="420">
+        Title="Manual" Height="400" Width="580">
     <StackPanel Margin="10">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="产品名称：" />
+            <TextBlock Text="Product Name：" />
             <TextBox x:Name="TxtMessage" Width="200" />
-            <Button Content="创建产品" Click="SendMessage_OnClick" Margin="10 0" />
-            <Button Content="注销消息" x:Name="BtnEvent" Click="SubscribeOrUnsubscribe_OnClick" />
+            <Button Content="Create Product" Click="SendMessage_OnClick" Margin="10 0" />
+            <Button Content="Unsubscribe Message" x:Name="BtnEvent" Click="SubscribeOrUnsubscribe_OnClick" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-            <TextBlock Text="消息：" />
-            <TextBox TextWrapping="Wrap" x:Name="TxtLog" Width="340" Height="300" />
+            <TextBlock Text="Message：" VerticalAlignment="Center"/>
+            <TextBox TextWrapping="Wrap" x:Name="TxtLog" Width="470" Height="300" />
         </StackPanel>
     </StackPanel>
 </Window>

@@ -1,4 +1,4 @@
-﻿namespace MessageViewModel
+﻿namespace Messages
 {
     public class CreateProductMessage : CodeWF.EventBus.Message
     {
@@ -11,7 +11,7 @@
 
         public override string ToString()
         {
-            return $"创建产品消息-》产品名称：{Name}";
+            return $"Create product message ->Product name:{Name}";
         }
     }
 }

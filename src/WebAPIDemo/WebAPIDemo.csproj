@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj" />
-  </ItemGroup>
-
-  <Import Project="..\MessageViewModel.Shared\MessageViewModel.Shared.projitems" Label="Shared" />
+	<ItemGroup>
+		<ProjectReference Include="..\CodeWF.EventBus\CodeWF.EventBus.csproj" />
+		<ProjectReference Include="..\Messages\Messages.csproj" />
+	</ItemGroup>
 
 </Project>
