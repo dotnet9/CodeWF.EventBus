@@ -1,5 +1,7 @@
 ﻿using CodeWF.EventBus;
-using Messages;
+using Messages.Commands;
+using Messages.Queries;
+using Messages.Services;
 using System.Windows;
 
 namespace WPFDemo
@@ -14,15 +16,23 @@ namespace WPFDemo
             ChangeSubscribe();
         }
 
-        void ReceiveManuDeleteProductMessage(DeleteProductMessage message)
+        void ReceiveManuDeleteProductCommand(DeleteProductCommand command)
         {
-            AddLog($"Received manually registered \"{message}|");
+            AddLog($"Received manually registered \"{command}|");
+            ProductService.Default.DeleteProduct(command);
         }
 
         private void SendMessage_OnClick(object sender, RoutedEventArgs e)
         {
             AddLog($"Publish \"{this.TxtMessage.Text}\"");
-            Messenger.Default.Publish(this, new CreateProductMessage(this, this.TxtMessage.Text));
+            EventBus.Default.Publish(this, new CreateProductCommand { Name = this.TxtMessage.Text });
+        }
+
+        private void Query_OnClick(object sender, RoutedEventArgs e)
+        {
+            var query = new ProductsQuery() { Name = this.TxtMessage.Text };
+            EventBus.Default.Publish(this, query);
+            AddLog($"The query result: \"{query}\"");
         }
 
         private void AddLog(string message)
@@ -41,12 +51,12 @@ namespace WPFDemo
             if (_isSubscribed)
             {
                 BtnEvent.Content = "Unsubscribe Message";
-                Messenger.Default.Subscribe<DeleteProductMessage>(this, ReceiveManuDeleteProductMessage);
+                EventBus.Default.Subscribe<DeleteProductCommand>(this, ReceiveManuDeleteProductCommand);
             }
             else
             {
                 BtnEvent.Content = "Subscribe Message";
-                Messenger.Default.Unsubscribe<DeleteProductMessage>(this, ReceiveManuDeleteProductMessage);
+                EventBus.Default.Unsubscribe<DeleteProductCommand>(this, ReceiveManuDeleteProductCommand);
             }
         }
     }

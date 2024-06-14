@@ -5,10 +5,10 @@
 		<Company>https://codewf.com</Company>
 		<Authors>沙漠尽头的狼</Authors>
 		<Owners>https://codewf.com</Owners>
-		<AssemblyVersion>1.0.9</AssemblyVersion>
-		<FileVersion>1.0.9</FileVersion>
-		<Version>1.0.9</Version>
-		<Description>EventBus，事件总线，进程内事件订阅与发布，可在各种模板项目使用：WPF、Winform、AvaloniaUI、ASP.NET Core等。EventBus， In process event subscription and publication, can be used in various template projects such as WPF, Winform, AvaloniaUI, ASP. NET Core, etc.</Description>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
+		<Version>2.0.0</Version>
+		<Description>EventBus，事件总线，通过 CodeWF.EventBus 提供的 事件总线，我们可以很轻松的实现 CQRS 模式。根据业务需求，我们可以创建并维护读模型，将读操作和写操作进行分离，从而提高应用程序的可扩展性和性能。可在各种模板项目使用：WPF、Winform、AvaloniaUI、ASP.NET Core等。The CodeWF.EventBus allows us to easily implement the CQRS mode. According to business requirements, we can create and maintain a read model to separate read and write operations, thereby improving the scalability and performance of the application. Can be used in various template projects: WPF, Winform, AvaloniaUI, ASP. NET Core, etc.</Description>
 		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>

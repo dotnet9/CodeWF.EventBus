@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace CodeWF.EventBus
 {
-    public class Messenger : IMessenger
+    public class EventBus : IEventBus
     {
-        public static readonly Messenger Default = new Messenger();
+        public static readonly EventBus Default = new EventBus();
 
         private readonly object _registerLock = new object();
 
@@ -27,7 +27,7 @@ namespace CodeWF.EventBus
                 }
 
                 var parameters = methodInfo.GetParameters();
-                if (parameters.Length != 1 || !typeof(Message).IsAssignableFrom(parameters[0].ParameterType))
+                if (parameters.Length != 1 || !typeof(Command).IsAssignableFrom(parameters[0].ParameterType))
                 {
                     continue;
                 }
@@ -42,7 +42,7 @@ namespace CodeWF.EventBus
         }
 
         public void Subscribe<TMessage>(object recipient, Action<TMessage> action)
-            where TMessage : Message
+            where TMessage : Command
         {
             var messageType = typeof(TMessage);
             Subscribe(messageType, new WeakActionAndToken()
@@ -82,7 +82,7 @@ namespace CodeWF.EventBus
                 }
 
                 var parameters = methodInfo.GetParameters();
-                if (parameters.Length != 1 || !typeof(Message).IsAssignableFrom(parameters[0].ParameterType))
+                if (parameters.Length != 1 || !typeof(Command).IsAssignableFrom(parameters[0].ParameterType))
                 {
                     continue;
                 }
@@ -98,7 +98,7 @@ namespace CodeWF.EventBus
             }
         }
 
-        public void Unsubscribe<TMessage>(object recipient, Action<TMessage> action = null) where TMessage : Message
+        public void Unsubscribe<TMessage>(object recipient, Action<TMessage> action = null) where TMessage : Command
         {
             var messageType = typeof(TMessage);
 
@@ -113,7 +113,7 @@ namespace CodeWF.EventBus
                 (action == null || item.Action.Method.Name == action.Method.Name));
         }
 
-        public void Publish<TMessage>(object sender, TMessage message) where TMessage : Message
+        public void Publish<TMessage>(object sender, TMessage message) where TMessage : Command
         {
             var messageType = typeof(TMessage);
 
@@ -137,7 +137,7 @@ namespace CodeWF.EventBus
         }
 
         private void SendToList<TMessage>(TMessage message, IEnumerable<WeakActionAndToken> weakActionsAndTokens)
-            where TMessage : Message
+            where TMessage : Command
         {
             var list = weakActionsAndTokens.ToList();
             var listClone = list.Take(list.Count()).ToList();

@@ -10,8 +10,11 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Product ID：" />
             <TextBox x:Name="TxtMessage" Width="200" />
-            <Button Content="Delete Product" Click="SendMessage_OnClick" Margin="10 0"/>
-            <Button Content="Unsubscribe Message" x:Name="BtnEvent" Click="SubscribeOrUnsubscribe_OnClick"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Delete Product" Click="SendMessage_OnClick"/>
+            <Button Content="Unsubscribe Message" x:Name="BtnEvent" Click="SubscribeOrUnsubscribe_OnClick" Margin="10 0"/>
+            <Button Content="Query" Click="Query_OnClick"></Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
             <TextBlock Text="Message：" VerticalAlignment="Center"/>

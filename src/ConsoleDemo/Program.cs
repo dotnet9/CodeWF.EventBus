@@ -1,6 +1,6 @@
-﻿using ConsoleDemo.EventBus;
+﻿using ConsoleDemo;
 
-var handler = new MessageHandler();
+var handler = new CommandAndQueryHandler();
 
 Console.WriteLine("Post messages when not registered");
 handler.Publish();

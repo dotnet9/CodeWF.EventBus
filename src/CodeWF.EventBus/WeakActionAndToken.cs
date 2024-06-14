@@ -10,7 +10,7 @@ namespace CodeWF.EventBus
 
         public int Order { get; set; }
 
-        public void ExecuteWithObject<TMessage>(TMessage message) where TMessage : Message
+        public void ExecuteWithObject<TMessage>(TMessage message) where TMessage : Command
         {
             if (Action is Action<TMessage> factAction) factAction.Invoke(message);
         }

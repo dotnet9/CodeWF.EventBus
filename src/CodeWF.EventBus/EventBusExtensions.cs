@@ -9,13 +9,13 @@ namespace CodeWF.EventBus
         public static void AddEventBus(Action<Type, Type> addSingleton1,
             Action<Type> addSingleton2, params Assembly[] assemblies)
         {
-            addSingleton1(typeof(IMessenger), typeof(Messenger));
+            addSingleton1(typeof(IEventBus), typeof(EventBus));
             HandleMessageObject(addSingleton2, assemblies);
         }
 
         public static void UseEventBus(Func<Type, object> resolveAction, params Assembly[] assemblies)
         {
-            if (!(resolveAction(typeof(IMessenger)) is IMessenger messenger))
+            if (!(resolveAction(typeof(IEventBus)) is IEventBus messenger))
             {
                 throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");
             }
