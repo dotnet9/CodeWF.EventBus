@@ -102,7 +102,7 @@ protected override void RegisterTypes(IContainerRegistry containerRegistry)
 
 #### 2.1.2. 未使用IOC
 
-未使用IOC容器，比如默认的WPF、Winform、AvaloniaUI、控制台程序不包含IOC容器，不做事件服务注册操作。
+未使用IOC容器，比如默认的WPF、Winform、AvaloniaUI、控制台程序不包含IOC容器，不做事件服务注册操作，功能使用上和使用IOC只差自动订阅功能，其他功能一样。
 
 ### 2.2. 定义消息（事件类型）
 
