@@ -114,13 +114,13 @@ public class ProductsQuery : Query<List<ProductItemDto>>
 }
 ```
 
-`Query<T>`中T表示查询响应结果类型，在查房中使用`Result`属性表示。
+`Query<T>`中T表示查询响应结果类型，在查询中使用`Result`属性表示。
 
 ### 2.3. 订阅事件（事件）
 
 #### 2.3.1. 自动订阅
 
-在`B/S`程序中，一般将事件处理程序单独封装到一个类中，文章开头贴的代码中`CommandAndQueryHandler`即是自动订阅类格式，这里我们再贴上讲解：
+在`B/S`程序中，一般将事件处理程序单独封装到一个类中，如下代码中`CommandAndQueryHandler`即是自动订阅类格式：
 
 ```csharp
 [Event]
@@ -393,7 +393,7 @@ public class EventBusTestViewModel : ViewModelBase
 }
 ```
 
-### 2.5. 取消订阅事件（事件）
+### 2.5. 取消订阅事件
 
 在实际应用中，你可能需要确保在适当的时机（如服务销毁时）取消订阅，以避免内存泄漏：
 
