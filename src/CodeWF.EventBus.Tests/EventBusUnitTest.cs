@@ -5,7 +5,7 @@ namespace CodeWF.EventBus.Tests
 {
     public class EventBusUnitTest
     {
-        private readonly IEventBus _eventBus = EventBus.Default; // 假设EventBus.Default已经实现IEventBus接口  
+        private readonly IEventBus _eventBus = EventBus.Default;
         private readonly CommandAndQueryHandler _handler = new();
 
         [Fact]
