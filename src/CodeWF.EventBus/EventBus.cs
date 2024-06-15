@@ -17,7 +17,8 @@ namespace CodeWF.EventBus
 
         public void Subscribe(object recipient)
         {
-            var methods = recipient.GetType().GetMethods();
+            var methods = recipient.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Static |
+                                                         BindingFlags.Public | BindingFlags.NonPublic);
             foreach (var methodInfo in methods)
             {
                 var eventHandlerAttr = methodInfo.GetCustomAttribute<EventHandlerAttribute>();
