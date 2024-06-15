@@ -10,7 +10,7 @@ namespace CodeWF.EventBus
             Action<Type> addSingleton2, params Assembly[] assemblies)
         {
             addSingleton1(typeof(IEventBus), typeof(EventBus));
-            HandleMessageObject(addSingleton2, assemblies);
+            HandleCommandObject(addSingleton2, assemblies);
         }
 
         public static void UseEventBus(Func<Type, object> resolveAction, params Assembly[] assemblies)
@@ -20,11 +20,11 @@ namespace CodeWF.EventBus
                 throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");
             }
 
-            HandleMessageObject(type => messenger.Subscribe(resolveAction(type)),
+            HandleCommandObject(type => messenger.Subscribe(resolveAction(type)),
                 assemblies);
         }
 
-        private static void HandleMessageObject(Action<Type> handleRecipient, params Assembly[] assemblies)
+        private static void HandleCommandObject(Action<Type> handleRecipient, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {

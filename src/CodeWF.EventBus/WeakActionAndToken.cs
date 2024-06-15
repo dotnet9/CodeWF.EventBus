@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CodeWF.EventBus
 {
@@ -9,10 +10,5 @@ namespace CodeWF.EventBus
         public Delegate Action { get; set; }
 
         public int Order { get; set; }
-
-        public void ExecuteWithObject<TMessage>(TMessage message) where TMessage : Command
-        {
-            if (Action is Action<TMessage> factAction) factAction.Invoke(message);
-        }
     }
 }

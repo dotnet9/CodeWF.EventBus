@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CodeWF.EventBus
 {
@@ -9,16 +12,13 @@ namespace CodeWF.EventBus
     {
         public static readonly EventBus Default = new EventBus();
 
-        private readonly object _registerLock = new object();
-
-        private Dictionary<Type, List<WeakActionAndToken>> _recipientsOfSubclassesAction;
+        private readonly ConcurrentDictionary<Type, List<WeakActionAndToken>> _subscriptions =
+            new ConcurrentDictionary<Type, List<WeakActionAndToken>>();
 
         public void Subscribe(object recipient)
         {
-            var recipientType = recipient.GetType();
-
-            foreach (var methodInfo in recipientType.GetMethods(BindingFlags.Instance | BindingFlags.Public |
-                                                                BindingFlags.NonPublic))
+            var methods = recipient.GetType().GetMethods();
+            foreach (var methodInfo in methods)
             {
                 var eventHandlerAttr = methodInfo.GetCustomAttribute<EventHandlerAttribute>();
                 if (eventHandlerAttr == null)
@@ -32,119 +32,89 @@ namespace CodeWF.EventBus
                     continue;
                 }
 
-                var messageType = parameters[0].ParameterType;
-                var actionType = typeof(Action<>).MakeGenericType(messageType);
-                var delegateInstance = Delegate.CreateDelegate(actionType, recipient, methodInfo);
+                if (methodInfo.ReturnType != typeof(void) && methodInfo.ReturnType != typeof(Task))
+                {
+                    continue;
+                }
 
-                Subscribe(messageType, new WeakActionAndToken()
-                    { Recipient = recipient, Action = delegateInstance, Order = eventHandlerAttr.Order });
+                var commandType = parameters[0].ParameterType;
+                var delegateType = methodInfo.ReturnType == typeof(Task)
+                    ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
+                    : typeof(Action<>).MakeGenericType(commandType);
+                var delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
+                Subscribe(recipient, commandType, delegateInstance, eventHandlerAttr.Order);
             }
         }
 
-        public void Subscribe<TMessage>(object recipient, Action<TMessage> action)
-            where TMessage : Command
+        public void Subscribe<TCommand>(object recipient, Action<TCommand> action)
+            where TCommand : Command
         {
-            var messageType = typeof(TMessage);
-            Subscribe(messageType, new WeakActionAndToken()
-                { Recipient = recipient, Action = action });
+            Subscribe(recipient, typeof(ICommand), action);
         }
 
-        private void Subscribe(Type messageType, WeakActionAndToken actionInfo)
+
+        public void Subscribe<TCommand>(object recipient, Func<TCommand, Task> asyncAction) where TCommand : Command
         {
-            lock (_registerLock)
-            {
-                if (_recipientsOfSubclassesAction == null)
-                {
-                    _recipientsOfSubclassesAction = new Dictionary<Type, List<WeakActionAndToken>>();
-                }
+            Subscribe(recipient, typeof(ICommand), asyncAction);
+        }
 
-                if (!_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
-                {
-                    actionList = new List<WeakActionAndToken>();
-                    _recipientsOfSubclassesAction.Add(messageType, actionList);
-                }
-
-                actionList.Add(actionInfo);
-            }
+        private void Subscribe(object recipient, Type commandType, Delegate action, int order = 0)
+        {
+            var subscriptions = _subscriptions.GetOrAdd(commandType, _ => new List<WeakActionAndToken>());
+            subscriptions.Add(new WeakActionAndToken()
+                { Recipient = recipient, Action = action, Order = order });
         }
 
         public void Unsubscribe(object recipient)
         {
-            var recipientType = recipient.GetType();
-
-            foreach (var methodInfo in recipientType.GetMethods(BindingFlags.Instance | BindingFlags.Public |
-                                                                BindingFlags.NonPublic))
+            foreach (var subscription in _subscriptions)
             {
-                var eventHandlerAttr = methodInfo.GetCustomAttribute<EventHandlerAttribute>();
-                if (eventHandlerAttr == null)
-                {
-                    continue;
-                }
-
-                var parameters = methodInfo.GetParameters();
-                if (parameters.Length != 1 || !typeof(Command).IsAssignableFrom(parameters[0].ParameterType))
-                {
-                    continue;
-                }
-
-                var messageType = parameters[0].ParameterType;
-
-                if (_recipientsOfSubclassesAction == null ||
-                    !_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList)) continue;
-
-
-                actionList.RemoveAll(item =>
-                    item.Action != null && item.Action.Target == recipient);
+                subscription.Value.RemoveAll(item => item.Action.Target == recipient);
             }
         }
 
-        public void Unsubscribe<TMessage>(object recipient, Action<TMessage> action = null) where TMessage : Command
+        public void Unsubscribe<TCommand>(object recipient, Action<TCommand> action = null) where TCommand : Command
         {
-            var messageType = typeof(TMessage);
-
-            if (recipient == null
-                || _recipientsOfSubclassesAction == null
-                || _recipientsOfSubclassesAction.Count == 0
-                || !_recipientsOfSubclassesAction.TryGetValue(messageType, out var actionList))
-                return;
-
-            actionList.RemoveAll(item =>
-                item.Action != null && item.Action.Target == recipient &&
-                (action == null || item.Action.Method.Name == action.Method.Name));
-        }
-
-        public void Publish<TMessage>(object sender, TMessage message) where TMessage : Command
-        {
-            var messageType = typeof(TMessage);
-
-            if (_recipientsOfSubclassesAction == null) return;
-
-            var listClone = _recipientsOfSubclassesAction.Keys.Take(_recipientsOfSubclassesAction.Count)
-                .ToList();
-
-            foreach (var type in listClone)
+            foreach (var subscription in _subscriptions)
             {
-                List<WeakActionAndToken> list = null;
-
-                if (messageType == type || messageType.IsSubclassOf(type) || type.IsAssignableFrom(messageType))
-                    list = _recipientsOfSubclassesAction[type]
-                        .Take(_recipientsOfSubclassesAction[type].Count)
-                        .OrderBy(action => action.Order)
-                        .ToList();
-
-                if (list != null && list.Count > 0) SendToList(message, list);
+                subscription.Value.RemoveAll(item =>
+                    item.Action.Target == recipient && item.Action.Method.Name == action?.Method.Name);
             }
         }
 
-        private void SendToList<TMessage>(TMessage message, IEnumerable<WeakActionAndToken> weakActionsAndTokens)
-            where TMessage : Command
+        public void Unsubscribe<TCommand>(object recipient, Func<TCommand, Task> asyncAction = null)
+            where TCommand : Command
         {
-            var list = weakActionsAndTokens.ToList();
-            var listClone = list.Take(list.Count()).ToList();
+            foreach (var subscription in _subscriptions)
+            {
+                subscription.Value.RemoveAll(item =>
+                    item.Action.Target == recipient && item.Action.Method.Name == asyncAction?.Method.Name);
+            }
+        }
 
-            foreach (var item in listClone)
-                if (item.Action != null && item.Action.Target != null)
-                    item.ExecuteWithObject(message);
+        public void Publish<TCommand>(object sender, TCommand command) where TCommand : Command
+        {
+            // Note: This method does not wait for asynchronous subscription completion
+            PublishAsync(sender, command).GetAwaiter()
+                .GetResult(); // This may cause deadlocks and should be used with caution in UI threads or synchronization contexts
+        }
+
+        public async Task PublishAsync<TCommand>(object sender, TCommand command) where TCommand : Command
+        {
+            if (_subscriptions.TryGetValue(typeof(TCommand), out var handlers))
+            {
+                foreach (var handler in handlers.OrderBy(item => item.Order))
+                {
+                    if (handler.Action is Action<TCommand> syncAction)
+                    {
+                        syncAction.Invoke(command);
+                    }
+                    else if (handler.Action is Func<TCommand, Task> asyncAction)
+                    {
+                        await asyncAction.Invoke(command);
+                    }
+                }
+            }
         }
     }
 }

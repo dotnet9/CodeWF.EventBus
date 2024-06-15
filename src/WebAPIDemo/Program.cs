@@ -1,6 +1,6 @@
+using System.Reflection;
 using CodeWF.EventBus;
-using Messages.Services;
-using WebAPIDemo.Services;
+using CommandsAndQueries.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -8,12 +8,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IProductService, ProductService>();
-builder.Services.AddSingleton<ITimeService, TimeService>();
 
 EventBusExtensions.AddEventBus(
     (t1, t2) => builder.Services.AddSingleton(t1, t2),
     t => builder.Services.AddSingleton(t),
-    typeof(Program).Assembly);
+    Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
@@ -27,6 +26,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-EventBusExtensions.UseEventBus((t) => app.Services.GetRequiredService(t), typeof(Program).Assembly);
+EventBusExtensions.UseEventBus(t => app.Services.GetRequiredService(t), Assembly.GetExecutingAssembly());
 
 app.Run();

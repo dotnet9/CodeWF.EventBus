@@ -1,22 +1,22 @@
-﻿using CodeWF.EventBus;
-using CommandsAndQueries.Commands;
+﻿using CommandsAndQueries.Commands;
 using CommandsAndQueries.Dto;
 using CommandsAndQueries.Queries;
 using CommandsAndQueries.Services;
 
-namespace WebAPIDemo.EventBus
+namespace CodeWF.EventBus.Tests
 {
-    [Event]
-    public class CommandAndQueryHandler(IEventBus eventBus, IProductService productService)
+    internal class CommandAndQueryHandler
     {
+        private readonly IProductService _productService = ProductService.Default;
+
         [EventHandler]
         public async Task ReceiveCreateProductCommandAsync(CreateProductCommand command)
         {
-            var isAddSuccess = await productService.AddProductAsync(new CreateProductRequest()
+            var isAddSuccess = await _productService.AddProductAsync(new CreateProductRequest()
                 { Name = command.Name, Price = command.Price });
             if (isAddSuccess)
             {
-                await eventBus.PublishAsync(this,
+                await EventBus.Default.PublishAsync(this,
                     new CreateProductSuccessCommand() { Name = command.Name, Price = command.Price });
             }
             else
@@ -48,21 +48,21 @@ namespace WebAPIDemo.EventBus
         [EventHandler]
         public async Task ReceiveDeleteProductCommandAsync(DeleteProductCommand command)
         {
-            var isRemoveSuccess = await productService.RemoveProductAsync(command.ProductId);
+            var isRemoveSuccess = await _productService.RemoveProductAsync(command.ProductId);
             Console.WriteLine(isRemoveSuccess ? "Remote product success" : "Remote product fail");
         }
 
         [EventHandler]
         public async Task ReceiveProductQueryAsync(ProductQuery query)
         {
-            var product = await productService.QueryProductAsync(query.ProductId);
+            var product = await _productService.QueryProductAsync(query.ProductId);
             query.Result = product;
         }
 
         [EventHandler]
         public async Task ReceiveAutoProductsQueryAsync(ProductsQuery query)
         {
-            var products = await productService.QueryProductsAsync(query.Name);
+            var products = await _productService.QueryProductsAsync(query.Name);
             query.Result = products;
         }
     }

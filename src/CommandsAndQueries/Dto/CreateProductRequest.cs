@@ -1,4 +1,4 @@
-﻿namespace Messages.Dto
+﻿namespace CommandsAndQueries.Dto
 {
     public class CreateProductRequest
     {
