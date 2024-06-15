@@ -11,25 +11,25 @@ namespace WebAPIDemo.Controllers
     public class EventController : ControllerBase
     {
         private readonly ILogger<EventController> _logger;
-        private readonly IEventBus _messenger;
+        private readonly IEventBus _eventBus;
 
-        public EventController(ILogger<EventController> logger, IEventBus messenger)
+        public EventController(ILogger<EventController> logger, IEventBus eventBus)
         {
             _logger = logger;
-            _messenger = messenger;
+            _eventBus = eventBus;
         }
 
         [HttpPost("/add")]
         public Task AddAsync([FromBody] CreateProductRequest request)
         {
-            _messenger.Publish(this, new CreateProductCommand { Name = request.Name, Price = request.Price });
+            _eventBus.Publish(this, new CreateProductCommand { Name = request.Name, Price = request.Price });
             return Task.CompletedTask;
         }
 
         [HttpDelete("/delete")]
         public Task DeleteAsync([FromQuery] Guid id)
         {
-            _messenger.Publish(this, new DeleteProductCommand { ProductId = id });
+            _eventBus.Publish(this, new DeleteProductCommand { ProductId = id });
             return Task.CompletedTask;
         }
 
@@ -37,7 +37,7 @@ namespace WebAPIDemo.Controllers
         public async Task<ProductItemDto> GetAsync([FromQuery] Guid id)
         {
             var query = new ProductQuery { ProductId = id };
-            await _messenger.PublishAsync(this, query);
+            await _eventBus.PublishAsync(this, query);
             return query.Result;
         }
 
@@ -45,7 +45,7 @@ namespace WebAPIDemo.Controllers
         public async Task<List<ProductItemDto>> ListAsync([FromQuery] string? name)
         {
             var query = new ProductsQuery { Name = name };
-            await _messenger.PublishAsync(this, query);
+            await _eventBus.PublishAsync(this, query);
             return query.Result;
         }
     }
