@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using CodeWF.EventBus;
 
-namespace CodeWF.EventBus
+namespace CodeWF.IOC.EventBus
 {
     public static partial class EventBusExtensions
     {
         public static void AddEventBus(Action<Type, Type> addSingleton1,
             Action<Type> addSingleton2, params Assembly[] assemblies)
         {
-            addSingleton1(typeof(IEventBus), typeof(EventBus));
+            addSingleton1(typeof(IEventBus), typeof(CodeWF.EventBus.EventBus));
             HandleCommandObject(addSingleton2, assemblies);
         }
 
