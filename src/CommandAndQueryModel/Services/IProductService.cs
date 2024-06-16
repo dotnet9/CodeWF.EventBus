@@ -1,9 +1,6 @@
-﻿using CommandsAndQueries.Dto;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using CommandAndQueryModel.Dto;
 
-namespace CommandsAndQueries.Services
+namespace CommandAndQueryModel.Services
 {
     public interface IProductService
     {

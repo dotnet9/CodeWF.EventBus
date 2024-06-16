@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 		<Company>https://codewf.com</Company>
 		<Authors>沙漠尽头的狼</Authors>
 		<Owners>https://codewf.com</Owners>
@@ -13,22 +15,27 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
 		<Copyright>Copyright © https://codewf.com 2024</Copyright>
-		<AssemblyName>CodeWF.EventBus</AssemblyName>
-		<RootNamespace>CodeWF.EventBus</RootNamespace>
-		<PackageId>CodeWF.EventBus</PackageId>
-		<PackageTags>C# EventBus; WPF; Winform; AvaloniaUI,ASP.NET Core;</PackageTags>
+		<AssemblyName>CodeWF.DryIoc.EventBus</AssemblyName>
+		<RootNamespace>CodeWF.DryIoc.EventBus</RootNamespace>
+		<PackageId>CodeWF.DryIoc.EventBus</PackageId>
+		<PackageTags>DryIoc EventBus</PackageTags>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/dotnet9/CodeWF.EventBus</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/dotnet9/CodeWF.EventBus</RepositoryUrl>
 	</PropertyGroup>
-
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\logo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
-
+	<ItemGroup>
+	  <PackageReference Include="DryIoc" Version="5.4.3" />
+	  <PackageReference Include="Prism.Container.Abstractions" Version="9.0.88" />
+	</ItemGroup>
 	<Import Project="..\CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems" Label="Shared" />
 
 </Project>

@@ -1,7 +1,7 @@
 using CodeWF.EventBus;
-using CommandsAndQueries.Commands;
-using CommandsAndQueries.Dto;
-using CommandsAndQueries.Queries;
+using CommandAndQueryModel.Commands;
+using CommandAndQueryModel.Dto;
+using CommandAndQueryModel.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPIDemo.Controllers

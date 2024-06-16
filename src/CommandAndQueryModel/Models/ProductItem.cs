@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CommandsAndQueries.Dto
+namespace CommandAndQueryModel.Models
 {
-    public class ProductItemDto
+    public class ProductItem
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

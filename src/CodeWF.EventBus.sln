@@ -11,9 +11,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIDemo", "WebAPIDemo\We
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A7FA457D-7E77-4B21-958F-F45A51EF8163}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandsAndQueries", "CommandsAndQueries\CommandsAndQueries.csproj", "{3F1735D2-6A32-4210-9C8F-8DBA9AC3EA29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus.Tests", "CodeWF.EventBus.Tests\CodeWF.EventBus.Tests.csproj", "{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWF.EventBus.Tests", "CodeWF.EventBus.Tests\CodeWF.EventBus.Tests.csproj", "{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CodeWF.EventBus.Shared", "CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.shproj", "{9AD10001-FE7A-4BD5-8EA3-00BC3A512857}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.AspNetCore.EventBus", "CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj", "{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{90B89F3E-ED63-4F67-9FE9-998E55B0FBB3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommandAndQueryModel", "CommandAndQueryModel\CommandAndQueryModel.shproj", "{76C198F3-07C4-46D2-A352-29C24D62ED38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWF.DryIoc.EventBus", "CodeWF.DryIoc.EventBus\CodeWF.DryIoc.EventBus.csproj", "{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +37,18 @@ Global
 		{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F1735D2-6A32-4210-9C8F-8DBA9AC3EA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F1735D2-6A32-4210-9C8F-8DBA9AC3EA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F1735D2-6A32-4210-9C8F-8DBA9AC3EA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F1735D2-6A32-4210-9C8F-8DBA9AC3EA29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,10 +56,22 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{19C6C53A-D5AD-4400-A80A-CF8BEE422982} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
 		{4BF9D6F9-2896-4006-B603-BC098FBEA3B8} = {53654337-FF17-4F13-A081-69801A2AE290}
-		{3F1735D2-6A32-4210-9C8F-8DBA9AC3EA29} = {53654337-FF17-4F13-A081-69801A2AE290}
 		{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
+		{9AD10001-FE7A-4BD5-8EA3-00BC3A512857} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
+		{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
+		{76C198F3-07C4-46D2-A352-29C24D62ED38} = {90B89F3E-ED63-4F67-9FE9-998E55B0FBB3}
+		{A2D8D369-7B88-4E87-B1F2-39AE8A88139D} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7685ED0A-581B-42BC-9613-64AD00D124D6}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CommandAndQueryModel\CommandAndQueryModel.projitems*{04e6f6d7-64fe-41cb-a6f2-af9c60d5ad34}*SharedItemsImports = 5
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{19c6c53a-d5ad-4400-a80a-cf8bee422982}*SharedItemsImports = 5
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{20f90535-4ccc-4ab7-97ea-f75a5e2f5a0e}*SharedItemsImports = 5
+		CommandAndQueryModel\CommandAndQueryModel.projitems*{4bf9d6f9-2896-4006-b603-bc098fbea3b8}*SharedItemsImports = 5
+		CommandAndQueryModel\CommandAndQueryModel.projitems*{76c198f3-07c4-46d2-a352-29c24d62ed38}*SharedItemsImports = 13
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{9ad10001-fe7a-4bd5-8ea3-00bc3a512857}*SharedItemsImports = 13
+		CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems*{a2d8d369-7b88-4e87-b1f2-39ae8a88139d}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

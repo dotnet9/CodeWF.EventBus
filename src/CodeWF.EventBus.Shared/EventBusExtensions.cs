@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace CodeWF.EventBus
 {
-    public static class EventBusExtensions
+    public static partial class EventBusExtensions
     {
         public static void AddEventBus(Action<Type, Type> addSingleton1,
             Action<Type> addSingleton2, params Assembly[] assemblies)
@@ -26,7 +26,7 @@ namespace CodeWF.EventBus
 
         private static void HandleCommandObject(Action<Type> handleRecipient, params Assembly[] assemblies)
         {
-            foreach (var assembly in assemblies)
+            foreach (var assembly in assemblies.Concat(new []{Assembly.GetCallingAssembly()}))
             {
                 var types = assembly.GetTypes()
                     .Where(t => t.IsClass

@@ -14,8 +14,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CodeWF.EventBus\CodeWF.EventBus.csproj" />
-		<ProjectReference Include="..\CommandsAndQueries\CommandsAndQueries.csproj" />
+		<ProjectReference Include="..\CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj" />
 	</ItemGroup>
+
+	<Import Project="..\CommandAndQueryModel\CommandAndQueryModel.projitems" Label="Shared" />
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using CommandsAndQueries.Commands;
-using CommandsAndQueries.Queries;
+﻿using CommandAndQueryModel.Commands;
+using CommandAndQueryModel.Queries;
 
 namespace CodeWF.EventBus.Tests
 {

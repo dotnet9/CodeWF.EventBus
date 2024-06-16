@@ -1,6 +1,6 @@
 ﻿using CodeWF.EventBus;
 
-namespace CommandsAndQueries.Commands
+namespace CommandAndQueryModel.Commands
 {
     public class CreateProductCommand : Command
     {

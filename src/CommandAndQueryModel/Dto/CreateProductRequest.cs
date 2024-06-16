@@ -1,4 +1,4 @@
-﻿namespace CommandsAndQueries.Dto
+﻿namespace CommandAndQueryModel.Dto
 {
     public class CreateProductRequest
     {

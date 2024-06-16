@@ -1,6 +1,5 @@
-using System.Reflection;
 using CodeWF.EventBus;
-using CommandsAndQueries.Services;
+using CommandAndQueryModel.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -9,10 +8,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IProductService, ProductService>();
 
-EventBusExtensions.AddEventBus(
-    (t1, t2) => builder.Services.AddSingleton(t1, t2),
-    t => builder.Services.AddSingleton(t),
-    Assembly.GetExecutingAssembly());
+builder.Services.AddEventBus();
 
 var app = builder.Build();
 
@@ -26,6 +22,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-EventBusExtensions.UseEventBus(t => app.Services.GetRequiredService(t), Assembly.GetExecutingAssembly());
+app.UseEventBus();
 
 app.Run();

@@ -1,11 +1,7 @@
-﻿using CommandsAndQueries.Dto;
-using CommandsAndQueries.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CommandAndQueryModel.Dto;
+using CommandAndQueryModel.Models;
 
-namespace CommandsAndQueries.Services
+namespace CommandAndQueryModel.Services
 {
     public class ProductService : IProductService
     {

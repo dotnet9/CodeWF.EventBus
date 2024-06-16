@@ -1,8 +1,7 @@
 ﻿using CodeWF.EventBus;
-using CommandsAndQueries.Dto;
-using System;
+using CommandAndQueryModel.Dto;
 
-namespace CommandsAndQueries.Queries
+namespace CommandAndQueryModel.Queries
 {
     public class ProductQuery : Query<ProductItemDto>
     {

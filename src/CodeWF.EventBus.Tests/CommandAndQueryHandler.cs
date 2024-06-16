@@ -1,7 +1,7 @@
-﻿using CommandsAndQueries.Commands;
-using CommandsAndQueries.Dto;
-using CommandsAndQueries.Queries;
-using CommandsAndQueries.Services;
+﻿using CommandAndQueryModel.Commands;
+using CommandAndQueryModel.Dto;
+using CommandAndQueryModel.Queries;
+using CommandAndQueryModel.Services;
 
 namespace CodeWF.EventBus.Tests
 {

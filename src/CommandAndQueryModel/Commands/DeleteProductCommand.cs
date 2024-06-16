@@ -1,7 +1,6 @@
-﻿using System;
-using CodeWF.EventBus;
+﻿using CodeWF.EventBus;
 
-namespace CommandsAndQueries.Commands
+namespace CommandAndQueryModel.Commands
 {
     public class DeleteProductCommand : Command
     {

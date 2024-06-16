@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<Company>https://codewf.com</Company>
 		<Authors>沙漠尽头的狼</Authors>
 		<Owners>https://codewf.com</Owners>
@@ -13,22 +13,23 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
 		<Copyright>Copyright © https://codewf.com 2024</Copyright>
-		<AssemblyName>CodeWF.EventBus</AssemblyName>
-		<RootNamespace>CodeWF.EventBus</RootNamespace>
-		<PackageId>CodeWF.EventBus</PackageId>
-		<PackageTags>C# EventBus; WPF; Winform; AvaloniaUI,ASP.NET Core;</PackageTags>
+		<AssemblyName>CodeWF.AspNetCore.EventBus</AssemblyName>
+		<RootNamespace>CodeWF.AspNetCore.EventBus</RootNamespace>
+		<PackageId>CodeWF.AspNetCore.EventBus</PackageId>
+		<PackageTags>ASP.NET Core EventBus</PackageTags>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/dotnet9/CodeWF.EventBus</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/dotnet9/CodeWF.EventBus</RepositoryUrl>
 	</PropertyGroup>
-
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\logo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
-
 	<Import Project="..\CodeWF.EventBus.Shared\CodeWF.EventBus.Shared.projitems" Label="Shared" />
 
 </Project>

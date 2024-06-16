@@ -17,11 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommandsAndQueries\CommandsAndQueries.csproj" />
+    <ProjectReference Include="..\CodeWF.EventBus\CodeWF.EventBus.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
+
+  <Import Project="..\CommandAndQueryModel\CommandAndQueryModel.projitems" Label="Shared" />
 
 </Project>
