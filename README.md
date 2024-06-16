@@ -68,6 +68,71 @@ protected override void RegisterTypes(IContainerRegistry containerRegistry)
 
 根据 IOC 容器注册单例、获取服务的 API 不同，做相应修改即可。
 
+**2024-06-16更新**
+
+为简化部分IOC容器引入，分发了适配NuGet包，说明如下。
+
+1. 简化Web API事件总线引入
+
+只需要引入一个包如下（CodeWF.EventBus包不再需要引入）
+
+```shell
+NuGet\Install-Package CodeWF.AspNetCore.EventBus -Version 2.1.4
+```
+
+使用：
+
+```csharp
+using CodeWF.EventBus;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+Register EventBus
+builder.Services.AddEventBus(Assembly.GetExecutingAssembly());
+
+var app = builder.Build();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+// Use EventBus
+app.UseEventBus(Assembly.GetExecutingAssembly());
+
+app.Run();
+```
+
+2. 简化`Prism.Container.DryIoc`事件总线引入
+
+只需要引入一个包如下（CodeWF.EventBus包不再需要引入）：
+
+```shell
+NuGet\Install-Package CodeWF.DryIoc.EventBus -Version 2.1.4
+```
+
+使用：
+
+```csharp
+protected override void RegisterTypes(IContainerRegistry containerRegistry)
+{
+    IContainer? container = containerRegistry.GetContainer();
+
+    // Register EventBus
+    containerRegistry.AddEventBus(Assembly.GetExecutingAssembly());
+
+    // ....
+
+    // Use EventBus
+    container.UseEventBus(Assembly.GetExecutingAssembly());
+}
+```
+
+3. 其他IOC容器
+
+使用方式不变。
+
 #### 2.1.2. 未使用 IOC
 
 默认的 WPF、Winform、AvaloniaUI、控制台程序默认未引入任何 IOC 容器，这里不用做事件服务注册操作，功能使用上和使用IOC只差自动订阅功能，其他功能一样。
