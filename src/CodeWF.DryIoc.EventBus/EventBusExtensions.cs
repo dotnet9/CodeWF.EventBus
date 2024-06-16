@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace CodeWF.DryIoc.EventBus
 {
-    public static partial class EventBusExtensions
+    public static class EventBusExtensions
     {
         public static IContainerRegistry AddEventBus(this IContainerRegistry services, params Assembly[] assemblies)
         {

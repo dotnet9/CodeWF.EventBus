@@ -1,7 +1,7 @@
 简化Web API事件总线引入，只需要引入一个包：
 
 ```shell
-NuGet\Install-Package CodeWF.AspNetCore.EventBus -Version 3.0.0
+NuGet\Install-Package CodeWF.AspNetCore.EventBus -Version 3.0.1
 ```
 
 使用：

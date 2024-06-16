@@ -5,7 +5,7 @@ using CodeWF.EventBus;
 
 namespace CodeWF.IOC.EventBus
 {
-    public static partial class EventBusExtensions
+    public static class EventBusExtensions
     {
         public static void AddEventBus(Action<Type, Type> addSingleton1,
             Action<Type> addSingleton2, params Assembly[] assemblies)

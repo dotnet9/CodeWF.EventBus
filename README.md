@@ -1,8 +1,8 @@
 # CodeWF.EventBus
 
-## 1. 简介
+## 1. 前言
 
-事件总线，即EventBus，是一种解耦模块间通讯的强大工具。在[CodeWF.EventBus](https://www.nuget.org/packages?q=CodeWF.EventBus)库中，我们得以轻松实现CQRS模式，并通过清晰、简洁的接口进行事件订阅与发布。接下来，我们将详细探讨如何使用这个库来处理事件。
+事件总线，即EventBus，是一种解耦模块间通讯的强大工具。在[CodeWF.EventBus](https://www.nuget.org/packages?q=CodeWF.EventBus)中，我们得以轻松实现CQRS模式，并通过清晰、简洁的接口进行事件订阅与发布。接下来，我们将详细探讨如何使用这个库来处理事件。
 
 > CQRS，全称Command Query Responsibility Segregation，是一种软件架构模式，旨在通过将系统中的命令（写操作）和查询（读操作）职责进行分离，来提高系统的性能、可伸缩性和响应性。
 
@@ -14,13 +14,99 @@
 
 ## 2. 怎么使用事件总线？
 
-首先请搜索 NuGet 包`CodeWF.EventBus`并安装最新版，安装完成后，你就可以在你的代码中引用并使用`CodeWF.EventBus`了。
-
 ### 2.1. 注册事件总线
 
-#### 2.1.1. 使用了 IOC
+#### 2.1.1. MS.DI容器
 
-如果是 ASP.NET Core 程序，比如 MVC、Razor Pages、Blazor Server 等模板程序，在`Program`中添加如下代码：
+主要是ASP.NET Core程序，比如 MVC、Razor Pages、Blazor Server 等模板程序，请搜索 NuGet 包`CodeWF.AspNetCore.EventBus`并安装最新版，安装完成后，在`Program`中添加如下代码：
+
+```csharp
+// ....
+
+// 1、注册事件总线，将标注`EventHandler`特性方法的类采用单例方式注入IOC容器
+builder.Services.AddEventBus();
+
+var app = builder.Build();
+
+// ...
+
+// 2、将上面已经注入IOC容器的类取出、关联处理方法到事件总线管理
+app.UseEventBus();
+
+// ...
+```
+
+- `AddEventBus`方法会扫描传入的程序集列表，将标注`Event`特性的类下又标注`EventHandler`特性方法的类采用单例方式注入 IOC 容器。
+- `UseEventBus`方法会将上一步注入的类通过 IOC 容器获取到实例，将实例的事件处理方法注册到事件管理队列中去，待收到事件发布时，会从事件管理队列中查找事件处理方法并调用，达到事件通知的功能。
+
+#### 2.1.2. DryIOC容器
+
+如果使用的`DryIoc`容器，比如 WPF /Avalonia UI中使用了 Prism 框架的DryIoc容器，请搜索 NuGet 包`CodeWF.DryIoc.EventBus`并安装最新版，安装完成后，在`RegisterTypes`方法中添加如下代码：
+
+```csharp
+protected override void RegisterTypes(IContainerRegistry containerRegistry)
+{
+    IContainer? container = containerRegistry.GetContainer();
+
+    // ...
+
+    // Register EventBus
+    EventBusExtensions.AddEventBus();
+
+    // ...
+
+    // Use EventBus
+    EventBusExtensions.UseEventBus();
+}
+```
+
+#### 2.1.3. 任意IOC容器
+
+`CodeWF.EventBus`支持任意IOC容器的项目，请搜索 NuGet 包`CodeWF.IOC.EventBus`并安装最新版，安装完成后，根据 IOC 容器注册单例、获取服务的 API 不同，做相应修改即可。下面是`AddEventBus`和`UseEventBus`扩展方法逻辑：
+
+```csharp
+public static class EventBusExtensions
+{
+    public static void AddEventBus(Action<Type, Type> addSingleton1,
+        Action<Type> addSingleton2, params Assembly[] assemblies)
+    {
+        addSingleton1(typeof(IEventBus), typeof(CodeWF.EventBus.EventBus));
+        HandleCommandObject(addSingleton2, assemblies);
+    }
+
+    public static void UseEventBus(Func<Type, object> resolveAction, params Assembly[] assemblies)
+    {
+        if (!(resolveAction(typeof(IEventBus)) is IEventBus messenger))
+        {
+            throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");
+        }
+
+        HandleCommandObject(type => messenger.Subscribe(resolveAction(type)),
+            assemblies);
+    }
+
+    private static void HandleCommandObject(Action<Type> handleRecipient, params Assembly[] assemblies)
+    {
+        foreach (var assembly in assemblies.Concat(new []{Assembly.GetCallingAssembly()}))
+        {
+            var types = assembly.GetTypes()
+                .Where(t => t.IsClass
+                            && !t.IsAbstract
+                            && t.GetCustomAttributes<EventAttribute>().Any()
+                            && t.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
+                                            BindingFlags.NonPublic).Any(m =>
+                                m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+
+            foreach (var type in types)
+            {
+                handleRecipient(type);
+            }
+        }
+    }
+}
+```
+
+比如上面的ASP.NET Core程序在安装`CodeWF.IOC.EventBus`包后，注册也可以这样写：
 
 ```csharp
 // ....
@@ -41,101 +127,9 @@ EventBusExtensions.UseEventBus(t => app.Services.GetRequiredService(t), Assembly
 // ...
 ```
 
-- `AddEventBus`方法会扫描传入的程序集列表，将标注`Event`特性的类下又标注`EventHandler`特性方法的类采用单例方式注入 IOC 容器。
-- `UseEventBus`方法会将上一步注入的类通过 IOC 容器获取到实例，将实例的事件处理方法注册到事件管理队列中去，待收到事件发布时，会从事件管理队列中查找事件处理方法并调用，达到事件通知的功能。
+#### 2.1.4. 未使用任何 IOC容器
 
-如果使用的其他 IOC容器，比如 WPF 中使用了 Prism 框架的DryIoc容器，写法如下：
-
-```csharp
-protected override void RegisterTypes(IContainerRegistry containerRegistry)
-{
-    IContainer? container = containerRegistry.GetContainer();
-
-    // ...
-
-    // Register EventBus
-    EventBusExtensions.AddEventBus(
-        (t1,t2)=> containerRegistry.RegisterSingleton(t1,t2),
-        t=> containerRegistry.RegisterSingleton(t),
-        typeof(App).Assembly);
-
-    // ...
-
-    // Use EventBus
-    EventBusExtensions.UseEventBus(t => container.Resolve(t), typeof(App).Assembly);
-}
-```
-
-根据 IOC 容器注册单例、获取服务的 API 不同，做相应修改即可。
-
-**2024-06-16更新**
-
-为简化部分IOC容器引入，分发了适配NuGet包，说明如下。
-
-1. 简化Web API事件总线引入
-
-只需要引入一个包如下（CodeWF.EventBus包不再需要引入）
-
-```shell
-NuGet\Install-Package CodeWF.AspNetCore.EventBus -Version 2.1.4
-```
-
-使用：
-
-```csharp
-using CodeWF.EventBus;
-
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-Register EventBus
-builder.Services.AddEventBus(Assembly.GetExecutingAssembly());
-
-var app = builder.Build();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-// Use EventBus
-app.UseEventBus(Assembly.GetExecutingAssembly());
-
-app.Run();
-```
-
-2. 简化`Prism.Container.DryIoc`事件总线引入
-
-只需要引入一个包如下（CodeWF.EventBus包不再需要引入）：
-
-```shell
-NuGet\Install-Package CodeWF.DryIoc.EventBus -Version 2.1.4
-```
-
-使用：
-
-```csharp
-protected override void RegisterTypes(IContainerRegistry containerRegistry)
-{
-    IContainer? container = containerRegistry.GetContainer();
-
-    // Register EventBus
-    containerRegistry.AddEventBus(Assembly.GetExecutingAssembly());
-
-    // ....
-
-    // Use EventBus
-    container.UseEventBus(Assembly.GetExecutingAssembly());
-}
-```
-
-3. 其他IOC容器
-
-使用方式不变。
-
-#### 2.1.2. 未使用 IOC
-
-默认的 WPF、Winform、AvaloniaUI、控制台程序默认未引入任何 IOC 容器，这里不用做事件服务注册操作，功能使用上和使用IOC只差自动订阅功能，其他功能一样。
+默认的 WPF、Winform、Avalonia UI、控制台程序默认未引入任何 IOC 容器，这里不用做事件服务注册操作，只需搜索 NuGet 包`CodeWF.EventBus`并安装最新版，安装完成后功能使用上和使用IOC只差自动订阅功能，其他功能一样。
 
 ### 2.2. 定义事件
 
@@ -185,7 +179,7 @@ public class ProductsQuery : Query<List<ProductItemDto>>
 
 #### 2.3.1. 自动订阅
 
-在`B/S`程序中，一般将事件处理程序单独封装到一个类中，如下代码中`CommandAndQueryHandler`即是自动订阅类格式：
+`自动订阅`只能在使用了IOC容器的程序中使用，比如ASP.NET Core程序。一般将事件处理程序单独封装到一个类中，如下代码中`CommandAndQueryHandler`即是自动订阅类格式：
 
 ```csharp
 [Event]
@@ -467,7 +461,7 @@ public class EventBusTestViewModel : ViewModelBase
 
 ## 3. 总结
 
-CodeWF.EventBus提供了一个小巧灵活的事件总线实现，支持CQRS模式，并适用于各种项目模板，如 Avalonia UI、WPF、WinForms、ASP.NET Core 等。通过简单的订阅和发布操作，你可以轻松实现模块间的解耦和通讯。通过有序的事件处理，确保事件得到妥善处理。
+`CodeWF.EventBus`提供了一个小巧灵活的事件总线实现，支持CQRS模式，并适用于各种项目模板，如 Avalonia UI、WPF、WinForms、ASP.NET Core 等。通过简单的订阅和发布操作，你可以轻松实现模块间的解耦和通讯。通过有序的事件处理，确保事件得到妥善处理。
 
 仓库地址 https://github.com/dotnet9/CodeWF.EventBus，具体使用可参考：
 

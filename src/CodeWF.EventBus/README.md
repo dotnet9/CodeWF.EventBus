@@ -1,0 +1,1 @@
+默认的 WPF、Winform、Avalonia UI、控制台程序默认未引入任何 IOC 容器，这里不用做事件服务注册操作，只需搜索 NuGet 包`CodeWF.EventBus`并安装最新版，安装完成后功能使用上和使用IOC只差自动订阅功能，其他功能一样。
