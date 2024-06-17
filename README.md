@@ -463,11 +463,11 @@ public class EventBusTestViewModel : ViewModelBase
 
 `CodeWF.EventBus`提供了一个小巧灵活的事件总线实现，支持CQRS模式，并适用于各种项目模板，如 Avalonia UI、WPF、WinForms、ASP.NET Core 等。通过简单的订阅和发布操作，你可以轻松实现模块间的解耦和通讯。通过有序的事件处理，确保事件得到妥善处理。
 
-仓库地址 https://github.com/dotnet9/CodeWF.EventBus，具体使用可参考：
+仓库地址 https://github.com/dotnet9/CodeWF.EventBus ，具体使用可参考：
 
 1. 单元测试：[CodeWF.EventBus.Tests](https://github.com/dotnet9/CodeWF.EventBus/tree/main/src/CodeWF.EventBus.Tests)
 3. AvaloniaUI + Prism：[Tools.CodeWF](https://github.com/dotnet9/Tools.CodeWF/tree/prism-modules)
-4. Web API：[WebAPIDemo](https://github.com/dotnet9/CodeWF.EventBus/tree/main/src/WebAPIDemo)
+4. Web API：[WebAPIDemo](https://github.com/dotnet9/CodeWF.EventBus/tree/main/src/WebAPIDemo) 、[CodeWF](https://github.com/dotnet9/CodeWF)
 
 开发过程中参考不少开源项目：
 
