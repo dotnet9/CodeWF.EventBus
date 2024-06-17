@@ -20,17 +20,15 @@ namespace WebAPIDemo.Controllers
         }
 
         [HttpPost("/add")]
-        public Task AddAsync([FromBody] CreateProductRequest request)
+        public async Task AddAsync([FromBody] CreateProductRequest request)
         {
-            _eventBus.Publish(new CreateProductCommand { Name = request.Name, Price = request.Price });
-            return Task.CompletedTask;
+            await _eventBus.PublishAsync(new CreateProductCommand { Name = request.Name, Price = request.Price });
         }
 
         [HttpDelete("/delete")]
-        public Task DeleteAsync([FromQuery] Guid id)
+        public async Task DeleteAsync([FromQuery] Guid id)
         {
-            _eventBus.Publish(new DeleteProductCommand { ProductId = id });
-            return Task.CompletedTask;
+            await _eventBus.PublishAsync(new DeleteProductCommand { ProductId = id });
         }
 
         [HttpGet("/get")]
