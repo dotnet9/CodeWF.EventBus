@@ -11,7 +11,12 @@ namespace CodeWF.IOC.EventBus
             Action<Type> addSingleton2, params Assembly[] assemblies)
         {
             addSingleton1(typeof(IEventBus), typeof(CodeWF.EventBus.EventBus));
-            HandleCommandObject(addSingleton2, assemblies);
+
+            var allAssemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray();
+
+            CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => addSingleton2(type),
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                allAssemblies);
         }
 
         public static void UseEventBus(Func<Type, object> resolveAction, params Assembly[] assemblies)
@@ -21,27 +26,14 @@ namespace CodeWF.IOC.EventBus
                 throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");
             }
 
-            HandleCommandObject(type => messenger.Subscribe(resolveAction(type)),
-                assemblies);
-        }
+            var allAssemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray();
 
-        private static void HandleCommandObject(Action<Type> handleRecipient, params Assembly[] assemblies)
-        {
-            foreach (var assembly in assemblies.Concat(new[] { Assembly.GetCallingAssembly() }))
-            {
-                var types = assembly.GetTypes()
-                    .Where(t => t.IsClass
-                                && !t.IsAbstract
-                                && t.GetCustomAttributes<EventAttribute>().Any()
-                                && t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                    .Any(m =>
-                                        m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+            CodeWF.EventBus.EventBusExtensions.HandleEventObject(
+                type => messenger.Subscribe(resolveAction(type)),
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, allAssemblies);
 
-                foreach (var type in types)
-                {
-                    handleRecipient(type);
-                }
-            }
+            CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => messenger.Subscribe(type),
+                BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, allAssemblies);
         }
     }
 }

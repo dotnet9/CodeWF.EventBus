@@ -6,6 +6,7 @@ namespace CodeWF.EventBus
     public interface IEventBus
     {
         void Subscribe<T>() where T : class;
+        void Subscribe(Type type);
         void Subscribe(object recipient);
         void Subscribe<TCommand>(Action<TCommand> action) where TCommand : Command;
         void Subscribe<TCommand>(Func<TCommand, Task> asyncAction) where TCommand : Command;

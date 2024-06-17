@@ -71,18 +71,18 @@ namespace CodeWF.EventBus.Tests
             var query = new TestQuery();
             Assert.Equal(0, query.Result);
 
-            _eventBus.Subscribe<CommandAndQueryHandler>();
+            _eventBus.Subscribe<StaticHandler>();
 
             await _eventBus.PublishAsync(new TestAddCommand());
             await _eventBus.PublishAsync(query);
             Assert.True(query.Result == 1);
 
-            _eventBus.Unsubscribe<CommandAndQueryHandler>();
+            _eventBus.Unsubscribe<StaticHandler>();
             await _eventBus.PublishAsync(new TestAddCommand());
             await _eventBus.PublishAsync(query);
             Assert.True(query.Result == 1);
 
-            _eventBus.Subscribe<CommandAndQueryHandler>();
+            _eventBus.Subscribe<StaticHandler>();
             await _eventBus.PublishAsync(new TestAddCommand());
             await _eventBus.PublishAsync(query);
             Assert.True(query.Result == 2);

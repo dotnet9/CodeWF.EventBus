@@ -9,8 +9,12 @@ namespace CodeWF.EventBus
     {
         public void Subscribe<T>() where T : class
         {
-            var methods = typeof(T)
-                .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            Subscribe(typeof(T));
+        }
+
+        public void Subscribe(Type type)
+        {
+            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             Subscribe(null, methods);
         }
 
