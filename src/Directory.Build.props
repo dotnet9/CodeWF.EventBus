@@ -1,0 +1,8 @@
+<Project>
+	<PropertyGroup>
+		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+		<OutputPath>$(MSBuildThisFileDirectory)\Output\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>True</AppendTargetFrameworkToOutputPath>
+		<Version>3.0.1</Version>
+	</PropertyGroup>
+</Project>

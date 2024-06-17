@@ -1,33 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\Package.props" />
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
-		<Company>https://codewf.com</Company>
-		<Authors>沙漠尽头的狼</Authors>
-		<Owners>https://codewf.com</Owners>
-		<AssemblyVersion>3.0.1</AssemblyVersion>
-		<FileVersion>3.0.1</FileVersion>
-		<Version>3.0.1</Version>
-		<Description>通过 CodeWF.EventBus 提供的 事件总线，我们可以很轻松的实现 CQRS 模式。根据业务需求，我们可以创建并维护读模型，将读操作和写操作进行分离，从而提高应用程序的可扩展性和性能。可在各种模板项目使用：WPF、Winform、AvaloniaUI、ASP.NET Core等。The CodeWF.EventBus allows us to easily implement the CQRS mode. According to business requirements, we can create and maintain a read model to separate read and write operations, thereby improving the scalability and performance of the application. Can be used in various template projects: WPF, Winform, AvaloniaUI, ASP. NET Core, etc.</Description>
-		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>$(AssemblyName)</Title>
-		<Copyright>Copyright © https://codewf.com 2024</Copyright>
-		<AssemblyName>$(AssemblyName)</AssemblyName>
-		<RootNamespace>$(AssemblyName)</RootNamespace>
-		<PackageId>$(AssemblyName)</PackageId>
-		<PackageTags>All IOC EventBus</PackageTags>
-		<PackageIcon>logo.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/dotnet9/CodeWF.EventBus</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/dotnet9/CodeWF.EventBus</RepositoryUrl>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="Resources\logo.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="CodeWF.EventBus" Version="3.0.0" />
+		<PackageReference Include="CodeWF.EventBus" Version="$(Version)" />
 	</ItemGroup>
 </Project>

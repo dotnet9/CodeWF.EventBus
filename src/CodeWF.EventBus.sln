@@ -21,7 +21,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommandAndQueryModel", "Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.DryIoc.EventBus", "CodeWF.DryIoc.EventBus\CodeWF.DryIoc.EventBus.csproj", "{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWF.IOC.EventBus", "CodeWF.IOC.EventBus\CodeWF.IOC.EventBus.csproj", "{934EB790-8C1E-4FD6-8C9E-3DC9BDB5D5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.IOC.EventBus", "CodeWF.IOC.EventBus\CodeWF.IOC.EventBus.csproj", "{934EB790-8C1E-4FD6-8C9E-3DC9BDB5D5E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{4F7B106B-3D66-4ED2-9547-B4372B2352B9}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Package.props = Package.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,9 @@
-﻿using CodeWF.EventBus;
+﻿using System;
+using System.Linq;
+using CodeWF.EventBus;
 using DryIoc;
 using System.Reflection;
+using Prism.Ioc;
 
 namespace CodeWF.DryIoc.EventBus
 {

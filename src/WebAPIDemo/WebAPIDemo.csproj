@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
@@ -8,15 +7,12 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj" />
 	</ItemGroup>
-
 	<Import Project="..\CommandAndQueryModel\CommandAndQueryModel.projitems" Label="Shared" />
 
 </Project>
