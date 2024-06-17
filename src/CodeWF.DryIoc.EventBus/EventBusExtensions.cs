@@ -29,6 +29,7 @@ namespace CodeWF.DryIoc.EventBus
             HandleCommandObject(type => messenger.Subscribe(app.Resolve(type)),
                 assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray());
         }
+
         private static void HandleCommandObject(Action<Type> handleRecipient, Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
@@ -37,9 +38,9 @@ namespace CodeWF.DryIoc.EventBus
                     .Where(t => t.IsClass
                                 && !t.IsAbstract
                                 && t.GetCustomAttributes<EventAttribute>().Any()
-                                && t.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
-                                                BindingFlags.NonPublic).Any(m =>
-                                    m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+                                && t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                    .Any(m =>
+                                        m.GetCustomAttributes<EventHandlerAttribute>().Any()));
 
                 foreach (var type in types)
                 {

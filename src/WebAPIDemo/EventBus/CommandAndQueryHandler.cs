@@ -16,8 +16,8 @@ namespace WebAPIDemo.EventBus
                 { Name = command.Name, Price = command.Price });
             if (isAddSuccess)
             {
-                await eventBus.PublishAsync(this,
-                    new CreateProductSuccessCommand() { Name = command.Name, Price = command.Price });
+                await eventBus.PublishAsync(new CreateProductSuccessCommand()
+                    { Name = command.Name, Price = command.Price });
             }
             else
             {
@@ -64,6 +64,12 @@ namespace WebAPIDemo.EventBus
         {
             var products = await productService.QueryProductsAsync(query.Name);
             query.Result = products;
+        }
+
+        [EventHandler]
+        private static async Task ReceiveAutoProductsQueryAsync2(ProductsQuery query)
+        {
+            Console.WriteLine("Test auto subscribe static method");
         }
     }
 }

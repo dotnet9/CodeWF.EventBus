@@ -27,15 +27,15 @@ namespace CodeWF.IOC.EventBus
 
         private static void HandleCommandObject(Action<Type> handleRecipient, params Assembly[] assemblies)
         {
-            foreach (var assembly in assemblies.Concat(new []{Assembly.GetCallingAssembly()}))
+            foreach (var assembly in assemblies.Concat(new[] { Assembly.GetCallingAssembly() }))
             {
                 var types = assembly.GetTypes()
                     .Where(t => t.IsClass
                                 && !t.IsAbstract
                                 && t.GetCustomAttributes<EventAttribute>().Any()
-                                && t.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
-                                                BindingFlags.NonPublic).Any(m =>
-                                    m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+                                && t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                    .Any(m =>
+                                        m.GetCustomAttributes<EventHandlerAttribute>().Any()));
 
                 foreach (var type in types)
                 {

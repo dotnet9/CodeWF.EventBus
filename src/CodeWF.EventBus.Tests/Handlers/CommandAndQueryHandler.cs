@@ -1,9 +1,11 @@
-﻿using CommandAndQueryModel.Commands;
+﻿using CodeWF.EventBus.Tests.Commands;
+using CodeWF.EventBus.Tests.Queries;
+using CommandAndQueryModel.Commands;
 using CommandAndQueryModel.Dto;
 using CommandAndQueryModel.Queries;
 using CommandAndQueryModel.Services;
 
-namespace CodeWF.EventBus.Tests
+namespace CodeWF.EventBus.Tests.Handlers
 {
     internal class CommandAndQueryHandler
     {
@@ -16,8 +18,8 @@ namespace CodeWF.EventBus.Tests
                 { Name = command.Name, Price = command.Price });
             if (isAddSuccess)
             {
-                await EventBus.Default.PublishAsync(this,
-                    new CreateProductSuccessCommand() { Name = command.Name, Price = command.Price });
+                await EventBus.Default.PublishAsync(new CreateProductSuccessCommand()
+                    { Name = command.Name, Price = command.Price });
             }
             else
             {
@@ -64,6 +66,26 @@ namespace CodeWF.EventBus.Tests
         {
             var products = await _productService.QueryProductsAsync(query.Name);
             query.Result = products;
+        }
+
+        private static int _testCount = 0;
+
+        [EventHandler]
+        public static void ReceiveAddCommand(TestAddCommand command)
+        {
+            _testCount++;
+        }
+
+        [EventHandler]
+        public static void ReceiveSubtractCommand(TestSubtractCommand command)
+        {
+            _testCount--;
+        }
+
+        [EventHandler]
+        public static void ReceiveStaticQuery(TestQuery query)
+        {
+            query.Result = _testCount;
         }
     }
 }

@@ -51,12 +51,12 @@ protected override void RegisterTypes(IContainerRegistry containerRegistry)
     // ...
 
     // Register EventBus
-    EventBusExtensions.AddEventBus();
+    containerRegistry.AddEventBus();
 
     // ...
 
     // Use EventBus
-    EventBusExtensions.UseEventBus();
+    container.UseEventBus();
 }
 ```
 
@@ -87,15 +87,15 @@ public static class EventBusExtensions
 
     private static void HandleCommandObject(Action<Type> handleRecipient, params Assembly[] assemblies)
     {
-        foreach (var assembly in assemblies.Concat(new []{Assembly.GetCallingAssembly()}))
+        foreach (var assembly in assemblies.Concat(new[] { Assembly.GetCallingAssembly() }))
         {
             var types = assembly.GetTypes()
                 .Where(t => t.IsClass
                             && !t.IsAbstract
                             && t.GetCustomAttributes<EventAttribute>().Any()
-                            && t.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
-                                            BindingFlags.NonPublic).Any(m =>
-                                m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+                            && t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                .Any(m =>
+                                    m.GetCustomAttributes<EventHandlerAttribute>().Any()));
 
             foreach (var type in types)
             {
@@ -258,8 +258,8 @@ internal class CommandAndQueryHandler
 {
     internal void ManuSubscribe()
     {
-        EventBus.Default.Subscribe<DeleteProductCommand>(this, ReceiveDeleteProductCommandAsync);
-        EventBus.Default.Subscribe<ProductQuery>(this, ReceiveProductQueryAsync);
+        EventBus.Default.Subscribe<DeleteProductCommand>(ReceiveDeleteProductCommandAsync);
+        EventBus.Default.Subscribe<ProductQuery>(ReceiveProductQueryAsync);
     }
 
     public async Task ReceiveDeleteProductCommandAsync(DeleteProductCommand command)
@@ -376,12 +376,12 @@ public class TimeService : ITimeService
 发布命令与查询使用相同的接口，通过`IEventBus`或`EventBus.Default`的`Publish`和`PublishAsync`方法发布命令和查询：
 
 ```csharp
-_messenger.Publish(this, new DeleteProductCommand { ProductId = id });
+_messenger.Publish(new DeleteProductCommand { ProductId = id });
 ```
 
 ```csharp
 var query = new ProductQuery { ProductId = id };
-await _messenger.PublishAsync(this, query);
+await _messenger.PublishAsync(query);
 ```
 
 在`B/S`控制器的`Action`使用发布：
@@ -403,14 +403,14 @@ public class EventController : ControllerBase
     [HttpPost("/add")]
     public Task AddAsync([FromBody] CreateProductRequest request)
     {
-        _eventBus.Publish(this, new CreateProductCommand { Name = request.Name, Price = request.Price });
+        _eventBus.Publish(new CreateProductCommand { Name = request.Name, Price = request.Price });
         return Task.CompletedTask;
     }
 
     [HttpDelete("/delete")]
     public Task DeleteAsync([FromQuery] Guid id)
     {
-        _eventBus.Publish(this, new DeleteProductCommand { ProductId = id });
+        _eventBus.Publish(new DeleteProductCommand { ProductId = id });
         return Task.CompletedTask;
     }
 
@@ -418,7 +418,7 @@ public class EventController : ControllerBase
     public async Task<ProductItemDto> GetAsync([FromQuery] Guid id)
     {
         var query = new ProductQuery { ProductId = id };
-        await _eventBus.PublishAsync(this, query);
+        await _eventBus.PublishAsync(query);
         return query.Result;
     }
 
@@ -426,7 +426,7 @@ public class EventController : ControllerBase
     public async Task<List<ProductItemDto>> ListAsync([FromQuery] string? name)
     {
         var query = new ProductsQuery { Name = name };
-        await _eventBus.PublishAsync(this, query);
+        await _eventBus.PublishAsync(query);
         return query.Result;
     }
 }
@@ -446,7 +446,7 @@ public class EventBusTestViewModel : ViewModelBase
 
     public Task ExecuteEventBusAsync()
     {
-        _eventBus.PublishAsync(this, new TestMessage(nameof(MessageTestViewModel), TestClass.CurrentTime()));
+        _eventBus.PublishAsync(new TestMessage(nameof(MessageTestViewModel), TestClass.CurrentTime()));
         return Task.CompletedTask;
     }
 }
@@ -456,7 +456,7 @@ public class EventBusTestViewModel : ViewModelBase
 
 在实际应用中，你可能需要确保在适当的时机（如服务销毁时）取消订阅，以避免内存泄漏：
 
-1. 注销指定处理程序：`Messenger.Default.Unsubscribe<CreateProductMessage>(this, ReceiveManuCreateProductMessage)`
+1. 注销指定处理程序：`Messenger.Default.Unsubscribe<CreateProductMessage>(ReceiveManuCreateProductMessage)`
 2. 注销指定类的所有处理程序：`Messenger.Default.Unsubscribe(this)`
 
 ## 3. 总结
