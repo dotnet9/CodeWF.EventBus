@@ -11,10 +11,11 @@ namespace CodeWF.EventBus
         {
             var methods = typeof(T)
                 .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).ToList();
+
             foreach (var subscription in _subscriptions)
             {
                 subscription.Value.RemoveAll(item =>
-                    item.Action.Target == null && methods.Any(method => method.Name == item.Action.Method.Name));
+                    item.Action.Target == null && methods.Any(method => IsTheSameMethod(item.Action.Method, method)));
             }
         }
 

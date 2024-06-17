@@ -87,5 +87,34 @@ namespace CodeWF.EventBus.Tests
             await _eventBus.PublishAsync(query);
             Assert.True(query.Result == 2);
         }
+
+        [Fact]
+        public async Task Should_UnsubscribeStaticHandle_Success()
+        {
+            var query = new TestQuery();
+            Assert.Equal(0, query.Result);
+
+            _eventBus.Subscribe<StaticHandler>();
+            _eventBus.Subscribe<StaticHandler2>();
+
+            await _eventBus.PublishAsync(new TestAddCommand());
+            await _eventBus.PublishAsync(query);
+            Assert.True(query.Result == 2);
+
+            _eventBus.Unsubscribe<StaticHandler>();
+            await _eventBus.PublishAsync(new TestAddCommand());
+            await _eventBus.PublishAsync(query);
+            Assert.True(query.Result == 3);
+
+            _eventBus.Unsubscribe<StaticHandler2>();
+            await _eventBus.PublishAsync(new TestAddCommand());
+            await _eventBus.PublishAsync(query);
+            Assert.True(query.Result == 3);
+
+            _eventBus.Subscribe<StaticHandler2>();
+            await _eventBus.PublishAsync(new TestAddCommand());
+            await _eventBus.PublishAsync(query);
+            Assert.True(query.Result == 4);
+        }
     }
 }

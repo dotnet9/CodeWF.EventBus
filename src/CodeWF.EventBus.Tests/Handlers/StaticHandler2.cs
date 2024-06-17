@@ -3,26 +3,24 @@ using CodeWF.EventBus.Tests.Queries;
 
 namespace CodeWF.EventBus.Tests.Handlers
 {
-    internal class StaticHandler
+    internal class StaticHandler2
     {
-        public static int TestCount = 0;
-
         [EventHandler]
         public static void ReceiveAddCommand(TestAddCommand command)
         {
-            TestCount++;
+            StaticHandler.TestCount++;
         }
 
         [EventHandler]
         public static void ReceiveSubtractCommand(TestSubtractCommand command)
         {
-            TestCount--;
+            StaticHandler.TestCount--;
         }
 
         [EventHandler]
         public static void ReceiveStaticQuery(TestQuery query)
         {
-            query.Result = TestCount;
+            query.Result = StaticHandler.TestCount;
         }
     }
 }

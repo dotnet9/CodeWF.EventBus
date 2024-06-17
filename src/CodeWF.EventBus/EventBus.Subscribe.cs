@@ -15,29 +15,29 @@ namespace CodeWF.EventBus
         public void Subscribe(Type type)
         {
             var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            Subscribe(null, methods);
+            Subscribe(type, null, methods);
         }
 
         public void Subscribe(object recipient)
         {
-            var methods = recipient.GetType()
+            var recipientType = recipient.GetType();
+            var methods = recipientType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            Subscribe(recipient, methods);
+            Subscribe(recipientType, recipient, methods);
         }
-
 
         public void Subscribe<TCommand>(Action<TCommand> action)
             where TCommand : Command
         {
-            Subscribe(typeof(TCommand), action);
+            Subscribe(typeof(TCommand), null, action);
         }
 
         public void Subscribe<TCommand>(Func<TCommand, Task> asyncAction) where TCommand : Command
         {
-            Subscribe(typeof(TCommand), asyncAction);
+            Subscribe(typeof(TCommand), null, asyncAction);
         }
 
-        private void Subscribe(object recipient, MethodInfo[] methods)
+        private void Subscribe(Type recipientType, object recipient, MethodInfo[] methods)
         {
             foreach (var methodInfo in methods)
             {
@@ -63,15 +63,15 @@ namespace CodeWF.EventBus
                     ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
                     : typeof(Action<>).MakeGenericType(commandType);
                 var delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
-                Subscribe(commandType, delegateInstance, eventHandlerAttr.Order);
+                Subscribe(commandType, recipientType, delegateInstance, eventHandlerAttr.Order);
             }
         }
 
-        private void Subscribe(Type commandType, Delegate action, int order = 0)
+        private void Subscribe(Type commandType, Type recipientType, Delegate action, int order = 0)
         {
             var subscriptions = _subscriptions.GetOrAdd(commandType, _ => new List<WeakActionAndToken>());
             subscriptions.Add(new WeakActionAndToken()
-                { Action = action, Order = order });
+                { RecipientType = recipientType, Action = action, Order = order });
         }
     }
 }
