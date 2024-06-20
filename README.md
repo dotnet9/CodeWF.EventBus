@@ -51,12 +51,12 @@ protected override void RegisterTypes(IContainerRegistry containerRegistry)
     // ...
 
     // Register EventBus
-    EventBusExtensions.AddEventBus();
+    containerRegistry.AddEventBus();
 
     // ...
 
     // Use EventBus
-    EventBusExtensions.UseEventBus();
+    container.UseEventBus();
 }
 ```
 
