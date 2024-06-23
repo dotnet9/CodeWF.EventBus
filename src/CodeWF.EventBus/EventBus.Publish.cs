@@ -19,17 +19,18 @@ namespace CodeWF.EventBus
 
         public async Task PublishAsync<TCommand>(TCommand command) where TCommand : Command
         {
-            if (_subscriptions.TryGetValue(typeof(TCommand), out var handlers))
+            if (_subscriptions.TryGetValue(command.GetType(), out var handlers))
             {
                 foreach (var handler in handlers.OrderBy(item => item.Order))
                 {
-                    if (handler.Action is Action<TCommand> syncAction)
+                    if (handler.Action.Method.ReturnType == typeof(Task))
                     {
-                        syncAction.Invoke(command);
+                        var task = (Task)handler.Action.DynamicInvoke(command);
+                        await task;
                     }
-                    else if (handler.Action is Func<TCommand, Task> asyncAction)
+                    else
                     {
-                        await asyncAction.Invoke(command);
+                        handler.Action.DynamicInvoke(command);
                     }
                 }
             }

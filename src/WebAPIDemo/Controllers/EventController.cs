@@ -34,17 +34,15 @@ namespace WebAPIDemo.Controllers
         [HttpGet("/get")]
         public async Task<ProductItemDto> GetAsync([FromQuery] Guid id)
         {
-            var query = new ProductQuery { ProductId = id };
-            await _eventBus.PublishAsync(query);
-            return query.Result;
+            var product = await _eventBus.QueryAsync(new ProductQuery { ProductId = id });
+            return product;
         }
 
         [HttpGet("/list")]
         public async Task<List<ProductItemDto>> ListAsync([FromQuery] string? name)
         {
-            var query = new ProductsQuery { Name = name };
-            await _eventBus.PublishAsync(query);
-            return query.Result;
+            var products = await _eventBus.QueryAsync(new ProductsQuery { Name = name });
+            return products;
         }
     }
 }

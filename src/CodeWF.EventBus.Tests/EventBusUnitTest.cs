@@ -92,29 +92,30 @@ namespace CodeWF.EventBus.Tests
         public async Task Should_UnsubscribeStaticHandle_Success()
         {
             var query = new TestQuery();
+            var addCount = 0;
             Assert.Equal(0, query.Result);
 
             _eventBus.Subscribe<StaticHandler>();
             _eventBus.Subscribe<StaticHandler2>();
 
             await _eventBus.PublishAsync(new TestAddCommand());
-            await _eventBus.PublishAsync(query);
-            Assert.True(query.Result == 2);
+            addCount = await _eventBus.QueryAsync(query);
+            Assert.True(addCount == 2);
 
             _eventBus.Unsubscribe<StaticHandler>();
             await _eventBus.PublishAsync(new TestAddCommand());
-            await _eventBus.PublishAsync(query);
+            addCount = await _eventBus.QueryAsync(query);
             Assert.True(query.Result == 3);
 
             _eventBus.Unsubscribe<StaticHandler2>();
             await _eventBus.PublishAsync(new TestAddCommand());
-            await _eventBus.PublishAsync(query);
-            Assert.True(query.Result == 3);
+            addCount = await _eventBus.QueryAsync(query);
+            Assert.True(addCount == 3);
 
             _eventBus.Subscribe<StaticHandler2>();
             await _eventBus.PublishAsync(new TestAddCommand());
-            await _eventBus.PublishAsync(query);
-            Assert.True(query.Result == 4);
+            addCount = await _eventBus.QueryAsync(query);
+            Assert.True(addCount == 4);
         }
     }
 }

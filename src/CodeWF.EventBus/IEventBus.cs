@@ -15,8 +15,8 @@ namespace CodeWF.EventBus
         void Unsubscribe<TCommand>(Action<TCommand> action) where TCommand : Command;
         void Unsubscribe<TCommand>(Func<TCommand, Task> asyncAction) where TCommand : Command;
         void Publish<TCommand>(TCommand command) where TCommand : Command;
-        T Query<T>(Query<T> query);
+        TResponse Query<TResponse>(Query<TResponse> query);
         Task PublishAsync<TCommand>(TCommand command) where TCommand : Command;
-        Task<T> QueryAsync<T>(Query<T> query);
+        Task<TResponse> QueryAsync<TResponse>(Query<TResponse> query);
     }
 }
