@@ -11,6 +11,12 @@ namespace CodeWF.EventBus
             PublishAsync(command).GetAwaiter().GetResult();
         }
 
+        public T Query<T>(Query<T> query)
+        {
+            Publish(query);
+            return query.Result;
+        }
+
         public async Task PublishAsync<TCommand>(TCommand command) where TCommand : Command
         {
             if (_subscriptions.TryGetValue(typeof(TCommand), out var handlers))
@@ -27,6 +33,12 @@ namespace CodeWF.EventBus
                     }
                 }
             }
+        }
+
+        public async Task<T> QueryAsync<T>(Query<T> query)
+        {
+            await PublishAsync(query);
+            return query.Result;
         }
     }
 }
