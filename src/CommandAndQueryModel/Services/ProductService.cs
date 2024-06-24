@@ -6,12 +6,12 @@ namespace CommandAndQueryModel.Services
     public class ProductService : IProductService
     {
         public static readonly ProductService Default = new ProductService();
-        private readonly List<ProductItem> _productItems = new List<ProductItem>();
+        private static readonly List<ProductItem> ProductItems = new List<ProductItem>();
 
         public async Task<bool> AddProductAsync(CreateProductRequest request)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-            _productItems.Add(new ProductItem()
+            ProductItems.Add(new ProductItem()
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
@@ -23,14 +23,14 @@ namespace CommandAndQueryModel.Services
         public async Task<bool> RemoveProductAsync(Guid productId)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-            var removeCount = _productItems.RemoveAll(item => item.Id == productId);
+            var removeCount = ProductItems.RemoveAll(item => item.Id == productId);
             return removeCount > 0;
         }
 
         public async Task<ProductItemDto> QueryProductAsync(Guid productId)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-            var productFromDb = _productItems.FirstOrDefault(item => item.Id == productId);
+            var productFromDb = ProductItems.FirstOrDefault(item => item.Id == productId);
             if (productFromDb == null)
             {
                 return null;
@@ -47,7 +47,7 @@ namespace CommandAndQueryModel.Services
         public async Task<List<ProductItemDto>> QueryProductsAsync(string name)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-            var productSFromDb = _productItems.Where(item => item.Name.Contains(name)).ToList();
+            var productSFromDb = ProductItems.Where(item => item.Name.Contains(name)).ToList();
             if (!productSFromDb.Any())
             {
                 return null;

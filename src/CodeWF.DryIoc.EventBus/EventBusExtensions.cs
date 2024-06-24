@@ -3,6 +3,7 @@ using System.Linq;
 using CodeWF.EventBus;
 using DryIoc;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Ioc;
 
 namespace CodeWF.DryIoc.EventBus
@@ -15,7 +16,7 @@ namespace CodeWF.DryIoc.EventBus
 
             var allAssemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray();
 
-            CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => services.RegisterSingleton(type),
+            CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => services.RegisterScoped(type),
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                 allAssemblies);
 
@@ -31,12 +32,15 @@ namespace CodeWF.DryIoc.EventBus
 
             var allAssemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray();
 
-            CodeWF.EventBus.EventBusExtensions.HandleEventObject(
-                type => messenger.Subscribe(app.Resolve(type)),
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, allAssemblies);
-
             CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => messenger.Subscribe(type),
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, allAssemblies);
+            messenger.Subscribe(allAssemblies);
+            messenger.RegisterServiceHandlerAction((type, action) =>
+            {
+                using var scope = app.CreateScope();
+                var obj = scope.ServiceProvider.GetRequiredService(type);
+                action(obj);
+            });
         }
     }
 }

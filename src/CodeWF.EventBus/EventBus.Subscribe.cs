@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -35,6 +36,42 @@ namespace CodeWF.EventBus
         public void Subscribe<TCommand>(Func<TCommand, Task> asyncAction) where TCommand : Command
         {
             Subscribe(typeof(TCommand), null, asyncAction);
+        }
+
+        public void Subscribe(Assembly[] assemblies)
+        {
+            foreach (var assembly in assemblies)
+            {
+                var types = assembly.GetTypes()
+                    .Where(t => t.IsClass
+                                && !t.IsAbstract
+                                && t.GetCustomAttributes<EventAttribute>().Any()
+                                && t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                    .Any(m =>
+                                        m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+
+                foreach (var type in types)
+                {
+                    var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        .Where(m =>
+                            m.GetCustomAttributes<EventHandlerAttribute>().Any());
+                    foreach (var method in methods)
+                    {
+                        var eventHandler = method.GetCustomAttributes<EventHandlerAttribute>().First();
+                        var parameters = method.GetParameters();
+                        if (parameters.Length != 1 || !typeof(Command).IsAssignableFrom(parameters[0].ParameterType))
+                        {
+                            continue;
+                        }
+
+                        var commandType = parameters[0].ParameterType;
+
+                        var subscriptions = _autoHandlers.GetOrAdd(commandType, _ => new List<WeakMethod>());
+                        subscriptions.Add(new WeakMethod()
+                            { RecipientType = type, Method = method, Order = eventHandler.Order });
+                    }
+                }
+            }
         }
 
         private void Subscribe(Type recipientType, object recipient, MethodInfo[] methods)

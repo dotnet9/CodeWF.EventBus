@@ -19,7 +19,8 @@ namespace CodeWF.EventBus
 
         public async Task PublishAsync<TCommand>(TCommand command) where TCommand : Command
         {
-            if (_subscriptions.TryGetValue(command.GetType(), out var handlers))
+            var commandType = command.GetType();
+            if (_subscriptions.TryGetValue(commandType, out var handlers))
             {
                 foreach (var handler in handlers.OrderBy(item => item.Order))
                 {
@@ -31,6 +32,31 @@ namespace CodeWF.EventBus
                     else
                     {
                         handler.Action.DynamicInvoke(command);
+                    }
+                }
+            }
+
+            if (_autoHandlers.TryGetValue(commandType, out var autoHandlers))
+            {
+                foreach (var handler in autoHandlers.OrderBy(item => item.Order))
+                {
+                    var methodInfo = handler.Method;
+                    Delegate delegateInstance = null;
+                    _serviceHandlerAction(handler.RecipientType, recipient =>
+                    {
+                        var delegateType = methodInfo.ReturnType == typeof(Task)
+                            ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
+                            : typeof(Action<>).MakeGenericType(commandType);
+                        delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
+                    });
+                    if (handler.Method.ReturnType == typeof(Task))
+                    {
+                        var task = (Task)delegateInstance.DynamicInvoke(command);
+                        await task;
+                    }
+                    else
+                    {
+                        delegateInstance.DynamicInvoke(command);
                     }
                 }
             }

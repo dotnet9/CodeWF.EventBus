@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CodeWF.EventBus;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using CodeWF.EventBus;
-using System.Linq;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace CodeWF.AspNetCore.EventBus
 {
@@ -15,7 +15,7 @@ namespace CodeWF.AspNetCore.EventBus
 
             var allAssemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray();
 
-            CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => services.AddSingleton(type),
+            CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => services.AddScoped(type),
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                 allAssemblies);
 
@@ -31,12 +31,15 @@ namespace CodeWF.AspNetCore.EventBus
 
             var allAssemblies = assemblies.Concat(new[] { Assembly.GetCallingAssembly() }).ToArray();
 
-            CodeWF.EventBus.EventBusExtensions.HandleEventObject(
-                type => messenger.Subscribe(app.ApplicationServices.GetService(type)),
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, allAssemblies);
-
             CodeWF.EventBus.EventBusExtensions.HandleEventObject(type => messenger.Subscribe(type),
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, allAssemblies);
+            messenger.Subscribe(allAssemblies);
+            messenger.RegisterServiceHandlerAction((type, action) =>
+            {
+                using var scope = app.ApplicationServices.CreateScope();
+                var obj = scope.ServiceProvider.GetRequiredService(type);
+                action(obj);
+            });
         }
     }
 }

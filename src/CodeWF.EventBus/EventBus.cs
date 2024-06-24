@@ -13,6 +13,11 @@ namespace CodeWF.EventBus
         private readonly ConcurrentDictionary<Type, List<WeakActionAndToken>> _subscriptions =
             new ConcurrentDictionary<Type, List<WeakActionAndToken>>();
 
+        private readonly ConcurrentDictionary<Type, List<WeakMethod>>
+            _autoHandlers = new ConcurrentDictionary<Type, List<WeakMethod>>();
+
+        private Action<Type, Action<object>> _serviceHandlerAction;
+
         private bool IsTheSameMethod(MethodInfo method1, MethodInfo method2)
         {
             return method1.DeclaringType == method2.DeclaringType &&
@@ -23,6 +28,11 @@ namespace CodeWF.EventBus
         {
             var parameters = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType.FullName));
             return methodInfo.Name + "(" + parameters + ")";
+        }
+
+        public void RegisterServiceHandlerAction(Action<Type, Action<object>> serviceHandlerAction)
+        {
+            _serviceHandlerAction = serviceHandlerAction;
         }
     }
 }
