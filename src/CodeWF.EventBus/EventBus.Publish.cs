@@ -41,23 +41,21 @@ namespace CodeWF.EventBus
                 foreach (var handler in autoHandlers.OrderBy(item => item.Order))
                 {
                     var methodInfo = handler.Method;
-                    Delegate delegateInstance = null;
                     _serviceHandlerAction(handler.RecipientType, recipient =>
                     {
                         var delegateType = methodInfo.ReturnType == typeof(Task)
                             ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
                             : typeof(Action<>).MakeGenericType(commandType);
-                        delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
+                        var delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
+                        if (handler.Method.ReturnType == typeof(Task))
+                        {
+                            ((Task)delegateInstance.DynamicInvoke(command)).GetAwaiter().GetResult();
+                        }
+                        else
+                        {
+                            delegateInstance.DynamicInvoke(command);
+                        }
                     });
-                    if (handler.Method.ReturnType == typeof(Task))
-                    {
-                        var task = (Task)delegateInstance.DynamicInvoke(command);
-                        await task;
-                    }
-                    else
-                    {
-                        delegateInstance.DynamicInvoke(command);
-                    }
                 }
             }
         }
