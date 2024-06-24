@@ -37,8 +37,8 @@ namespace CodeWF.DryIoc.EventBus
             messenger.Subscribe(allAssemblies);
             messenger.RegisterServiceHandlerAction((type, action) =>
             {
-                using var scope = app.CreateScope();
-                var obj = scope.ServiceProvider.GetRequiredService(type);
+                using var scope = app.OpenScope();
+                var obj = scope.Resolve(type);
                 action(obj);
             });
         }
