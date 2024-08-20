@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using CodeWF.EventBus;
+﻿using CodeWF.EventBus;
 using DryIoc;
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 using Prism.Ioc;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace CodeWF.DryIoc.EventBus
 {

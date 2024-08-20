@@ -5,7 +5,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="CodeWF.EventBus" Version="$(Version)" />
-		<PackageReference Include="Prism.Container.DryIoc" Version="8.1.97.11073" />
+		<PackageReference Include="Prism.Core" Version="8.1.97" />
+		<PackageReference Include="DryIoc" Version="4.8.0" />
 	</ItemGroup>
 
 </Project>
