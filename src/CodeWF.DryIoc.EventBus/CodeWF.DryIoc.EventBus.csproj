@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\Package.props" />
+	<Import Project="..\..\Package.props" />
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="CodeWF.EventBus" Version="$(Version)" />
 		<PackageReference Include="Prism.Core" Version="8.1.97" />
-		<PackageReference Include="DryIoc" Version="4.8.0" />
+		<PackageReference Include="DryIoc" Version="6.0.0-preview-07" />
 	</ItemGroup>
 
 </Project>

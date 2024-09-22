@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\Package.props" />
+	<Import Project="..\..\Package.props" />
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 	</PropertyGroup>

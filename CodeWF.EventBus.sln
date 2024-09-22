@@ -3,31 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.34929.205
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus", "CodeWF.EventBus\CodeWF.EventBus.csproj", "{19C6C53A-D5AD-4400-A80A-CF8BEE422982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus", "src\CodeWF.EventBus\CodeWF.EventBus.csproj", "{19C6C53A-D5AD-4400-A80A-CF8BEE422982}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{53654337-FF17-4F13-A081-69801A2AE290}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIDemo", "WebAPIDemo\WebAPIDemo.csproj", "{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIDemo", "src\WebAPIDemo\WebAPIDemo.csproj", "{4BF9D6F9-2896-4006-B603-BC098FBEA3B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A7FA457D-7E77-4B21-958F-F45A51EF8163}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus.Tests", "CodeWF.EventBus.Tests\CodeWF.EventBus.Tests.csproj", "{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.EventBus.Tests", "src\CodeWF.EventBus.Tests\CodeWF.EventBus.Tests.csproj", "{04E6F6D7-64FE-41CB-A6F2-AF9C60D5AD34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.AspNetCore.EventBus", "CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj", "{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.AspNetCore.EventBus", "src\CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj", "{20F90535-4CCC-4AB7-97EA-F75A5E2F5A0E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{90B89F3E-ED63-4F67-9FE9-998E55B0FBB3}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommandAndQueryModel", "CommandAndQueryModel\CommandAndQueryModel.shproj", "{76C198F3-07C4-46D2-A352-29C24D62ED38}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommandAndQueryModel", "src\CommandAndQueryModel\CommandAndQueryModel.shproj", "{76C198F3-07C4-46D2-A352-29C24D62ED38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.DryIoc.EventBus", "CodeWF.DryIoc.EventBus\CodeWF.DryIoc.EventBus.csproj", "{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.DryIoc.EventBus", "src\CodeWF.DryIoc.EventBus\CodeWF.DryIoc.EventBus.csproj", "{A2D8D369-7B88-4E87-B1F2-39AE8A88139D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.IOC.EventBus", "CodeWF.IOC.EventBus\CodeWF.IOC.EventBus.csproj", "{934EB790-8C1E-4FD6-8C9E-3DC9BDB5D5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWF.IOC.EventBus", "src\CodeWF.IOC.EventBus\CodeWF.IOC.EventBus.csproj", "{934EB790-8C1E-4FD6-8C9E-3DC9BDB5D5E5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{4F7B106B-3D66-4ED2-9547-B4372B2352B9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4F7B106B-3D66-4ED2-9547-B4372B2352B9}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Package.props = Package.props
-		..\README.md = ..\README.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FABFCEA3-4F5D-4473-AF45-A507D1463B1A}"
@@ -79,8 +79,8 @@ Global
 		SolutionGuid = {7685ED0A-581B-42BC-9613-64AD00D124D6}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		CommandAndQueryModel\CommandAndQueryModel.projitems*{04e6f6d7-64fe-41cb-a6f2-af9c60d5ad34}*SharedItemsImports = 5
-		CommandAndQueryModel\CommandAndQueryModel.projitems*{4bf9d6f9-2896-4006-b603-bc098fbea3b8}*SharedItemsImports = 5
-		CommandAndQueryModel\CommandAndQueryModel.projitems*{76c198f3-07c4-46d2-a352-29c24d62ed38}*SharedItemsImports = 13
+		src\CommandAndQueryModel\CommandAndQueryModel.projitems*{04e6f6d7-64fe-41cb-a6f2-af9c60d5ad34}*SharedItemsImports = 5
+		src\CommandAndQueryModel\CommandAndQueryModel.projitems*{4bf9d6f9-2896-4006-b603-bc098fbea3b8}*SharedItemsImports = 5
+		src\CommandAndQueryModel\CommandAndQueryModel.projitems*{76c198f3-07c4-46d2-a352-29c24d62ed38}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
