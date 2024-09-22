@@ -19,7 +19,7 @@
 
     <Grid RowDefinitions="Auto *">
         <Button Content="Send Event"
-                Command="{Binding SendEventHandler}"
+                Command="{Binding SendEventCommand}"
                 Classes="Success" Theme="{DynamicResource SolidButton}" />
         <log:LogView Grid.Row="1" />
     </Grid>

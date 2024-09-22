@@ -1,34 +1,26 @@
 using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using CodeWF.EventBus.AvaAOT.ViewModels;
 using CodeWF.EventBus.AvaAOT.Views;
-using Prism.DryIoc;
-using Prism.Ioc;
-using Prism.Regions;
 
 namespace CodeWF.EventBus.AvaAOT;
 
-public class App : PrismApplication
+public class App : Application
 {
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        base.Initialize(); // <-- Required
     }
 
-    protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+    public override void OnFrameworkInitializationCompleted()
     {
-        regionAdapterMappings.RegisterMapping<ItemsControl, ItemsControlRegionAdapter>();
-        regionAdapterMappings.RegisterMapping<ContentControl, ContentControlRegionAdapter>();
-    }
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = new MainWindow();
+            desktop.MainWindow.DataContext = new MainWindowViewModel();
+        }
 
-    protected override AvaloniaObject CreateShell()
-    {
-        return Container.Resolve<MainWindow>();
-    }
-
-    protected override void RegisterTypes(IContainerRegistry containerRegistry)
-    {
-        containerRegistry.Register<MainWindow>();
+        base.OnFrameworkInitializationCompleted();
     }
 }
