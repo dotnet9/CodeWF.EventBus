@@ -1,15 +1,34 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="CodeWF.EventBus.AvaAOT.App"
-             xmlns:local="using:CodeWF.EventBus.AvaAOT"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
-</Application>
+<prism:PrismApplication xmlns="https://github.com/avaloniaui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:prism="http://prismlibrary.com/"
+                        xmlns:semi="https://irihi.tech/semi"
+                        xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
+                        x:Class="CodeWF.EventBus.AvaAOT.App">
+    <prism:PrismApplication.Styles>
+        <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
+        <semi:SemiTheme Locale="zh-CN" />
+        <u-semi:SemiTheme Locale="zh-CN" />
+    </prism:PrismApplication.Styles>
+    <prism:PrismApplication.Resources>
+        <ResourceDictionary>
+            <FontWeight x:Key="ButtonDefaultFontWeight">500</FontWeight>
+            <FontWeight x:Key="CalendarItemCalendarButtonSelectedFontWeight">500</FontWeight>
+            <FontWeight x:Key="ExpanderHeaderFontWeight">500</FontWeight>
+            <FontWeight x:Key="ListBoxItemRadioGroupButtonFontWeight">500</FontWeight>
+            <FontWeight x:Key="ProgressBarTextFontWeight">500</FontWeight>
+            <FontWeight x:Key="RadioButtonButtonFontWeight">500</FontWeight>
+            <FontWeight x:Key="TabItemSelectedFontWeight">500</FontWeight>
+            <FontWeight x:Key="TextBlockTitleFontWeight">500</FontWeight>
+            <FontWeight x:Key="ToggleButtonDefaultFontWeight">500</FontWeight>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="WindowDefaultBackground" Color="#404263" />
+                    <SolidColorBrush x:Key="WindowDefaultForeground" Color="#FFFFFF" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="WindowDefaultForeground" Color="#3c525f" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>

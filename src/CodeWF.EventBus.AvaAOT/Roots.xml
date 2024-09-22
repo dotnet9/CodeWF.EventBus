@@ -1,0 +1,7 @@
+<linker>
+	<assembly fullname="Ursa.PrismExtension" preserve="All" />
+	<assembly fullname="Prism" preserve="All" />
+	<assembly fullname="DryIoc" preserve="All" />
+	<assembly fullname="Prism.Avalonia" preserve="All" />
+	<assembly fullname="Prism.DryIoc.Avalonia" preserve="All" />
+</linker>
