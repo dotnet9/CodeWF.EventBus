@@ -521,7 +521,7 @@ public interface IEventBus
 事件总线具体实现请查看`CodeWF.EventBus`源码： https://github.com/dotnet9/CodeWF.EventBus ，具体使用可参考：
 
 1. 单元测试：[CodeWF.EventBus.Tests](https://github.com/dotnet9/CodeWF.EventBus/tree/main/src/CodeWF.EventBus.Tests)
-3. AvaloniaUI + Prism：[Tools.CodeWF](https://github.com/dotnet9/Tools.CodeWF/tree/prism-modules)
+3. AvaloniaUI + Prism：[CodeWF.Toolbox](https://github.com/dotnet9/CodeWF.Toolbox/)
 4. Web API：[WebAPIDemo](https://github.com/dotnet9/CodeWF.EventBus/tree/main/src/WebAPIDemo) 、[CodeWF](https://github.com/dotnet9/CodeWF)
 
 开发参考开源项目：
