@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWF.EventBus.ConsoleAOT"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWF.EventBus.AvaAOT", "src\CodeWF.EventBus.AvaAOT\CodeWF.EventBus.AvaAOT.csproj", "{47D9CEE8-DE72-4FD7-97B5-28FDBD233101}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp1_4_8", "src\WindowsFormsApp1_4_8\WindowsFormsApp1_4_8.csproj", "{F683A892-B28D-46EE-B86B-2BE2F4F4B997}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{47D9CEE8-DE72-4FD7-97B5-28FDBD233101}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D9CEE8-DE72-4FD7-97B5-28FDBD233101}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D9CEE8-DE72-4FD7-97B5-28FDBD233101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F683A892-B28D-46EE-B86B-2BE2F4F4B997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F683A892-B28D-46EE-B86B-2BE2F4F4B997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F683A892-B28D-46EE-B86B-2BE2F4F4B997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F683A892-B28D-46EE-B86B-2BE2F4F4B997}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{934EB790-8C1E-4FD6-8C9E-3DC9BDB5D5E5} = {A7FA457D-7E77-4B21-958F-F45A51EF8163}
 		{080C70B1-8169-40CF-B43C-065E6DB68038} = {FABFCEA3-4F5D-4473-AF45-A507D1463B1A}
 		{47D9CEE8-DE72-4FD7-97B5-28FDBD233101} = {FABFCEA3-4F5D-4473-AF45-A507D1463B1A}
+		{F683A892-B28D-46EE-B86B-2BE2F4F4B997} = {FABFCEA3-4F5D-4473-AF45-A507D1463B1A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7685ED0A-581B-42BC-9613-64AD00D124D6}
