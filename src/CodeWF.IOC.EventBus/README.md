@@ -1,3 +1,7 @@
+[![NuGet](https://img.shields.io/nuget/v/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/)
+[![NuGet](https://img.shields.io/nuget/dt/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/)
+[![License](https://img.shields.io/github/license/dotnet9/CodeWF.EventBus)](LICENSE)
+
 `CodeWF.EventBus`支持任意IOC容器的项目，请搜索 NuGet 包`CodeWF.IOC.EventBus`并安装最新版，安装完成后，根据 IOC 容器注册单例、获取服务的 API 不同，做相应修改即可。下面是`AddEventBus`和`UseEventBus`扩展方法逻辑：
 
 ```csharp

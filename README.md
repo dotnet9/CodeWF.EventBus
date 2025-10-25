@@ -1,8 +1,12 @@
 # CodeWF.EventBus
 
-[![NuGet](https://img.shields.io/nuget/v/CodeWF.EventBus.svg)](https://www.nuget.org/packages/CodeWF.EventBus/)
-[![NuGet](https://img.shields.io/nuget/dt/CodeWF.EventBus.svg)](https://www.nuget.org/packages/CodeWF.EventBus/)
-[![License](https://img.shields.io/github/license/dotnet9/CodeWF.EventBus)](LICENSE)
+| NuGet Name | NuGet url | Download |
+|------|-----------|--------|
+| CodeWF.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.EventBus)](https://www.nuget.org/packages/CodeWF.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.EventBus)](https://www.nuget.org/packages/CodeWF.EventBus/) |
+| CodeWF.IOC.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/) |
+| CodeWF.DryIoc.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.DryIoc.EventBus.svg)](https://www.nuget.org/packages/CodeWF.DryIoc.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.DryIoc.EventBus.svg)](https://www.nuget.org/packages/CodeWF.DryIoc.EventBus/) |
+| CodeWF.AspNetCore.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.AspNetCore.EventBus.svg)](https://www.nuget.org/packages/CodeWF.AspNetCore.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.AspNetCore.EventBus.svg)](https://www.nuget.org/packages/CodeWF.AspNetCore.EventBus/) |
+
 
 ## 1. 前言
 
