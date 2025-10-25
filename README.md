@@ -1,5 +1,9 @@
 # CodeWF.EventBus
 
+[![NuGet](https://img.shields.io/nuget/v/CodeWF.EventBus.svg)](https://www.nuget.org/packages/CodeWF.EventBus/)
+[![NuGet](https://img.shields.io/nuget/dt/CodeWF.EventBus.svg)](https://www.nuget.org/packages/CodeWF.EventBus/)
+[![License](https://img.shields.io/github/license/dotnet9/CodeWF.EventBus)](LICENSE)
+
 ## 1. 前言
 
 事件总线，即EventBus，是一种解耦模块间通讯的强大工具。在 [CodeWF.EventBus](https://github.com/dotnet9/CodeWF.EventBus) 中，我们得以轻松实现CQRS模式，并通过清晰、简洁的接口进行事件订阅与发布。接下来，我们将详细探讨如何使用这个库来处理事件。
