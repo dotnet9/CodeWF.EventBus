@@ -1,6 +1,6 @@
 # CodeWF.EventBus
 
-| NuGet Name | NuGet url | Download |
+| Name | NuGet | Download |
 |------|-----------|--------|
 | CodeWF.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.EventBus)](https://www.nuget.org/packages/CodeWF.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.EventBus)](https://www.nuget.org/packages/CodeWF.EventBus/) |
 | CodeWF.IOC.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/) |
