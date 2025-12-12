@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>net10.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
@@ -15,23 +15,17 @@
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
-	<ItemGroup>
-	  <AvaloniaXaml Remove="Models\**" />
-	  <Compile Remove="Models\**" />
-	  <EmbeddedResource Remove="Models\**" />
-	  <None Remove="Models\**" />
-	</ItemGroup>
 
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="11.3.8" />
-		<PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
-		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.8" />
+		<PackageReference Include="Avalonia" Version="11.3.9" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.3.9" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.9" />
 		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.8" />
-		<PackageReference Include="ReactiveUI.Avalonia" Version="11.3.8" />
-		<PackageReference Include="CodeWF.LogViewer.Avalonia" Version="1.1.0.1" />
-		<PackageReference Include="Semi.Avalonia" Version="11.3.7" />
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.9" />
+		<PackageReference Include="ReactiveUI.Avalonia" Version="11.3.9" />
+		<PackageReference Include="CodeWF.LogViewer.Avalonia" Version="11.3.9.7" />
+		<PackageReference Include="Semi.Avalonia" Version="11.3.7.1" />
 	</ItemGroup>
 
 

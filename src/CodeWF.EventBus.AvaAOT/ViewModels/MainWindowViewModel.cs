@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reactive;
-using CodeWF.EventBus.AvaAOT.Commands;
-using CodeWF.LogViewer.Avalonia;
+﻿using CodeWF.EventBus.AvaAOT.Commands;
+using CodeWF.Log.Core;
 using ReactiveUI;
+using System;
+using System.Reactive;
 
 namespace CodeWF.EventBus.AvaAOT.ViewModels
 {

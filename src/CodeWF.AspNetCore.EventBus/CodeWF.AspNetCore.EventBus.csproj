@@ -7,7 +7,7 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CodeWF.EventBus" Version="$(Version)" />
+	  <ProjectReference Include="..\CodeWF.EventBus\CodeWF.EventBus.csproj" />
 	</ItemGroup>
 
 </Project>
