@@ -4,5 +4,6 @@
 		<OutputPath>$(MSBuildThisFileDirectory)\Output\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>True</AppendTargetFrameworkToOutputPath>
 		<Version>3.4.5.0</Version>
+		<AvaloniaVersion>11.3.10</AvaloniaVersion>
 	</PropertyGroup>
 </Project>
