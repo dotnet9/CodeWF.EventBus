@@ -3,7 +3,7 @@
 		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
 		<OutputPath>$(MSBuildThisFileDirectory)Output\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>True</AppendTargetFrameworkToOutputPath>
-		<Version>3.4.5.1</Version>
-		<AvaloniaVersion>11.3.12</AvaloniaVersion>
+		<Version>3.4.5.2</Version>
+		<AvaloniaVersion>11.3.14</AvaloniaVersion>
 	</PropertyGroup>
 </Project>
