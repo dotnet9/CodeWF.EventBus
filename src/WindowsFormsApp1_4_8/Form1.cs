@@ -1,4 +1,4 @@
-﻿using CodeWF.EventBus;
+using CodeWF.EventBus;
 using System;
 using System.Windows.Forms;
 
@@ -14,6 +14,7 @@ namespace WindowsFormsApp1_4_8
         {
             InitializeComponent();
 
+            // 无 IOC 场景下，窗体自己订阅自己的事件处理方法。
             EventBus.Default.Subscribe(this);
 
             var btn = new Button();
@@ -30,6 +31,7 @@ namespace WindowsFormsApp1_4_8
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
+            // 窗体关闭时主动取消订阅，避免重复打开窗体后处理器累积。
             EventBus.Default.Unsubscribe(this);
             base.OnFormClosed(e);
         }

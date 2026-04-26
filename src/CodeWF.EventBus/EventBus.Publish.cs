@@ -1,11 +1,13 @@
-﻿using System;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace CodeWF.EventBus
 {
     public partial class EventBus
     {
+        /// <summary>
+        /// 统一执行同步/异步处理器，调用方按返回值是否为空判断是否需要等待。
+        /// </summary>
         private static Task InvokeHandler(Delegate handler, object command)
         {
             if (handler.Method.ReturnType == typeof(Task))
@@ -17,17 +19,27 @@ namespace CodeWF.EventBus
             return null;
         }
 
+        /// <summary>
+        /// 同步发布命令。
+        /// </summary>
         public void Publish<TCommand>(TCommand command) where TCommand : Command
         {
             PublishAsync(command).GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// 同步执行查询。
+        /// </summary>
         public T Query<T>(Query<T> query)
         {
             Publish(query);
             return query.Result;
         }
 
+        /// <summary>
+        /// 异步发布命令。
+        /// 先执行手动注册的处理器，再执行程序集扫描得到的实例处理器。
+        /// </summary>
         public async Task PublishAsync<TCommand>(TCommand command) where TCommand : Command
         {
             if (command == null)
@@ -54,6 +66,7 @@ namespace CodeWF.EventBus
                 {
                     var methodInfo = handler.Method;
                     Task task = null;
+                    // 实例处理器的对象由 IOC 集成层提供，主库只负责“拿到对象后执行方法”。
                     _serviceHandlerAction(handler.RecipientType, recipient =>
                     {
                         var delegateType = methodInfo.ReturnType == typeof(Task)
@@ -71,6 +84,9 @@ namespace CodeWF.EventBus
             }
         }
 
+        /// <summary>
+        /// 异步执行查询。
+        /// </summary>
         public async Task<T> QueryAsync<T>(Query<T> query)
         {
             await PublishAsync(query);

@@ -1,10 +1,13 @@
-﻿using CodeWF.EventBus;
+using CodeWF.EventBus;
 using System;
 using System.Linq;
 using System.Reflection;
 
 namespace CodeWF.IOC.EventBus
 {
+    /// <summary>
+    /// 通用 IOC 场景下的事件总线扩展。
+    /// </summary>
     public static class EventBusExtensions
     {
         private static Assembly[] GetAssemblies(Assembly[] assemblies)
@@ -15,6 +18,9 @@ namespace CodeWF.IOC.EventBus
                 .ToArray();
         }
 
+        /// <summary>
+        /// 注册事件总线以及自动发现的实例处理器类型。
+        /// </summary>
         public static void AddEventBus(Action<Type, Type> addSingleton1,
             Action<Type> addScoped2, params Assembly[] assemblies)
         {
@@ -27,6 +33,9 @@ namespace CodeWF.IOC.EventBus
                 allAssemblies);
         }
 
+        /// <summary>
+        /// 启动事件总线，并提供按类型解析实例处理器的方式。
+        /// </summary>
         public static void UseEventBus(Func<Type, object> resolveAction, params Assembly[] assemblies)
         {
             if (resolveAction(typeof(IEventBus)) is not IEventBus messenger)

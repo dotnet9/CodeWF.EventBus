@@ -18,6 +18,10 @@
 
 如果你熟悉 `MediatR`、`Prism.Events` 或 `MASA Framework` 的事件处理方式，可以把它理解成一个更轻量、对项目类型约束更少的选择。
 
+设计说明可查看：
+
+- [docs/CodeWF.EventBus-Design.md](./docs/CodeWF.EventBus-Design.md)
+
 ## 安装
 
 按项目类型选择包：
@@ -63,6 +67,18 @@ public sealed class ProductQuery : Query<ProductItemDto?>
 - `void`
 - `Task`
 
+方法声明支持：
+
+- `public`
+- `private`
+- `static`
+
+说明：
+
+- `Subscribe<T>()` / `Subscribe(Type)` 会扫描指定类型中的 `public/private static` 处理方法。
+- `Subscribe(this)` 会扫描当前实例中的 `public/private instance` 处理方法。
+- `Subscribe(Assembly[])` 会登记标记了 `[Event]` 的类型中 `public/private instance` 处理方法，真正执行时再通过服务解析器拿实例。
+
 示例：
 
 ```csharp
@@ -88,7 +104,7 @@ public sealed class ProductEventHandler
 }
 ```
 
-`[Event]` 主要用于 IOC 自动发现实例处理器。静态处理器不需要 `[Event]`：
+`[Event]` 主要用于 IOC 自动发现实例处理器。通过 `Subscribe<T>()` 这类方式扫描指定类型时，不需要再额外标记 `[Event]`：
 
 ```csharp
 public static class TimeHandler
@@ -126,7 +142,7 @@ public sealed class MainViewModel
 }
 ```
 
-### 手动注册静态处理器
+### 手动注册类型处理器
 
 ```csharp
 var eventBus = EventBus.Default;
@@ -158,7 +174,7 @@ var product = await EventBus.Default.QueryAsync(new ProductQuery
 EventBus.Default.Unsubscribe(this);
 ```
 
-静态处理器也可以取消：
+通过扫描指定类型注册的处理器也可以取消：
 
 ```csharp
 EventBus.Default.Unsubscribe<TimeHandler>();
@@ -188,7 +204,7 @@ app.Run();
 说明：
 
 - `AddEventBus()` 会扫描程序集中的 `[Event]` 类，并将它们按作用域注册到容器中。
-- `UseEventBus()` 会把静态处理器和实例处理器都接入事件总线。
+- `UseEventBus()` 会把扫描指定类型得到的处理器和实例处理器都接入事件总线。
 
 控制器中直接注入 `IEventBus`：
 
@@ -271,11 +287,11 @@ EventBusExtensions.UseEventBus(
 如果没有 IOC 容器，请使用：
 
 - `Subscribe(this)` 注册实例对象
-- `Subscribe<T>()` 注册静态处理器
+- `Subscribe<T>()` 扫描指定类型并注册处理器
 
 ### 2. 重复订阅会自动去重
 
-同一个对象方法或同一个静态方法重复注册，不会重复执行。
+同一个对象方法或同一个扫描命中的方法重复注册，不会重复执行。
 
 ### 3. 查询结果的约定
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -7,6 +7,9 @@ namespace CodeWF.EventBus
 {
     public partial class EventBus
     {
+        /// <summary>
+        /// 取消扫描指定类型时注册的处理器。
+        /// </summary>
         public void Unsubscribe<T>() where T : class
         {
             var methods = typeof(T)
@@ -22,6 +25,9 @@ namespace CodeWF.EventBus
             }
         }
 
+        /// <summary>
+        /// 取消指定实例上的所有处理器。
+        /// </summary>
         public void Unsubscribe(object recipient)
         {
             if (recipient == null)
@@ -38,6 +44,9 @@ namespace CodeWF.EventBus
             }
         }
 
+        /// <summary>
+        /// 取消指定同步委托。
+        /// </summary>
         public void Unsubscribe<TCommand>(Action<TCommand> action) where TCommand : Command
         {
             if (action == null)
@@ -54,6 +63,9 @@ namespace CodeWF.EventBus
             }
         }
 
+        /// <summary>
+        /// 取消指定异步委托。
+        /// </summary>
         public void Unsubscribe<TCommand>(Func<TCommand, Task> asyncAction)
             where TCommand : Command
         {

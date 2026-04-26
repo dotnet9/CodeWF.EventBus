@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc">
+  <title id="title">CodeWF.EventBus 架构图</title>
+  <desc id="desc">展示命令、查询、手动订阅、自动订阅以及 IOC 集成的整体关系。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7fafc"/>
+      <stop offset="100%" stop-color="#eef4ff"/>
+    </linearGradient>
+    <linearGradient id="bus" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 28px "Segoe UI", "Microsoft YaHei", sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 16px "Segoe UI", "Microsoft YaHei", sans-serif; fill: #334155; }
+      .h { font: 700 18px "Segoe UI", "Microsoft YaHei", sans-serif; fill: #0f172a; }
+      .t { font: 400 14px "Segoe UI", "Microsoft YaHei", sans-serif; fill: #334155; }
+      .tiny { font: 400 13px "Segoe UI", "Microsoft YaHei", sans-serif; fill: #475569; }
+      .light { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .accent { fill: #eff6ff; stroke: #60a5fa; stroke-width: 2; }
+      .green { fill: #ecfdf5; stroke: #34d399; stroke-width: 2; }
+      .amber { fill: #fffbeb; stroke: #f59e0b; stroke-width: 2; }
+      .busBox { fill: url(#bus); stroke: #0f172a; stroke-width: 0; }
+      .line { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #64748b; stroke-width: 2.5; fill: none; stroke-dasharray: 8 7; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="860" fill="url(#bg)"/>
+
+  <text x="60" y="58" class="title">CodeWF.EventBus 设计概览</text>
+  <text x="60" y="88" class="subtitle">围绕“发布命令 / 查询”组织，支持手动订阅、程序集扫描和 IOC 集成。</text>
+
+  <rect x="60" y="140" rx="18" ry="18" width="280" height="180" class="light"/>
+  <text x="85" y="178" class="h">消息入口</text>
+  <text x="85" y="212" class="t">Command</text>
+  <text x="85" y="240" class="t">Query&lt;TResponse&gt;</text>
+  <text x="85" y="268" class="tiny">调用方只关心“发什么消息”</text>
+  <text x="85" y="292" class="tiny">而不是直接依赖处理器实现</text>
+
+  <rect x="420" y="120" rx="22" ry="22" width="430" height="220" class="busBox"/>
+  <text x="455" y="170" style="font:700 26px 'Segoe UI','Microsoft YaHei',sans-serif; fill:#ffffff;">EventBus</text>
+  <text x="455" y="208" style="font:400 15px 'Segoe UI','Microsoft YaHei',sans-serif; fill:#dbeafe;">_subscriptions: 手动注册的委托处理器</text>
+  <text x="455" y="238" style="font:400 15px 'Segoe UI','Microsoft YaHei',sans-serif; fill:#dbeafe;">_autoHandlers: 程序集扫描得到的实例方法</text>
+  <text x="455" y="268" style="font:400 15px 'Segoe UI','Microsoft YaHei',sans-serif; fill:#dbeafe;">发布时先取快照，再按 Order 顺序执行</text>
+  <text x="455" y="298" style="font:400 15px 'Segoe UI','Microsoft YaHei',sans-serif; fill:#dbeafe;">实例处理器执行前需先通过服务解析器拿到对象</text>
+
+  <rect x="940" y="140" rx="18" ry="18" width="280" height="180" class="green"/>
+  <text x="965" y="178" class="h">处理器出口</text>
+  <text x="965" y="212" class="t">同步处理器: void</text>
+  <text x="965" y="240" class="t">异步处理器: Task</text>
+  <text x="965" y="268" class="tiny">同一命令下支持多个处理器</text>
+  <text x="965" y="292" class="tiny">Query 由处理器写回 Result</text>
+
+  <rect x="60" y="420" rx="18" ry="18" width="360" height="180" class="accent"/>
+  <text x="85" y="458" class="h">手动订阅通道</text>
+  <text x="85" y="492" class="t">Subscribe(this)</text>
+  <text x="85" y="520" class="t">Subscribe&lt;T&gt;()</text>
+  <text x="85" y="548" class="t">Subscribe(Action / Func&lt;T, Task&gt;)</text>
+  <text x="85" y="576" class="tiny">适合控制台、WinForms、WPF、Avalonia 等无 IOC 场景</text>
+
+  <rect x="460" y="420" rx="18" ry="18" width="360" height="180" class="accent"/>
+  <text x="485" y="458" class="h">自动订阅通道</text>
+  <text x="485" y="492" class="t">[Event] 标记处理器类型</text>
+  <text x="485" y="520" class="t">[EventHandler] 标记方法</text>
+  <text x="485" y="548" class="t">Subscribe(Assembly[])</text>
+  <text x="485" y="576" class="tiny">这里只登记方法元数据，不直接创建实例</text>
+
+  <rect x="860" y="420" rx="18" ry="18" width="360" height="180" class="green"/>
+  <text x="885" y="458" class="h">IOC 集成层</text>
+  <text x="885" y="492" class="t">AddEventBus(...)</text>
+  <text x="885" y="520" class="t">UseEventBus(...)</text>
+  <text x="885" y="548" class="t">RegisterServiceHandlerAction(...)</text>
+  <text x="885" y="576" class="tiny">负责注册处理器类型、创建作用域、解析实例</text>
+
+  <rect x="250" y="680" rx="18" ry="18" width="780" height="120" class="amber"/>
+  <text x="280" y="718" class="h">关键约束</text>
+  <text x="280" y="750" class="t">1. 处理器方法只能接收一个参数，且该参数必须继承 Command。</text>
+  <text x="280" y="776" class="t">2. 实例处理器要么手动 Subscribe(this)，要么通过 IOC 集成层提供服务解析器。</text>
+
+  <path d="M340 230 H400" class="line"/>
+  <path d="M850 230 H920" class="line"/>
+  <path d="M240 420 C240 360, 460 360, 520 340" class="line"/>
+  <path d="M640 420 V350" class="dash"/>
+  <path d="M1040 420 C1040 360, 820 360, 760 340" class="line"/>
+  <path d="M820 510 H850" class="line"/>
+</svg>

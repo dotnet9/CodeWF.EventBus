@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,11 +8,17 @@ namespace CodeWF.EventBus
 {
     public partial class EventBus
     {
+        /// <summary>
+        /// 扫描指定类型，并订阅其中标记了 <see cref="EventHandlerAttribute"/> 的 public/private static 处理方法。
+        /// </summary>
         public void Subscribe<T>() where T : class
         {
             Subscribe(typeof(T));
         }
 
+        /// <summary>
+        /// 扫描指定类型，并订阅其中标记了 <see cref="EventHandlerAttribute"/> 的 public/private static 处理方法。
+        /// </summary>
         public void Subscribe(Type type)
         {
             if (type == null)
@@ -24,6 +30,9 @@ namespace CodeWF.EventBus
             Subscribe(type, null, methods);
         }
 
+        /// <summary>
+        /// 订阅指定实例上的处理方法。
+        /// </summary>
         public void Subscribe(object recipient)
         {
             if (recipient == null)
@@ -37,17 +46,27 @@ namespace CodeWF.EventBus
             Subscribe(recipientType, recipient, methods);
         }
 
+        /// <summary>
+        /// 直接订阅同步命令处理委托。
+        /// </summary>
         public void Subscribe<TCommand>(Action<TCommand> action)
             where TCommand : Command
         {
             Subscribe(typeof(TCommand), null, action);
         }
 
+        /// <summary>
+        /// 直接订阅异步命令处理委托。
+        /// </summary>
         public void Subscribe<TCommand>(Func<TCommand, Task> asyncAction) where TCommand : Command
         {
             Subscribe(typeof(TCommand), null, asyncAction);
         }
 
+        /// <summary>
+        /// 扫描程序集，登记带 <see cref="EventAttribute"/> 的实例处理器。
+        /// 注意这里只做登记，真正发布时仍需要先提供服务解析回调。
+        /// </summary>
         public void Subscribe(Assembly[] assemblies)
         {
             if (assemblies == null)
@@ -82,7 +101,8 @@ namespace CodeWF.EventBus
                         var commandType = parameters[0].ParameterType;
                         lock (_autoHandlersSync)
                         {
-                            var subscriptions = _autoHandlers.GetOrAdd(commandType, _ => new List<WeakMethod>());
+                            var subscriptions = _autoHandlers.GetOrAdd(commandType, _ => new List<DiscoveredHandlerMethod>());
+                            // 同一个类型上的同一个方法只登记一次，避免 UseEventBus 重复调用后重复执行。
                             if (subscriptions.Any(item =>
                                     item.RecipientType == type &&
                                     IsTheSameMethod(item.Method, method)))
@@ -90,7 +110,7 @@ namespace CodeWF.EventBus
                                 continue;
                             }
 
-                            subscriptions.Add(new WeakMethod()
+                            subscriptions.Add(new DiscoveredHandlerMethod()
                                 { RecipientType = type, Method = method, Order = eventHandler.Order });
                         }
                     }
@@ -132,7 +152,8 @@ namespace CodeWF.EventBus
         {
             lock (_subscriptionsSync)
             {
-                var subscriptions = _subscriptions.GetOrAdd(commandType, _ => new List<WeakActionAndToken>());
+                var subscriptions = _subscriptions.GetOrAdd(commandType, _ => new List<SubscriptionEntry>());
+                // 同一个对象方法或同一个扫描命中的方法重复注册时自动去重。
                 if (subscriptions.Any(item =>
                         item.RecipientType == recipientType &&
                         IsTheSameDelegate(item.Action, action)))
@@ -140,7 +161,7 @@ namespace CodeWF.EventBus
                     return;
                 }
 
-                subscriptions.Add(new WeakActionAndToken()
+                subscriptions.Add(new SubscriptionEntry()
                     { RecipientType = recipientType, Action = action, Order = order });
             }
         }
