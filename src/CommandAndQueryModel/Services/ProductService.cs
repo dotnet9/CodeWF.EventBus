@@ -8,6 +8,11 @@ namespace CommandAndQueryModel.Services
         public static readonly ProductService Default = new ProductService();
         private static readonly List<ProductItem> ProductItems = new List<ProductItem>();
 
+        public static void Reset()
+        {
+            ProductItems.Clear();
+        }
+
         public async Task<bool> AddProductAsync(CreateProductRequest request)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
@@ -27,7 +32,7 @@ namespace CommandAndQueryModel.Services
             return removeCount > 0;
         }
 
-        public async Task<ProductItemDto> QueryProductAsync(Guid productId)
+        public async Task<ProductItemDto?> QueryProductAsync(Guid productId)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
             var productFromDb = ProductItems.FirstOrDefault(item => item.Id == productId);
@@ -44,14 +49,12 @@ namespace CommandAndQueryModel.Services
             };
         }
 
-        public async Task<List<ProductItemDto>> QueryProductsAsync(string name)
+        public async Task<List<ProductItemDto>> QueryProductsAsync(string? name)
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-            var productSFromDb = ProductItems.Where(item => item.Name.Contains(name)).ToList();
-            if (!productSFromDb.Any())
-            {
-                return null;
-            }
+            var productSFromDb = string.IsNullOrWhiteSpace(name)
+                ? ProductItems.ToList()
+                : ProductItems.Where(item => item.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
             return productSFromDb.Select(item => new ProductItemDto()
             {

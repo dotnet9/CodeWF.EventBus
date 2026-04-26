@@ -9,4 +9,8 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\\CodeWF.EventBus\\CodeWF.EventBus.csproj" />
+  </ItemGroup>
+
 </Project>

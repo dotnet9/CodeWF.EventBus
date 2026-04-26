@@ -9,7 +9,14 @@ namespace CodeWF.EventBus.Tests.Handlers
 {
     internal class CommandAndQueryHandler
     {
-        private readonly IProductService _productService = ProductService.Default;
+        private readonly IEventBus _eventBus;
+        private readonly IProductService _productService;
+
+        public CommandAndQueryHandler(IEventBus? eventBus = null, IProductService? productService = null)
+        {
+            _eventBus = eventBus ?? EventBus.Default;
+            _productService = productService ?? ProductService.Default;
+        }
 
         [EventHandler]
         private async Task ReceiveCreateProductCommandAsync(CreateProductCommand command)
@@ -18,7 +25,7 @@ namespace CodeWF.EventBus.Tests.Handlers
                 { Name = command.Name, Price = command.Price });
             if (isAddSuccess)
             {
-                await EventBus.Default.PublishAsync(new CreateProductSuccessCommand()
+                await _eventBus.PublishAsync(new CreateProductSuccessCommand()
                     { Name = command.Name, Price = command.Price });
             }
             else
@@ -69,6 +76,11 @@ namespace CodeWF.EventBus.Tests.Handlers
         }
 
         private static int _testCount = 0;
+
+        public static void ResetTestState()
+        {
+            _testCount = 0;
+        }
 
         [EventHandler]
         public static void ReceiveAddCommand(TestAddCommand command)

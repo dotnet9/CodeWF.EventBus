@@ -12,36 +12,62 @@ namespace CodeWF.EventBus
             var methods = typeof(T)
                 .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).ToList();
 
-            foreach (var subscription in _subscriptions)
+            lock (_subscriptionsSync)
             {
-                subscription.Value.RemoveAll(item =>
-                    item.Action.Target == null && methods.Any(method => IsTheSameMethod(item.Action.Method, method)));
+                foreach (var subscription in _subscriptions)
+                {
+                    subscription.Value.RemoveAll(item =>
+                        item.Action.Target == null && methods.Any(method => IsTheSameMethod(item.Action.Method, method)));
+                }
             }
         }
 
         public void Unsubscribe(object recipient)
         {
-            foreach (var subscription in _subscriptions)
+            if (recipient == null)
             {
-                subscription.Value.RemoveAll(item => item.Action.Target == recipient);
+                throw new ArgumentNullException(nameof(recipient));
+            }
+
+            lock (_subscriptionsSync)
+            {
+                foreach (var subscription in _subscriptions)
+                {
+                    subscription.Value.RemoveAll(item => item.Action.Target == recipient);
+                }
             }
         }
 
         public void Unsubscribe<TCommand>(Action<TCommand> action) where TCommand : Command
         {
-            foreach (var subscription in _subscriptions)
+            if (action == null)
             {
-                subscription.Value.RemoveAll(item =>
-                    item.Action == (Delegate)action);
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            lock (_subscriptionsSync)
+            {
+                foreach (var subscription in _subscriptions)
+                {
+                    subscription.Value.RemoveAll(item => IsTheSameDelegate(item.Action, action));
+                }
             }
         }
 
         public void Unsubscribe<TCommand>(Func<TCommand, Task> asyncAction)
             where TCommand : Command
         {
-            foreach (var subscription in _subscriptions)
+            if (asyncAction == null)
             {
-                subscription.Value.RemoveAll(item => item.Action == (Delegate)asyncAction);
+                throw new ArgumentNullException(nameof(asyncAction));
+            }
+
+            lock (_subscriptionsSync)
+            {
+                foreach (var subscription in _subscriptions)
+                {
+                    subscription.Value.RemoveAll(item => IsTheSameDelegate(item.Action, asyncAction));
+                }
             }
         }
     }

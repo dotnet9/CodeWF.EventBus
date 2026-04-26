@@ -27,5 +27,11 @@ namespace WindowsFormsApp1_4_8
         {
             MessageBox.Show($"收到ID：{command.Id}");
         }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            EventBus.Default.Unsubscribe(this);
+            base.OnFormClosed(e);
+        }
     }
 }

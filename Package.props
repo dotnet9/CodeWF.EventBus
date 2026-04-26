@@ -16,6 +16,7 @@
 		<PackageId>$(AssemblyName)</PackageId>
 		<PackageTags>C# EventBus; WPF; Winform; AvaloniaUI,ASP.NET Core;</PackageTags>
 		<PackageIcon>logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/dotnet9/CodeWF.EventBus</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/dotnet9/CodeWF.EventBus</RepositoryUrl>
 	</PropertyGroup>

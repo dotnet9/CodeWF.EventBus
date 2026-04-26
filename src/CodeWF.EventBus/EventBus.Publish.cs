@@ -6,6 +6,17 @@ namespace CodeWF.EventBus
 {
     public partial class EventBus
     {
+        private static Task InvokeHandler(Delegate handler, object command)
+        {
+            if (handler.Method.ReturnType == typeof(Task))
+            {
+                return (Task)handler.DynamicInvoke(command);
+            }
+
+            handler.DynamicInvoke(command);
+            return null;
+        }
+
         public void Publish<TCommand>(TCommand command) where TCommand : Command
         {
             PublishAsync(command).GetAwaiter().GetResult();
@@ -19,43 +30,43 @@ namespace CodeWF.EventBus
 
         public async Task PublishAsync<TCommand>(TCommand command) where TCommand : Command
         {
-            var commandType = command.GetType();
-            if (_subscriptions.TryGetValue(commandType, out var handlers))
+            if (command == null)
             {
-                foreach (var handler in handlers.OrderBy(item => item.Order))
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            var commandType = command.GetType();
+            var handlers = GetSubscriptionSnapshot(commandType);
+            foreach (var handler in handlers)
+            {
+                var task = InvokeHandler(handler.Action, command);
+                if (task != null)
                 {
-                    if (handler.Action.Method.ReturnType == typeof(Task))
-                    {
-                        var task = (Task)handler.Action.DynamicInvoke(command);
-                        await task;
-                    }
-                    else
-                    {
-                        handler.Action.DynamicInvoke(command);
-                    }
+                    await task;
                 }
             }
 
-            if (_autoHandlers.TryGetValue(commandType, out var autoHandlers))
+            var autoHandlers = GetAutoHandlerSnapshot(commandType);
+            if (autoHandlers.Length > 0)
             {
-                foreach (var handler in autoHandlers.OrderBy(item => item.Order))
+                ThrowIfAutoHandlersAreNotConfigured();
+                foreach (var handler in autoHandlers)
                 {
                     var methodInfo = handler.Method;
+                    Task task = null;
                     _serviceHandlerAction(handler.RecipientType, recipient =>
                     {
                         var delegateType = methodInfo.ReturnType == typeof(Task)
                             ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
                             : typeof(Action<>).MakeGenericType(commandType);
                         var delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
-                        if (handler.Method.ReturnType == typeof(Task))
-                        {
-                            ((Task)delegateInstance.DynamicInvoke(command)).GetAwaiter().GetResult();
-                        }
-                        else
-                        {
-                            delegateInstance.DynamicInvoke(command);
-                        }
+                        task = InvokeHandler(delegateInstance, command);
                     });
+
+                    if (task != null)
+                    {
+                        await task;
+                    }
                 }
             }
         }

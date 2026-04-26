@@ -8,8 +8,8 @@ namespace CommandAndQueryModel.Services
 
         Task<bool> RemoveProductAsync(Guid productId);
 
-        Task<ProductItemDto> QueryProductAsync(Guid productId);
+        Task<ProductItemDto?> QueryProductAsync(Guid productId);
 
-        Task<List<ProductItemDto>> QueryProductsAsync(string name);
+        Task<List<ProductItemDto>> QueryProductsAsync(string? name);
     }
 }

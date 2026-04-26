@@ -15,12 +15,22 @@ namespace CodeWF.EventBus
 
         public void Subscribe(Type type)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
             var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             Subscribe(type, null, methods);
         }
 
         public void Subscribe(object recipient)
         {
+            if (recipient == null)
+            {
+                throw new ArgumentNullException(nameof(recipient));
+            }
+
             var recipientType = recipient.GetType();
             var methods = recipientType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -40,6 +50,11 @@ namespace CodeWF.EventBus
 
         public void Subscribe(Assembly[] assemblies)
         {
+            if (assemblies == null)
+            {
+                throw new ArgumentNullException(nameof(assemblies));
+            }
+
             foreach (var assembly in assemblies)
             {
                 var types = assembly.GetTypes()
@@ -65,10 +80,19 @@ namespace CodeWF.EventBus
                         }
 
                         var commandType = parameters[0].ParameterType;
+                        lock (_autoHandlersSync)
+                        {
+                            var subscriptions = _autoHandlers.GetOrAdd(commandType, _ => new List<WeakMethod>());
+                            if (subscriptions.Any(item =>
+                                    item.RecipientType == type &&
+                                    IsTheSameMethod(item.Method, method)))
+                            {
+                                continue;
+                            }
 
-                        var subscriptions = _autoHandlers.GetOrAdd(commandType, _ => new List<WeakMethod>());
-                        subscriptions.Add(new WeakMethod()
-                            { RecipientType = type, Method = method, Order = eventHandler.Order });
+                            subscriptions.Add(new WeakMethod()
+                                { RecipientType = type, Method = method, Order = eventHandler.Order });
+                        }
                     }
                 }
             }
@@ -106,9 +130,19 @@ namespace CodeWF.EventBus
 
         private void Subscribe(Type commandType, Type recipientType, Delegate action, int order = 0)
         {
-            var subscriptions = _subscriptions.GetOrAdd(commandType, _ => new List<WeakActionAndToken>());
-            subscriptions.Add(new WeakActionAndToken()
-                { RecipientType = recipientType, Action = action, Order = order });
+            lock (_subscriptionsSync)
+            {
+                var subscriptions = _subscriptions.GetOrAdd(commandType, _ => new List<WeakActionAndToken>());
+                if (subscriptions.Any(item =>
+                        item.RecipientType == recipientType &&
+                        IsTheSameDelegate(item.Action, action)))
+                {
+                    return;
+                }
+
+                subscriptions.Add(new WeakActionAndToken()
+                    { RecipientType = recipientType, Action = action, Order = order });
+            }
         }
     }
 }

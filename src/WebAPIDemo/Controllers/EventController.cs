@@ -32,17 +32,17 @@ namespace WebAPIDemo.Controllers
         }
 
         [HttpGet("/get")]
-        public async Task<ProductItemDto> GetAsync([FromQuery] Guid id)
+        public async Task<ActionResult<ProductItemDto>> GetAsync([FromQuery] Guid id)
         {
             var product = await _eventBus.QueryAsync(new ProductQuery { ProductId = id });
-            return product;
+            return product == null ? NotFound() : Ok(product);
         }
 
         [HttpGet("/list")]
-        public async Task<List<ProductItemDto>> ListAsync([FromQuery] string? name)
+        public async Task<ActionResult<List<ProductItemDto>>> ListAsync([FromQuery] string? name)
         {
             var products = await _eventBus.QueryAsync(new ProductsQuery { Name = name });
-            return products;
+            return Ok(products ?? new List<ProductItemDto>());
         }
     }
 }
