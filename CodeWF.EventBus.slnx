@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/common/">
+    <Project Path="src/CommandAndQueryModel/CommandAndQueryModel.shproj" />
+  </Folder>
+  <Folder Name="/demo/">
+    <Project Path="src/WebAPIDemo/WebAPIDemo.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Package.props" />
+    <File Path="pack.bat" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/CodeWF.AspNetCore.EventBus/CodeWF.AspNetCore.EventBus.csproj" />
+    <Project Path="src/CodeWF.DryIoc.EventBus/CodeWF.DryIoc.EventBus.csproj" />
+    <Project Path="src/CodeWF.EventBus/CodeWF.EventBus.csproj" />
+    <Project Path="src/CodeWF.IOC.EventBus/CodeWF.IOC.EventBus.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="src/CodeWF.EventBus.AvaAOT/CodeWF.EventBus.AvaAOT.csproj" />
+    <Project Path="src/CodeWF.EventBus.ConsoleAOT/CodeWF.EventBus.ConsoleAOT.csproj" />
+    <Project Path="src/CodeWF.EventBus.Tests/CodeWF.EventBus.Tests.csproj" />
+    <Project Path="src/WindowsFormsApp1_4_8/WindowsFormsApp1_4_8.csproj" Id="f683a892-b28d-46ee-b86b-2be2f4f4b997" />
+  </Folder>
+</Solution>
