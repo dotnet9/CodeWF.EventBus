@@ -1,11 +1,18 @@
 # CodeWF.EventBus
 
-| Name | NuGet | Download |
+| 名称 | NuGet | 下载量 |
 |------|-----------|--------|
 | CodeWF.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.EventBus)](https://www.nuget.org/packages/CodeWF.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.EventBus)](https://www.nuget.org/packages/CodeWF.EventBus/) |
 | CodeWF.IOC.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.IOC.EventBus.svg)](https://www.nuget.org/packages/CodeWF.IOC.EventBus/) |
 | CodeWF.DryIoc.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.DryIoc.EventBus.svg)](https://www.nuget.org/packages/CodeWF.DryIoc.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.DryIoc.EventBus.svg)](https://www.nuget.org/packages/CodeWF.DryIoc.EventBus/) |
 | CodeWF.AspNetCore.EventBus | [![NuGet](https://img.shields.io/nuget/v/CodeWF.AspNetCore.EventBus.svg)](https://www.nuget.org/packages/CodeWF.AspNetCore.EventBus/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.AspNetCore.EventBus.svg)](https://www.nuget.org/packages/CodeWF.AspNetCore.EventBus/) |
+
+## 仓库规范
+
+- 当前版本：`3.4.5.8`，版本号统一维护在根目录 `Directory.Build.props` 的 `<Version>` 节点。
+- NuGet 包项目统一支持 `net8.0;net10.0`；Demo、App、测试与内部应用项目统一使用 `net11.0` / `net11.0-windows`。
+- 根目录 `logo.svg`、`logo.png`、`logo.ico` 是唯一图标源，子工程只通过 MSBuild `Link` 引用，不维护图标副本。
+- 运行时帮助、Markdown 示例、内置备忘录、设计说明等业务文档按功能保留；仓库级入口文档使用根目录 `README.md` 和 `UpdateLog.md`。
 
 ## 简介
 
@@ -348,7 +355,7 @@ public interface IEventBus
 
 1. [MediatR](https://github.com/jbogard/MediatR)
 2. [Prism.Events](https://github.com/PrismLibrary/Prism/tree/master/src/Prism.Events)
-3. [Messenger | MvvmCross](https://www.mvvmcross.com/documentation/plugins/messenger?scroll=1000)
+3. [Messenger   MvvmCross](https://www.mvvmcross.com/documentation/plugins/messenger?scroll=1000)
 4. [MASA Framework](https://docs.masastack.com/framework/tutorial/mf-part-3#section-69828ff0)
 
 ## 一键打包
@@ -370,19 +377,19 @@ public interface IEventBus
 - `Tmds.DBus.Protocol` 从 Avalonia 传递依赖 `0.92.0` pin 到 `0.93.0`。
 - 测试依赖升级到 `Microsoft.NET.Test.Sdk 18.5.1`、`coverlet.collector 10.0.1`；`xunit.runner.visualstudio` 保持稳定 `3.1.5`，不使用 `4.0.0-pre.4` 预览版。
 
-| 包 | 使用范围 | 协议 | 源码/项目地址 | 结论 |
-| --- | --- | --- | --- | --- |
-| `DryIoc` | DryIoc 扩展包 | MIT | https://github.com/dadhi/DryIoc | 通过 |
-| `Prism.Core` `8.1.97` | DryIoc/Prism 扩展包 | MIT | https://github.com/PrismLibrary/Prism | 通过，保留 8.x 开源线 |
-| `Swashbuckle.AspNetCore` | Web API 示例 | MIT | https://github.com/domaindrivendev/Swashbuckle.AspNetCore | 通过 |
-| `Avalonia` / `Avalonia.Desktop` / `Avalonia.Fonts.Inter` `12.0.3` | AOT 示例 | MIT | https://github.com/AvaloniaUI/Avalonia | 通过 |
-| `ReactiveUI.Avalonia` `12.0.1` | AOT 示例 | MIT | https://github.com/reactiveui/reactiveui | 通过，使用匹配 Avalonia 12 的包线 |
-| `Semi.Avalonia` `12.0.1` | AOT 示例 | MIT | https://github.com/irihitech/Semi.Avalonia | 通过，仅使用开源主体包 |
-| `CodeWF.Log.Core` / `CodeWF.LogViewer.Avalonia` `12.0.3.1` | AOT 示例日志 | MIT | https://github.com/dotnet9/CodeWF.LogViewer | 自研开源包 |
-| `CodeWF.Tools.Core` `1.3.13` | 日志组件传递依赖 pin | MIT | https://github.com/dotnet9/CodeWF.Tools | 自研开源包 |
-| `Tmds.DBus.Protocol` `0.93.0` | Avalonia Linux DBus 传递依赖 | MIT | https://github.com/tmds/Tmds.DBus | 通过，pin 到当前稳定版 |
-| `Microsoft.NET.Test.Sdk` `18.5.1` | 测试 | MIT | https://github.com/microsoft/vstest | 通过 |
-| `coverlet.collector` `10.0.1` | 测试覆盖率 | MIT | https://github.com/coverlet-coverage/coverlet | 通过 |
-| `xunit` / `xunit.runner.visualstudio` | 测试 | Apache-2.0 | https://github.com/xunit/xunit | 通过 |
+  包   使用范围   协议   源码/项目地址   结论  
+  ---   ---   ---   ---   ---  
+  `DryIoc`   DryIoc 扩展包   MIT   https://github.com/dadhi/DryIoc   通过  
+  `Prism.Core` `8.1.97`   DryIoc/Prism 扩展包   MIT   https://github.com/PrismLibrary/Prism   通过，保留 8.x 开源线  
+  `Swashbuckle.AspNetCore`   Web API 示例   MIT   https://github.com/domaindrivendev/Swashbuckle.AspNetCore   通过  
+  `Avalonia` / `Avalonia.Desktop` / `Avalonia.Fonts.Inter` `12.0.3`   AOT 示例   MIT   https://github.com/AvaloniaUI/Avalonia   通过  
+  `ReactiveUI.Avalonia` `12.0.1`   AOT 示例   MIT   https://github.com/reactiveui/reactiveui   通过，使用匹配 Avalonia 12 的包线  
+  `Semi.Avalonia` `12.0.1`   AOT 示例   MIT   https://github.com/irihitech/Semi.Avalonia   通过，仅使用开源主体包  
+  `CodeWF.Log.Core` / `CodeWF.LogViewer.Avalonia` `12.0.3.1`   AOT 示例日志   MIT   https://github.com/dotnet9/CodeWF.LogViewer   自研开源包  
+  `CodeWF.Tools.Core` `1.3.13`   日志组件传递依赖 pin   MIT   https://github.com/dotnet9/CodeWF.Tools   自研开源包  
+  `Tmds.DBus.Protocol` `0.93.0`   Avalonia Linux DBus 传递依赖   MIT   https://github.com/tmds/Tmds.DBus   通过，pin 到当前稳定版  
+  `Microsoft.NET.Test.Sdk` `18.5.1`   测试   MIT   https://github.com/microsoft/vstest   通过  
+  `coverlet.collector` `10.0.1`   测试覆盖率   MIT   https://github.com/coverlet-coverage/coverlet   通过  
+  `xunit` / `xunit.runner.visualstudio`   测试   Apache-2.0   https://github.com/xunit/xunit   通过  
 
 传递依赖检查结论：恢复后的有效依赖链未发现黑盒包、Prism 9 商业协议包、`AvaloniaUI.DiagnosticsSupport`、`Semi.Avalonia.*` 黑盒扩展或预发布 DryIoc 运行时依赖。`DryIoc 5.4.3` 构建时会在包内源码触发 `SYSLIB0051` 过时 API 警告，但不是许可证或已知漏洞告警。

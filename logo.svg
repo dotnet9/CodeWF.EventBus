@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="36" y1="32" x2="220" y2="224" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="124%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#020617" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+  <rect x="14" y="14" width="228" height="228" rx="46" fill="url(#bg)"/>
+  <path d="M128 56v144M56 128h144M78 78l100 100M178 78L78 178" stroke="#2DD4BF" stroke-width="14" stroke-linecap="round" opacity="0.72"/>
+  <g fill="#F97316" stroke="#FFFFFF" stroke-width="7">
+    <circle cx="128" cy="54" r="20"/>
+    <circle cx="202" cy="128" r="20"/>
+    <circle cx="128" cy="202" r="20"/>
+    <circle cx="54" cy="128" r="20"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="77" y="77" width="102" height="102" rx="28" fill="#F8FAFC" stroke="#67E8F9" stroke-width="8"/>
+    <text x="128" y="145" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="800" fill="#0F172A">EB</text>
+  </g>
+  <path d="M184 83l16 3-8 14" fill="none" stroke="#FDE68A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

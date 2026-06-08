@@ -8,7 +8,7 @@
         Width="800" Height="450"
         x:Class="CodeWF.EventBus.AvaAOT.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/logo.ico"
         Title="CodeWF.EventBus.AvaAOT">
 
     <Design.DataContext>

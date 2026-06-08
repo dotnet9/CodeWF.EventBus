@@ -11,6 +11,7 @@
     <File Path="Package.props" />
     <File Path="pack.bat" />
     <File Path="README.md" />
+    <File Path="UpdateLog.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/CodeWF.AspNetCore.EventBus/CodeWF.AspNetCore.EventBus.csproj" />
