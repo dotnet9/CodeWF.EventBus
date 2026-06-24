@@ -393,3 +393,6 @@ public interface IEventBus
   `xunit` / `xunit.runner.visualstudio`   测试   Apache-2.0   https://github.com/xunit/xunit   通过  
 
 传递依赖检查结论：恢复后的有效依赖链未发现黑盒包、Prism 9 商业协议包、`AvaloniaUI.DiagnosticsSupport`、`Semi.Avalonia.*` 黑盒扩展或预发布 DryIoc 运行时依赖。`DryIoc 5.4.3` 构建时会在包内源码触发 `SYSLIB0051` 过时 API 警告，但不是许可证或已知漏洞告警。
+## Package Versioning Convention
+
+Keep NuGet package versions and Central Package Management settings in `Directory.Packages.props`, including shared version properties such as `AvaloniaVersion`. Keep `Directory.Build.props` focused on build, compiler, and NuGet package metadata. When referenced, `VC-LTL` and `YY-Thunks` should use their latest prerelease versions for OS platform compatibility.
