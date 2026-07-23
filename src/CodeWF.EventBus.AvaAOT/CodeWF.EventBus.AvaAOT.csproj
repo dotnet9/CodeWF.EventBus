@@ -23,7 +23,7 @@
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="ReactiveUI.Avalonia" />
-    <PackageReference Include="CodeWF.LogViewer.Avalonia" />
+    <PackageReference Include="CodeWF.Log.Avalonia" />
     <PackageReference Include="Semi.Avalonia" />
   </ItemGroup>
   <ItemGroup>
