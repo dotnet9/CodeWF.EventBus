@@ -9,6 +9,6 @@
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <OutputPath>$(MSBuildThisFileDirectory)Output\</OutputPath>
     <AppendTargetFrameworkToOutputPath>True</AppendTargetFrameworkToOutputPath>
-    <Version>3.4.5.11</Version>
+    <Version>3.4.5.12</Version>
   </PropertyGroup>
 </Project>

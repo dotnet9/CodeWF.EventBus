@@ -2,21 +2,29 @@
 setlocal
 
 set "ROOT=%~dp0"
-set "SOLUTION=%ROOT%CodeWF.EventBus.slnx"
 set "CONFIGURATION=Release"
 set "PACKAGE_DIR=%ROOT%Output\NuGet"
-
-echo [CodeWF.EventBus] Restore packages...
-dotnet restore "%SOLUTION%"
-if errorlevel 1 goto :failed
 
 if not exist "%PACKAGE_DIR%" mkdir "%PACKAGE_DIR%"
 del /q "%PACKAGE_DIR%\*.nupkg" 2>nul
 del /q "%PACKAGE_DIR%\*.snupkg" 2>nul
 
-echo [CodeWF.EventBus] Build and pack %CONFIGURATION% packages...
-dotnet build "%SOLUTION%" -c "%CONFIGURATION%" --no-restore -p:PackageOutputPath="%PACKAGE_DIR%"
-if errorlevel 1 goto :failed
+for %%P in (
+    "%ROOT%src\CodeWF.EventBus\CodeWF.EventBus.csproj"
+    "%ROOT%src\CodeWF.IOC.EventBus\CodeWF.IOC.EventBus.csproj"
+    "%ROOT%src\CodeWF.DryIoc.EventBus\CodeWF.DryIoc.EventBus.csproj"
+    "%ROOT%src\CodeWF.AspNetCore.EventBus\CodeWF.AspNetCore.EventBus.csproj"
+) do (
+    echo [CodeWF.EventBus] Restore %%~nxP...
+    dotnet restore "%%~P"
+    if errorlevel 1 goto :failed
+    echo [CodeWF.EventBus] Build %%~nxP...
+    dotnet build "%%~P" -c "%CONFIGURATION%" --no-restore -p:GeneratePackageOnBuild=false
+    if errorlevel 1 goto :failed
+    echo [CodeWF.EventBus] Pack %%~nxP...
+    dotnet pack "%%~P" -c "%CONFIGURATION%" --no-build --no-restore -o "%PACKAGE_DIR%"
+    if errorlevel 1 goto :failed
+)
 
 echo.
 echo [CodeWF.EventBus] Packages:

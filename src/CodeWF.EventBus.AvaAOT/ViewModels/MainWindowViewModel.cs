@@ -1,8 +1,8 @@
 ﻿using CodeWF.EventBus.AvaAOT.Commands;
 using CodeWF.Log.Core;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using System;
-using System.Reactive;
 
 namespace CodeWF.EventBus.AvaAOT.ViewModels
 {
@@ -14,7 +14,7 @@ namespace CodeWF.EventBus.AvaAOT.ViewModels
             SendEventCommand = ReactiveCommand.Create(SendEventHandler);
         }
 
-        public ReactiveCommand<Unit, Unit>? SendEventCommand { get; private set; }
+        public ReactiveCommand<RxVoid, RxVoid>? SendEventCommand { get; private set; }
 
         private void SendEventHandler()
         {
