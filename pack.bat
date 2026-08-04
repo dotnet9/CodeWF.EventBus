@@ -3,7 +3,7 @@ setlocal
 
 set "ROOT=%~dp0"
 set "CONFIGURATION=Release"
-set "PACKAGE_DIR=%ROOT%Output\NuGet"
+set "PACKAGE_DIR=%ROOT%artifacts\packages"
 
 if not exist "%PACKAGE_DIR%" mkdir "%PACKAGE_DIR%"
 del /q "%PACKAGE_DIR%\*.nupkg" 2>nul
