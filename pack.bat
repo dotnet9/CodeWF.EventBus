@@ -26,6 +26,8 @@ for %%P in (
     if errorlevel 1 goto :failed
 )
 
+for /r "%PACKAGE_DIR%" %%F in (*.pdb) do del /q "%%F" 2>nul
+
 echo.
 echo [CodeWF.EventBus] Packages:
 dir /b "%PACKAGE_DIR%\*.nupkg"
