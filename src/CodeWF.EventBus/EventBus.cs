@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CodeWF.EventBus
 {
@@ -39,6 +40,19 @@ namespace CodeWF.EventBus
         {
             var parameters = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType.FullName));
             return methodInfo.Name + "(" + parameters + ")";
+        }
+
+        internal static bool IsValidHandlerMethod(MethodInfo methodInfo)
+        {
+            if (methodInfo == null || methodInfo.ContainsGenericParameters)
+            {
+                return false;
+            }
+
+            var parameters = methodInfo.GetParameters();
+            return parameters.Length == 1
+                   && typeof(Command).IsAssignableFrom(parameters[0].ParameterType)
+                   && (methodInfo.ReturnType == typeof(void) || methodInfo.ReturnType == typeof(Task));
         }
 
         private bool IsTheSameDelegate(Delegate left, Delegate right)

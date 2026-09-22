@@ -27,7 +27,8 @@ namespace CodeWF.EventBus
                                 && t.GetCustomAttributes<EventAttribute>().Any()
                                 && t.GetMethods(findHandlerMethodBindingFlags)
                                     .Any(m =>
-                                        m.GetCustomAttributes<EventHandlerAttribute>().Any()));
+                                        m.GetCustomAttributes<EventHandlerAttribute>().Any() &&
+                                        EventBus.IsValidHandlerMethod(m)));
 
                 foreach (var type in types)
                 {

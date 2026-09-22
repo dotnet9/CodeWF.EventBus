@@ -158,6 +158,37 @@ namespace CodeWF.EventBus.Tests
             Assert.Contains("RegisterServiceHandlerAction", exception.Message);
         }
 
+        [Fact]
+        public async Task Publish_ShouldRespectOrderAcrossManualAndAutoHandlers()
+        {
+            var eventBus = new EventBus();
+            var executionOrder = new List<string>();
+
+            eventBus.Subscribe<OrderCommand>(_ => executionOrder.Add("manual"));
+            eventBus.RegisterServiceHandlerAction((type, action) =>
+            {
+                action(new OrderedAutoHandler(value => executionOrder.Add(value)));
+            });
+            eventBus.Subscribe(new[] { typeof(OrderedAutoHandler).Assembly });
+
+            await eventBus.PublishAsync(new OrderCommand());
+
+            Assert.Equal(new[] { "auto", "manual" }, executionOrder);
+        }
+
+        [Fact]
+        public async Task Publish_ShouldIgnoreAutoHandlersWithInvalidReturnType()
+        {
+            var eventBus = new EventBus();
+            eventBus.RegisterServiceHandlerAction((type, action) =>
+            {
+                action(new InvalidReturnHandler());
+            });
+            eventBus.Subscribe(new[] { typeof(InvalidReturnHandler).Assembly });
+
+            await eventBus.PublishAsync(new InvalidReturnCommand());
+        }
+
         [Event]
         private sealed class AutoResolverHandler
         {
@@ -169,6 +200,41 @@ namespace CodeWF.EventBus.Tests
 
         private sealed class AutoResolverCommand : Command
         {
+        }
+
+        private sealed class OrderCommand : Command
+        {
+        }
+
+        private sealed class InvalidReturnCommand : Command
+        {
+        }
+
+        [Event]
+        private sealed class OrderedAutoHandler
+        {
+            private readonly Action<string> _record;
+
+            public OrderedAutoHandler(Action<string> record)
+            {
+                _record = record;
+            }
+
+            [EventHandler(Order = -1)]
+            private void Handle(OrderCommand command)
+            {
+                _record("auto");
+            }
+        }
+
+        [Event]
+        private sealed class InvalidReturnHandler
+        {
+            [EventHandler]
+            private int Handle(InvalidReturnCommand command)
+            {
+                return 1;
+            }
         }
     }
 }

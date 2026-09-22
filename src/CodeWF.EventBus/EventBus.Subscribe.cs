@@ -88,17 +88,12 @@ namespace CodeWF.EventBus
                 {
                     var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                         .Where(m =>
-                            m.GetCustomAttributes<EventHandlerAttribute>().Any());
+                            m.GetCustomAttributes<EventHandlerAttribute>().Any() &&
+                            IsValidHandlerMethod(m));
                     foreach (var method in methods)
                     {
                         var eventHandler = method.GetCustomAttributes<EventHandlerAttribute>().First();
-                        var parameters = method.GetParameters();
-                        if (parameters.Length != 1 || !typeof(Command).IsAssignableFrom(parameters[0].ParameterType))
-                        {
-                            continue;
-                        }
-
-                        var commandType = parameters[0].ParameterType;
+                        var commandType = method.GetParameters()[0].ParameterType;
                         lock (_autoHandlersSync)
                         {
                             var subscriptions = _autoHandlers.GetOrAdd(commandType, _ => new List<DiscoveredHandlerMethod>());
@@ -128,17 +123,12 @@ namespace CodeWF.EventBus
                     continue;
                 }
 
+                if (!IsValidHandlerMethod(methodInfo))
+                {
+                    continue;
+                }
+
                 var parameters = methodInfo.GetParameters();
-                if (parameters.Length != 1 || !typeof(Command).IsAssignableFrom(parameters[0].ParameterType))
-                {
-                    continue;
-                }
-
-                if (methodInfo.ReturnType != typeof(void) && methodInfo.ReturnType != typeof(Task))
-                {
-                    continue;
-                }
-
                 var commandType = parameters[0].ParameterType;
                 var delegateType = methodInfo.ReturnType == typeof(Task)
                     ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))

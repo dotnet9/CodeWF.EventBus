@@ -1,5 +1,11 @@
 # 更新日志
 
+## 3.4.5.18 (2026-09-22)
+
+- fix: validate scanned handler signatures consistently across all discovery paths.
+- fix: honor handler order across manual and assembly-discovered subscriptions.
+- test: cover cross-source ordering and invalid automatic handler signatures.
+
 ## 3.4.5.17 (2026-09-22)
 
 - fix: use the application entry assembly for default IOC event-handler discovery.

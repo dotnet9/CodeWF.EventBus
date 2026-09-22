@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeWF.EventBus
@@ -16,7 +18,23 @@ namespace CodeWF.EventBus
             }
 
             handler.DynamicInvoke(command);
-            return null;
+            return Task.CompletedTask;
+        }
+
+        private Task InvokeAutoHandler(DiscoveredHandlerMethod handler, Type commandType, object command)
+        {
+            Task task = null;
+            var methodInfo = handler.Method;
+            _serviceHandlerAction(handler.RecipientType, recipient =>
+            {
+                var delegateType = methodInfo.ReturnType == typeof(Task)
+                    ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
+                    : typeof(Action<>).MakeGenericType(commandType);
+                var delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
+                task = InvokeHandler(delegateInstance, command);
+            });
+
+            return task ?? Task.CompletedTask;
         }
 
         /// <summary>
@@ -49,38 +67,30 @@ namespace CodeWF.EventBus
 
             var commandType = command.GetType();
             var handlers = GetSubscriptionSnapshot(commandType);
-            foreach (var handler in handlers)
-            {
-                var task = InvokeHandler(handler.Action, command);
-                if (task != null)
-                {
-                    await task;
-                }
-            }
-
             var autoHandlers = GetAutoHandlerSnapshot(commandType);
             if (autoHandlers.Length > 0)
             {
                 ThrowIfAutoHandlersAreNotConfigured();
-                foreach (var handler in autoHandlers)
-                {
-                    var methodInfo = handler.Method;
-                    Task task = null;
-                    // 实例处理器的对象由 IOC 集成层提供，主库只负责“拿到对象后执行方法”。
-                    _serviceHandlerAction(handler.RecipientType, recipient =>
-                    {
-                        var delegateType = methodInfo.ReturnType == typeof(Task)
-                            ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
-                            : typeof(Action<>).MakeGenericType(commandType);
-                        var delegateInstance = Delegate.CreateDelegate(delegateType, recipient, methodInfo);
-                        task = InvokeHandler(delegateInstance, command);
-                    });
+            }
 
-                    if (task != null)
-                    {
-                        await task;
-                    }
-                }
+            var invocations = new List<(int Order, Func<Task> Invoke)>(handlers.Length + autoHandlers.Length);
+            foreach (var handler in handlers)
+            {
+                var currentHandler = handler;
+                invocations.Add((currentHandler.Order,
+                    () => InvokeHandler(currentHandler.Action, command)));
+            }
+
+            foreach (var handler in autoHandlers)
+            {
+                var currentHandler = handler;
+                invocations.Add((currentHandler.Order,
+                    () => InvokeAutoHandler(currentHandler, commandType, command)));
+            }
+
+            foreach (var invocation in invocations.OrderBy(item => item.Order))
+            {
+                await invocation.Invoke();
             }
         }
 
