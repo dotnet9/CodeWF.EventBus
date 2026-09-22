@@ -189,6 +189,20 @@ namespace CodeWF.EventBus.Tests
             await eventBus.PublishAsync(new InvalidReturnCommand());
         }
 
+        [Fact]
+        public async Task Subscribe_ShouldRejectNullDelegates()
+        {
+            var eventBus = new EventBus();
+
+            Assert.Throws<ArgumentNullException>(() =>
+                eventBus.Subscribe<TestAddCommand>((Action<TestAddCommand>)null!));
+            Assert.Throws<ArgumentNullException>(() =>
+                eventBus.Subscribe<TestAddCommand>((Func<TestAddCommand, Task>)null!));
+
+            eventBus.Subscribe<TestAddCommand>(_ => null);
+            await eventBus.PublishAsync(new TestAddCommand());
+        }
+
         [Event]
         private sealed class AutoResolverHandler
         {

@@ -1,5 +1,10 @@
 # 更新日志
 
+## 3.4.5.19 (2026-09-22)
+
+- fix: reject null delegate subscriptions and tolerate null tasks from async handlers.
+- test: cover null delegate validation and null task completion.
+
 ## 3.4.5.18 (2026-09-22)
 
 - fix: validate scanned handler signatures consistently across all discovery paths.

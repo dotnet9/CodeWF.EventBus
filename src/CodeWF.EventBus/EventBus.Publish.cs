@@ -14,7 +14,7 @@ namespace CodeWF.EventBus
         {
             if (handler.Method.ReturnType == typeof(Task))
             {
-                return (Task)handler.DynamicInvoke(command);
+                return (Task)handler.DynamicInvoke(command) ?? Task.CompletedTask;
             }
 
             handler.DynamicInvoke(command);

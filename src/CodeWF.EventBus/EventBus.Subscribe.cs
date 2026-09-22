@@ -52,6 +52,11 @@ namespace CodeWF.EventBus
         public void Subscribe<TCommand>(Action<TCommand> action)
             where TCommand : Command
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
             Subscribe(typeof(TCommand), null, action);
         }
 
@@ -60,6 +65,11 @@ namespace CodeWF.EventBus
         /// </summary>
         public void Subscribe<TCommand>(Func<TCommand, Task> asyncAction) where TCommand : Command
         {
+            if (asyncAction == null)
+            {
+                throw new ArgumentNullException(nameof(asyncAction));
+            }
+
             Subscribe(typeof(TCommand), null, asyncAction);
         }
 
