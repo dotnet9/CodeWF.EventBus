@@ -12,8 +12,9 @@ namespace CodeWF.IOC.EventBus
     {
         private static Assembly[] GetAssemblies(Assembly[] assemblies)
         {
-            return assemblies
-                .Concat(new[] { Assembly.GetCallingAssembly() })
+            var entryAssembly = Assembly.GetEntryAssembly();
+            return (assemblies ?? Array.Empty<Assembly>())
+                .Concat(entryAssembly == null ? Array.Empty<Assembly>() : new[] { entryAssembly })
                 .Distinct()
                 .ToArray();
         }

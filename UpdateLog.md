@@ -1,5 +1,10 @@
 # 更新日志
 
+## 3.4.5.17 (2026-09-22)
+
+- fix: use the application entry assembly for default IOC event-handler discovery.
+- docs: clarify explicit assembly registration for plugin and test scenarios.
+
 ## 3.4.5.16 (2026-09-20)
 
 - 🚀[新增]-NuGet 包统一支持 `net8.0;net10.0;net11.0`，并发布新版本。
