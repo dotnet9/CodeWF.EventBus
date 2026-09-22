@@ -203,6 +203,24 @@ namespace CodeWF.EventBus.Tests
             await eventBus.PublishAsync(new TestAddCommand());
         }
 
+        [Fact]
+        public void Publish_ShouldRejectAsyncHandlers()
+        {
+            var eventBus = new EventBus();
+            var invoked = false;
+            eventBus.Subscribe<TestAddCommand>((Func<TestAddCommand, Task>)(async _ =>
+            {
+                invoked = true;
+                await Task.Yield();
+            }));
+
+            var exception = Assert.Throws<InvalidOperationException>(() =>
+                eventBus.Publish(new TestAddCommand()));
+
+            Assert.Contains("PublishAsync", exception.Message);
+            Assert.False(invoked);
+        }
+
         [Event]
         private sealed class AutoResolverHandler
         {

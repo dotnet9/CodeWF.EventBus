@@ -9,6 +9,6 @@
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts\</ArtifactsPath>
     <PackageOutputPath>$(ArtifactsPath)packages\</PackageOutputPath>
-    <Version>3.4.5.19</Version>
+    <Version>3.4.5.20</Version>
   </PropertyGroup>
 </Project>

@@ -76,6 +76,7 @@ namespace CodeWF.EventBus
 
         /// <summary>
         /// 同步发布一个命令或查询。
+        /// 仅适用于匹配的处理器全部为同步处理器；包含异步处理器时请使用 <see cref="PublishAsync{TCommand}"/>。
         /// </summary>
         /// <typeparam name="TCommand">命令类型。</typeparam>
         /// <param name="command">待发布的命令。</param>
@@ -83,6 +84,7 @@ namespace CodeWF.EventBus
 
         /// <summary>
         /// 同步执行查询并返回结果。
+        /// 仅适用于匹配的处理器全部为同步处理器；包含异步处理器时请使用 <see cref="QueryAsync{TResponse}"/>。
         /// </summary>
         /// <typeparam name="TResponse">结果类型。</typeparam>
         /// <param name="query">查询对象。</param>

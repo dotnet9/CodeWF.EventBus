@@ -37,11 +37,34 @@ namespace CodeWF.EventBus
             return task ?? Task.CompletedTask;
         }
 
+        private void ThrowIfSynchronousPublishIsNotSupported(Type commandType)
+        {
+            var handlers = GetSubscriptionSnapshot(commandType);
+            if (handlers.Any(handler => handler.Action.Method.ReturnType == typeof(Task)))
+            {
+                throw new InvalidOperationException(
+                    "Synchronous publishing cannot execute asynchronous handlers. Use PublishAsync or QueryAsync instead.");
+            }
+
+            var autoHandlers = GetAutoHandlerSnapshot(commandType);
+            if (autoHandlers.Any(handler => handler.Method.ReturnType == typeof(Task)))
+            {
+                throw new InvalidOperationException(
+                    "Synchronous publishing cannot execute asynchronous handlers. Use PublishAsync or QueryAsync instead.");
+            }
+        }
+
         /// <summary>
         /// 同步发布命令。
         /// </summary>
         public void Publish<TCommand>(TCommand command) where TCommand : Command
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            ThrowIfSynchronousPublishIsNotSupported(command.GetType());
             PublishAsync(command).GetAwaiter().GetResult();
         }
 

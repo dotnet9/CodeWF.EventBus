@@ -1,5 +1,11 @@
 # 更新日志
 
+## 3.4.5.20 (2026-09-22)
+
+- fix: reject synchronous publishing when asynchronous handlers are registered.
+- docs: clarify when to use synchronous versus asynchronous APIs.
+- test: cover synchronous publishing with asynchronous handlers.
+
 ## 3.4.5.19 (2026-09-22)
 
 - fix: reject null delegate subscriptions and tolerate null tasks from async handlers.
