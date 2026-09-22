@@ -123,7 +123,7 @@ namespace CodeWF.EventBus
             }
         }
 
-        private void Subscribe(Type recipientType, object recipient, MethodInfo[] methods)
+        private void Subscribe(Type recipientType, object? recipient, MethodInfo[] methods)
         {
             foreach (var methodInfo in methods)
             {
@@ -148,7 +148,7 @@ namespace CodeWF.EventBus
             }
         }
 
-        private void Subscribe(Type commandType, Type recipientType, Delegate action, int order = 0)
+        private void Subscribe(Type commandType, Type? recipientType, Delegate action, int order = 0)
         {
             lock (_subscriptionsSync)
             {

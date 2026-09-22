@@ -11,12 +11,12 @@ namespace CodeWF.EventBus
         /// <summary>
         /// 订阅者类型。
         /// </summary>
-        public Type RecipientType { get; set; }
+        public Type? RecipientType { get; set; }
 
         /// <summary>
         /// 实际执行的委托。
         /// </summary>
-        public Delegate Action { get; set; }
+        public Delegate Action { get; set; } = null!;
 
         /// <summary>
         /// 当前处理器的执行顺序。

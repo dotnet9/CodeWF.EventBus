@@ -200,7 +200,7 @@ namespace CodeWF.EventBus.Tests
             Assert.Throws<ArgumentNullException>(() =>
                 eventBus.Subscribe<TestAddCommand>((Func<TestAddCommand, Task>)null!));
 
-            eventBus.Subscribe<TestAddCommand>(_ => null);
+            eventBus.Subscribe<TestAddCommand>(_ => null!);
             await eventBus.PublishAsync(new TestAddCommand());
         }
 
@@ -239,9 +239,9 @@ namespace CodeWF.EventBus.Tests
         public void HandleEventObject_ShouldValidateArguments()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                EventBusExtensions.HandleEventObject(null, BindingFlags.Instance, Array.Empty<Assembly>()));
+                EventBusExtensions.HandleEventObject(null!, BindingFlags.Instance, Array.Empty<Assembly>()));
             Assert.Throws<ArgumentNullException>(() =>
-                EventBusExtensions.HandleEventObject(_ => { }, BindingFlags.Instance, null));
+                EventBusExtensions.HandleEventObject(_ => { }, BindingFlags.Instance, null!));
         }
 
         [Event]

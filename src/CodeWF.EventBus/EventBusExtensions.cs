@@ -61,7 +61,7 @@ namespace CodeWF.EventBus
             }
             catch (ReflectionTypeLoadException exception)
             {
-                return exception.Types.Where(type => type != null);
+                return exception.Types.Where(type => type != null).Select(type => type!);
             }
         }
     }

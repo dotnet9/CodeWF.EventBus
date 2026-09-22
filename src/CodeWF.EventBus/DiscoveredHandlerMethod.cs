@@ -12,12 +12,12 @@ namespace CodeWF.EventBus
         /// <summary>
         /// 处理器所在类型。
         /// </summary>
-        public Type RecipientType { get; set; }
+        public Type RecipientType { get; set; } = null!;
 
         /// <summary>
         /// 最终要绑定到实例上的方法。
         /// </summary>
-        public MethodInfo Method { get; set; }
+        public MethodInfo Method { get; set; } = null!;
 
         /// <summary>
         /// 当前处理器的执行顺序。

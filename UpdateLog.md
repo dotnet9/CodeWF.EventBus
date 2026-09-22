@@ -1,5 +1,10 @@
 # 更新日志
 
+## 3.4.5.24 (2026-09-22)
+
+- build: enable nullable reference types in the core package.
+- fix: annotate nullable internal state and reflection results explicitly.
+
 ## 3.4.5.23 (2026-09-22)
 
 - docs: align supported target frameworks and package output paths with the build configuration.

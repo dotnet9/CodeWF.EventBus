@@ -28,7 +28,7 @@ namespace CodeWF.EventBus
         private readonly object _subscriptionsSync = new object();
         private readonly object _autoHandlersSync = new object();
 
-        private Action<Type, Action<object>> _serviceHandlerAction;
+        private Action<Type, Action<object>>? _serviceHandlerAction;
 
         private bool IsTheSameMethod(MethodInfo method1, MethodInfo method2)
         {

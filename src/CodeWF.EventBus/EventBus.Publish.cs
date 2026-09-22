@@ -14,7 +14,7 @@ namespace CodeWF.EventBus
         /// </summary>
         private static Task InvokeHandler(Delegate handler, object command)
         {
-            object result;
+            object? result;
             try
             {
                 result = handler.DynamicInvoke(command);
@@ -27,7 +27,7 @@ namespace CodeWF.EventBus
 
             if (handler.Method.ReturnType == typeof(Task))
             {
-                return (Task)result ?? Task.CompletedTask;
+                return (Task?)result ?? Task.CompletedTask;
             }
 
             return Task.CompletedTask;
@@ -35,9 +35,12 @@ namespace CodeWF.EventBus
 
         private Task InvokeAutoHandler(DiscoveredHandlerMethod handler, Type commandType, object command)
         {
-            Task task = null;
+            Task? task = null;
             var methodInfo = handler.Method;
-            _serviceHandlerAction(handler.RecipientType, recipient =>
+            var serviceHandlerAction = _serviceHandlerAction ?? throw new InvalidOperationException(
+                "Instance event handlers discovered from assemblies require a service resolver. " +
+                "Call RegisterServiceHandlerAction or use one of the IOC integration packages before publishing.");
+            serviceHandlerAction(handler.RecipientType, recipient =>
             {
                 var delegateType = methodInfo.ReturnType == typeof(Task)
                     ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
