@@ -4,6 +4,7 @@ using CodeWF.EventBus.Tests.Queries;
 using CommandAndQueryModel.Commands;
 using CommandAndQueryModel.Queries;
 using CommandAndQueryModel.Services;
+using System.Reflection;
 
 namespace CodeWF.EventBus.Tests
 {
@@ -232,6 +233,15 @@ namespace CodeWF.EventBus.Tests
                 eventBus.PublishAsync(new TestAddCommand()));
 
             Assert.Same(expected, exception);
+        }
+
+        [Fact]
+        public void HandleEventObject_ShouldValidateArguments()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+                EventBusExtensions.HandleEventObject(null, BindingFlags.Instance, Array.Empty<Assembly>()));
+            Assert.Throws<ArgumentNullException>(() =>
+                EventBusExtensions.HandleEventObject(_ => { }, BindingFlags.Instance, null));
         }
 
         [Event]

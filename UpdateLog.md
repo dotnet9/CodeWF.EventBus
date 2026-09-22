@@ -1,5 +1,11 @@
 # 更新日志
 
+## 3.4.5.22 (2026-09-22)
+
+- fix: continue scanning loadable types when an assembly has type-load failures.
+- fix: validate assembly scanning callback and collection arguments.
+- test: cover scanner argument validation.
+
 ## 3.4.5.21 (2026-09-22)
 
 - fix: propagate the original exception from synchronous handlers.

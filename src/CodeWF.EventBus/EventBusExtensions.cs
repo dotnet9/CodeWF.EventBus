@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -19,9 +20,19 @@ namespace CodeWF.EventBus
         public static void HandleEventObject(Action<Type> handleRecipient, BindingFlags findHandlerMethodBindingFlags,
             Assembly[] assemblies)
         {
+            if (handleRecipient == null)
+            {
+                throw new ArgumentNullException(nameof(handleRecipient));
+            }
+
+            if (assemblies == null)
+            {
+                throw new ArgumentNullException(nameof(assemblies));
+            }
+
             foreach (var assembly in assemblies)
             {
-                var types = assembly.GetTypes()
+                var types = GetLoadableTypes(assembly)
                     .Where(t => t.IsClass
                                 && !t.IsAbstract
                                 && t.GetCustomAttributes<EventAttribute>().Any()
@@ -34,6 +45,23 @@ namespace CodeWF.EventBus
                 {
                     handleRecipient(type);
                 }
+            }
+        }
+
+        internal static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException(nameof(assembly));
+            }
+
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException exception)
+            {
+                return exception.Types.Where(type => type != null);
             }
         }
     }

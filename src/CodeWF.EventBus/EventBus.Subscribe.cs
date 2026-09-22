@@ -86,7 +86,7 @@ namespace CodeWF.EventBus
 
             foreach (var assembly in assemblies)
             {
-                var types = assembly.GetTypes()
+                var types = EventBusExtensions.GetLoadableTypes(assembly)
                     .Where(t => t.IsClass
                                 && !t.IsAbstract
                                 && t.GetCustomAttributes<EventAttribute>().Any()
