@@ -1,5 +1,10 @@
 # 更新日志
 
+## 3.4.5.21 (2026-09-22)
+
+- fix: propagate the original exception from synchronous handlers.
+- test: verify handler exception identity and type are preserved.
+
 ## 3.4.5.20 (2026-09-22)
 
 - fix: reject synchronous publishing when asynchronous handlers are registered.

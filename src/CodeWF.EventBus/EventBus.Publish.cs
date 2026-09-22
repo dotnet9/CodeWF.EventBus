@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
 namespace CodeWF.EventBus
@@ -12,12 +14,22 @@ namespace CodeWF.EventBus
         /// </summary>
         private static Task InvokeHandler(Delegate handler, object command)
         {
-            if (handler.Method.ReturnType == typeof(Task))
+            object result;
+            try
             {
-                return (Task)handler.DynamicInvoke(command) ?? Task.CompletedTask;
+                result = handler.DynamicInvoke(command);
+            }
+            catch (TargetInvocationException exception) when (exception.InnerException != null)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+                throw;
             }
 
-            handler.DynamicInvoke(command);
+            if (handler.Method.ReturnType == typeof(Task))
+            {
+                return (Task)result ?? Task.CompletedTask;
+            }
+
             return Task.CompletedTask;
         }
 

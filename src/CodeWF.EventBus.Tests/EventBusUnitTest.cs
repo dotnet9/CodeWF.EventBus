@@ -221,6 +221,19 @@ namespace CodeWF.EventBus.Tests
             Assert.False(invoked);
         }
 
+        [Fact]
+        public async Task PublishAsync_ShouldPropagateOriginalHandlerException()
+        {
+            var eventBus = new EventBus();
+            var expected = new InvalidOperationException("handler failed");
+            eventBus.Subscribe<TestAddCommand>(_ => throw expected);
+
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                eventBus.PublishAsync(new TestAddCommand()));
+
+            Assert.Same(expected, exception);
+        }
+
         [Event]
         private sealed class AutoResolverHandler
         {
