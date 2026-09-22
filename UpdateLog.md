@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.4.5.23 (2026-09-22)
+
+- docs: align supported target frameworks and package output paths with the build configuration.
+
 ## 3.4.5.22 (2026-09-22)
 
 - fix: continue scanning loadable types when an assembly has type-load failures.
