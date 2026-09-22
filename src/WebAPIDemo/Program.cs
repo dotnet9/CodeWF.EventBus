@@ -8,8 +8,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 
-// 注册事件总线，并自动扫描当前调用程序集中的实例处理器。
-builder.Services.AddEventBus();
+// 显式指定处理器程序集，兼容 NativeAOT 和裁剪发布。
+var handlerAssembly = typeof(Program).Assembly;
+builder.Services.AddEventBus(handlerAssembly);
 
 var app = builder.Build();
 
@@ -24,6 +25,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // 在应用启动阶段把处理器真正接入到事件总线。
-app.UseEventBus();
+app.UseEventBus(handlerAssembly);
 
 app.Run();

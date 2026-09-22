@@ -9,7 +9,7 @@
 
 ## 仓库规范
 
-- 当前版本：`3.4.5.25`，版本号统一维护在根目录 `Directory.Build.props` 的 `<Version>` 节点。
+- 当前版本：`3.4.5.26`，版本号统一维护在根目录 `Directory.Build.props` 的 `<Version>` 节点。
 - NuGet 包项目统一支持 `net8.0;net10.0;net11.0`；Demo、App、测试与内部应用项目统一使用 `net11.0` / `net11.0-windows`。
 - 根目录 `logo.svg`、`logo.png`、`logo.ico` 是唯一图标源，子工程只通过 MSBuild `Link` 引用，不维护图标副本。
 - 运行时帮助、Markdown 示例、内置备忘录、设计说明等业务文档按功能保留；仓库级入口文档使用根目录 `README.md` 和 `UpdateLog.md`。
@@ -212,9 +212,9 @@ app.Run();
 
 说明：
 
-- `AddEventBus()` 默认扫描应用入口程序集中的 `[Event]` 类，并将它们按作用域注册到容器中。
+- `AddEventBus()` 默认扫描入口程序集中的 `[Event]` 类；如果运行环境没有入口程序集，则回退扫描当前已加载程序集。
 - `UseEventBus()` 会把扫描指定类型得到的处理器和实例处理器都接入事件总线。
-- 插件、测试或多程序集场景请显式传入需要扫描的程序集，例如 `AddEventBus(typeof(MyHandler).Assembly)` 和 `UseEventBus(typeof(MyHandler).Assembly)`。
+- NativeAOT、裁剪发布、插件、测试或多程序集场景必须显式传入需要扫描的程序集，例如 `AddEventBus(typeof(MyHandler).Assembly)` 和 `UseEventBus(typeof(MyHandler).Assembly)`。
 
 控制器中直接注入 `IEventBus`：
 

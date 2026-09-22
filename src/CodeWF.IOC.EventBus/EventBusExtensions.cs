@@ -12,9 +12,20 @@ namespace CodeWF.IOC.EventBus
     {
         private static Assembly[] GetAssemblies(Assembly[] assemblies)
         {
+            var requestedAssemblies = assemblies ?? Array.Empty<Assembly>();
+            if (requestedAssemblies.Any(assembly => assembly == null))
+            {
+                throw new ArgumentException("The assemblies collection cannot contain null entries.", nameof(assemblies));
+            }
+
             var entryAssembly = Assembly.GetEntryAssembly();
-            return (assemblies ?? Array.Empty<Assembly>())
-                .Concat(entryAssembly == null ? Array.Empty<Assembly>() : new[] { entryAssembly })
+            var assembliesToScan = requestedAssemblies.Length > 0
+                ? requestedAssemblies.Concat(entryAssembly == null ? Array.Empty<Assembly>() : new[] { entryAssembly })
+                : entryAssembly == null
+                    ? AppDomain.CurrentDomain.GetAssemblies()
+                    : new[] { entryAssembly };
+
+            return assembliesToScan
                 .Distinct()
                 .ToArray();
         }

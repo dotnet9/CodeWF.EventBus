@@ -1,5 +1,11 @@
 # 更新日志
 
+## 3.4.5.26 (2026-09-22)
+
+- fix: add a loaded-assembly fallback when the entry assembly is unavailable.
+- docs: require explicit handler assemblies for NativeAOT and trimmed deployments.
+- sample: pass the application assembly explicitly in the Web API demo.
+
 ## 3.4.5.25 (2026-09-22)
 
 - fix: validate IOC integration arguments and null service resolutions.
