@@ -1,5 +1,10 @@
 # 更新日志
 
+## 3.4.5.25 (2026-09-22)
+
+- fix: validate IOC integration arguments and null service resolutions.
+- test: cover unresolved automatic handler instances.
+
 ## 3.4.5.24 (2026-09-22)
 
 - build: enable nullable reference types in the core package.

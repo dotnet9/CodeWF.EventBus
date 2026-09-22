@@ -25,6 +25,8 @@ namespace CodeWF.IOC.EventBus
         public static void AddEventBus(Action<Type, Type> addSingleton1,
             Action<Type> addScoped2, params Assembly[] assemblies)
         {
+            ArgumentNullException.ThrowIfNull(addSingleton1);
+            ArgumentNullException.ThrowIfNull(addScoped2);
             addSingleton1(typeof(IEventBus), typeof(CodeWF.EventBus.EventBus));
 
             var allAssemblies = GetAssemblies(assemblies);
@@ -39,6 +41,7 @@ namespace CodeWF.IOC.EventBus
         /// </summary>
         public static void UseEventBus(Func<Type, object> resolveAction, params Assembly[] assemblies)
         {
+            ArgumentNullException.ThrowIfNull(resolveAction);
             if (resolveAction(typeof(IEventBus)) is not IEventBus messenger)
             {
                 throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");

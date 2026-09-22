@@ -244,6 +244,19 @@ namespace CodeWF.EventBus.Tests
                 EventBusExtensions.HandleEventObject(_ => { }, BindingFlags.Instance, null!));
         }
 
+        [Fact]
+        public async Task Publish_ShouldRejectNullResolvedAutoHandler()
+        {
+            var eventBus = new EventBus();
+            eventBus.RegisterServiceHandlerAction((type, action) => action(null!));
+            eventBus.Subscribe(new[] { typeof(AutoResolverHandler).Assembly });
+
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                eventBus.PublishAsync(new AutoResolverCommand()));
+
+            Assert.Contains("returned null", exception.Message);
+        }
+
         [Event]
         private sealed class AutoResolverHandler
         {

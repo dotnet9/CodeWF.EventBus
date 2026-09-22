@@ -42,6 +42,12 @@ namespace CodeWF.EventBus
                 "Call RegisterServiceHandlerAction or use one of the IOC integration packages before publishing.");
             serviceHandlerAction(handler.RecipientType, recipient =>
             {
+                if (recipient == null)
+                {
+                    throw new InvalidOperationException(
+                        $"The service resolver returned null for event handler type '{handler.RecipientType.FullName}'.");
+                }
+
                 var delegateType = methodInfo.ReturnType == typeof(Task)
                     ? typeof(Func<,>).MakeGenericType(commandType, typeof(Task))
                     : typeof(Action<>).MakeGenericType(commandType);

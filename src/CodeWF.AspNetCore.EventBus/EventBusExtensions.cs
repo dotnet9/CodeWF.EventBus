@@ -26,6 +26,7 @@ namespace CodeWF.AspNetCore.EventBus
         /// </summary>
         public static IServiceCollection AddEventBus(this IServiceCollection services, params Assembly[] assemblies)
         {
+            ArgumentNullException.ThrowIfNull(services);
             services.AddSingleton<IEventBus, CodeWF.EventBus.EventBus>();
 
             var allAssemblies = GetAssemblies(assemblies);
@@ -42,6 +43,7 @@ namespace CodeWF.AspNetCore.EventBus
         /// </summary>
         public static void UseEventBus(this IApplicationBuilder app, params Assembly[] assemblies)
         {
+            ArgumentNullException.ThrowIfNull(app);
             if (app.ApplicationServices.GetService<IEventBus>() is not { } messenger)
             {
                 throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");

@@ -26,6 +26,7 @@ namespace CodeWF.DryIoc.EventBus
         /// </summary>
         public static IContainerRegistry AddEventBus(this IContainerRegistry services, params Assembly[] assemblies)
         {
+            ArgumentNullException.ThrowIfNull(services);
             services.RegisterSingleton<IEventBus, CodeWF.EventBus.EventBus>();
 
             var allAssemblies = GetAssemblies(assemblies);
@@ -42,6 +43,7 @@ namespace CodeWF.DryIoc.EventBus
         /// </summary>
         public static void UseEventBus(this IContainer app, params Assembly[] assemblies)
         {
+            ArgumentNullException.ThrowIfNull(app);
             if (app.Resolve<IEventBus>() is not { } messenger)
             {
                 throw new InvalidOperationException("Please call AddEventBus before calling UseEventBus");
