@@ -399,3 +399,19 @@ public interface IEventBus
 ## 包版本维护约定
 
 XML 文件统一使用两个空格缩进。`Directory.Packages.props` 统一承载 NuGet 中央包管理开关和包版本变量，包括 `AvaloniaVersion` 等共享版本属性；`Directory.Build.props` 仅保留项目构建、编译选项和 NuGet 元数据。仓库如引用 `VC-LTL`、`YY-Thunks`，这两个兼容旧版操作系统的特殊包必须使用最新预览版。
+
+## CI/CD：自动发布 NuGet 包
+
+推送 `v*` 标签（例如 `v3.4.5.27`）会触发 [.github/workflows/publish-nuget.yml](.github/workflows/publish-nuget.yml)，一次发布四个包：`CodeWF.EventBus`、`CodeWF.IOC.EventBus`、`CodeWF.DryIoc.EventBus`、`CodeWF.AspNetCore.EventBus`（含 snupkg 符号包），完成后自动创建 GitHub Release。
+
+包版本号以 `Directory.Build.props` 的 `<Version>` 为准，**打标签前先升版本**——nuget.org 拒绝重复的版本号；标签与 `<Version>` 不一致时工作流仅告警不阻断。认证使用 NuGet Trusted Publishing：工作流通过 `nuget/login@v1` 以 OIDC 令牌换取一次性发布凭据，仓库不保存任何 secret。nuget.org 侧的 API key 需绑定本仓库与工作流文件名 `publish-nuget.yml`（Scopes 勾选 Push，Glob 建议收窄为 `CodeWF.*`）；这类 key 创建后 7 天内需成功发布一次才会转永久有效。
+
+手工发布步骤：
+
+```bash
+# 1. 升版本：修改 Directory.Build.props 的 <Version>（或用 UpdateLog.md 记录变更）并提交
+# 2. 打标签并推送，触发发布
+git tag -a v3.4.5.28 -m "CodeWF.EventBus v3.4.5.28"
+git push origin v3.4.5.28
+# 3. 在 GitHub Actions 观察 publish-nuget 运行，完成后到 nuget.org 核对四个包的新版本
+```

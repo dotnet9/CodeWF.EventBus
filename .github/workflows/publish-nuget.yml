@@ -1,0 +1,113 @@
+name: publish-nuget
+
+# 推送 v* 格式 tag 时触发，例如 v3.4.5.27。
+# 包版本号以 Directory.Build.props 的 <Version> 为准（打 tag 前先升版本），
+# tag 只负责触发与命名 GitHub Release，不一致时仅告警不阻断。
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write # 创建 GitHub Release
+  id-token: write # NuGet Trusted Publishing：用 OIDC 令牌换取一次性发布凭据
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          # 目标框架 net8.0 / net10.0 / net11.0，11.0 为 preview SDK
+          dotnet-version: |
+            8.0.x
+            10.0.x
+            11.0.x
+          dotnet-quality: preview
+
+      - name: Check tag matches package version
+        shell: pwsh
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          $tagVersion = $env:TAG.TrimStart('v')
+          $props = Get-Content -LiteralPath Directory.Build.props -Raw -Encoding UTF8
+          if ($props -match '<Version>([^<]+)</Version>') {
+            $packageVersion = $Matches[1].Trim()
+            if ($tagVersion -ne $packageVersion) {
+              Write-Host "::warning::Tag ($tagVersion) 与 Directory.Build.props 的 Version ($packageVersion) 不一致，本次将以 $packageVersion 发布。"
+            }
+          } else {
+            Write-Host "::warning::未在 Directory.Build.props 中找到 <Version>，将使用项目默认版本。"
+          }
+
+      - name: Build
+        shell: pwsh
+        run: |
+          # 与 pack.bat 一致：只构建四个库项目（Demo / Test 不参与打包）；
+          # Package.props 开了 GeneratePackageOnBuild，构建阶段显式关闭，统一交给 Pack
+          $projects = @(
+            'src/CodeWF.EventBus/CodeWF.EventBus.csproj',
+            'src/CodeWF.IOC.EventBus/CodeWF.IOC.EventBus.csproj',
+            'src/CodeWF.DryIoc.EventBus/CodeWF.DryIoc.EventBus.csproj',
+            'src/CodeWF.AspNetCore.EventBus/CodeWF.AspNetCore.EventBus.csproj'
+          )
+
+          foreach ($project in $projects) {
+            dotnet build $project -c Release --no-restore -p:GeneratePackageOnBuild=false
+            if ($LASTEXITCODE -ne 0) { throw "build failed: $project" }
+          }
+
+      - name: Pack
+        shell: pwsh
+        run: |
+          # .NET 11 SDK 的 pack 不再隐式构建，须先 Build 再 --no-build Pack
+          $projects = @(
+            'src/CodeWF.EventBus/CodeWF.EventBus.csproj',
+            'src/CodeWF.IOC.EventBus/CodeWF.IOC.EventBus.csproj',
+            'src/CodeWF.DryIoc.EventBus/CodeWF.DryIoc.EventBus.csproj',
+            'src/CodeWF.AspNetCore.EventBus/CodeWF.AspNetCore.EventBus.csproj'
+          )
+
+          foreach ($project in $projects) {
+            dotnet pack $project -c Release --no-build --no-restore -o artifacts/packages
+            if ($LASTEXITCODE -ne 0) { throw "pack failed: $project" }
+          }
+
+          Get-ChildItem artifacts/packages | ForEach-Object { Write-Host $_.Name }
+
+      - name: NuGet login (Trusted Publishing)
+        uses: nuget/login@v1
+        id: login
+        with:
+          user: dotnet9
+
+      - name: Push to nuget.org
+        shell: pwsh
+        run: |
+          # 主包：失败即中止
+          Get-ChildItem artifacts/packages -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName `
+              --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" `
+              --source https://api.nuget.org/v3/index.json `
+              --skip-duplicate
+            if ($LASTEXITCODE -ne 0) { throw "push failed: $($_.Name)" }
+          }
+
+          # 符号包：不含 pdb 的 snupkg 会被 nuget.org 拒绝，仅告警不中止
+          Get-ChildItem artifacts/packages -Filter *.snupkg | ForEach-Object {
+            dotnet nuget push $_.FullName `
+              --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" `
+              --source https://api.nuget.org/v3/index.json `
+              --skip-duplicate
+            if ($LASTEXITCODE -ne 0) { Write-Host "warning: symbol package push failed: $($_.Name)" }
+          }
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
