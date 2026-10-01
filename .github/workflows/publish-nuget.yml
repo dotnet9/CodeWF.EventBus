@@ -58,7 +58,7 @@ jobs:
           )
 
           foreach ($project in $projects) {
-            dotnet build $project -c Release --no-restore -p:GeneratePackageOnBuild=false
+            dotnet build $project -c Release -p:GeneratePackageOnBuild=false
             if ($LASTEXITCODE -ne 0) { throw "build failed: $project" }
           }
 
