@@ -1,3 +1,18 @@
+> [!WARNING]
+> # ⚠️ 本仓库已停止维护 / This repository is no longer maintained
+>
+> 本仓库已归档：不再接受 Issue 与 Pull Request，NuGet 旧包保留但不再升级。
+>
+> This repository is archived: issues and pull requests are closed, and existing NuGet packages will not receive updates.
+>
+> **替代方案 / Replacement:**
+>
+> | 旧包 / Old packages | 新包 / New packages |
+> |---|---|
+> | CodeWF.EventBus(.IOC/.DryIoc/.AspNetCore) | CodeWF.Toolkit.EventBus(.Prism/.AspNetCore) |
+>
+> 新仓库 / New repository: **https://github.com/dotnet9/CodeWF.Toolkit**
+
 # CodeWF.EventBus
 
 | 名称 | NuGet | 下载量 |
